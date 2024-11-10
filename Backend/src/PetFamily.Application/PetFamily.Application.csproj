@@ -9,5 +9,5 @@
     <ItemGroup>
       <ProjectReference Include="..\PetFamily.Domain\PetFamily.Domain.csproj" />
     </ItemGroup>
-
+    
 </Project>
