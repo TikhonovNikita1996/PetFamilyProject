@@ -5,22 +5,22 @@ namespace PetFamily.Domain;
 
 public class Pet
 {
-    public Guid Id { get; set; }
-    public required string PetsName { get; set; }
-    public required string Species { get; set; }
-    public required GenderType Gender { get; set; }
-    public required string Description { get; set; }
-    public required string Breed { get; set; }
-    public required string Color { get; set; }
-    public required string HealthInformation { get; set; }
-    public required string LocationAdress { get; set; }
-    public required double Weight { get; set; }
-    public required double Hight { get; set; }
-    public required string OwnersPhoneNumber { get; set; }
-    public required bool IsSterilized { get; set; }
-    public required DateTime DateOfBirth { get; set; }
-    public required bool IsVaccinated { get; set; }
-    public required HelpStatusType CurrentStatus { get; set; }
-    public required List<DetailsforAssistance> DetailsforAssistance { get; set; }
-    public required DateTime PetsPageCreationDate { get; set; }
+    public Guid Id { get; private set; }
+    public string PetsName { get; private set; } = default!;
+    public string Species { get; private set; } = default!;
+    public GenderType Gender { get; private set; } = default!;
+    public string Description { get; private set; } = default!;
+    public string Breed { get; private set; } = default!;
+    public string Color { get; private set; } = default!;
+    public string HealthInformation { get; private set; } = default!;
+    public string LocationAdress { get; private set; } = default!;
+    public double Weight { get; private set; } = default!;
+    public double Hight { get; private set; } = default!;
+    public string OwnersPhoneNumber { get; private set;} = default!;
+    public bool IsSterilized { get; private set; } = default!;
+    public DateTime DateOfBirth { get; private set; } = default!;
+    public bool IsVaccinated { get; private set; } = default!;
+    public HelpStatusType CurrentStatus { get; private set; } = default!;
+    public List<DetailsforAssistance> DetailsforAssistance { get; private set; } = [];
+    public DateTime PetsPageCreationDate { get; private set; } = default!;
 }
