@@ -3,7 +3,8 @@ public enum HelpStatusType
 {
     NeedHelp,
     SerachingForHome,
-    FoundHome
+    FoundHome,
+    OnTreatment
 }
 
 public enum GenderType
