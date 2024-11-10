@@ -2,6 +2,6 @@
 
 public class DetailsforAssistance
 {
-    public required string Name { get; set; }
-    public required string Description { get; set; }
+    public string Name { get; private set; } = default!;
+    public string Description { get; private set; } = default!;
 }
