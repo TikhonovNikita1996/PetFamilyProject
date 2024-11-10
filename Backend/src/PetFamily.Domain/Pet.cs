@@ -1,4 +1,5 @@
 ﻿using System.Security.AccessControl;
+using PetFamily.Domain.Enums;
 
 namespace PetFamily.Domain;
 
@@ -7,6 +8,7 @@ public class Pet
     public Guid Id { get; set; }
     public required string PetsName { get; set; }
     public required string Species { get; set; }
+    public required GenderType Gender { get; set; }
     public required string Description { get; set; }
     public required string Breed { get; set; }
     public required string Color { get; set; }
@@ -18,7 +20,7 @@ public class Pet
     public required bool IsSterilized { get; set; }
     public required DateTime DateOfBirth { get; set; }
     public required bool IsVaccinated { get; set; }
-    public required string CurrentStatus { get; set; }
-    public required string DetailsforAssistance { get; set; }
+    public required HelpStatusType CurrentStatus { get; set; }
+    public required List<DetailsforAssistance> DetailsforAssistance { get; set; }
     public required DateTime PetsPageCreationDate { get; set; }
 }
