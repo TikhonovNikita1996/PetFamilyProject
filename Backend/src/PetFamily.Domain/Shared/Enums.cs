@@ -1,4 +1,4 @@
-namespace PetFamily.Domain.Enums;
+namespace PetFamily.Domain.Shared;
 public enum HelpStatusType
 {
     NeedHelp,
