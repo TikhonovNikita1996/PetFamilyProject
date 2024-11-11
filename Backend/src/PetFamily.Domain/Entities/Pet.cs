@@ -1,10 +1,12 @@
-﻿using System.Security.AccessControl;
-using PetFamily.Domain.Shared;
+﻿using PetFamily.Domain.Shared;
 
-namespace PetFamily.Domain;
+namespace PetFamily.Domain.Entities;
 
 public class Pet
 {
+    // ef core
+    private Pet() { }
+    
     public Guid Id { get; private set; }
     public string PetsName { get; private set; } = default!;
     public string Species { get; private set; } = default!;
@@ -21,7 +23,8 @@ public class Pet
     public DateTime DateOfBirth { get; private set; } = default!;
     public bool IsVaccinated { get; private set; } = default!;
     public HelpStatusType CurrentStatus { get; private set; } = default!;
-    public List<DetailForAssistance> DetailsForAssistance { get; private set; } = [];
+    /*public DonationInfo DonateForHelpInfos { get; private set; }*/
     public DateTime PetsPageCreationDate { get; private set; } = default!;
-    public List<PetPhoto> Photos { get; private set; } = [];
+    public Photos Photos { get; private set; }
+    
 }
