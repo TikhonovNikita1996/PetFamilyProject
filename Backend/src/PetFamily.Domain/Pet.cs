@@ -21,6 +21,7 @@ public class Pet
     public DateTime DateOfBirth { get; private set; } = default!;
     public bool IsVaccinated { get; private set; } = default!;
     public HelpStatusType CurrentStatus { get; private set; } = default!;
-    public List<DetailForAssistance> DetailsforAssistance { get; private set; } = [];
+    public List<DetailForAssistance> DetailsForAssistance { get; private set; } = [];
     public DateTime PetsPageCreationDate { get; private set; } = default!;
+    public List<PetPhoto> Photos { get; private set; } = [];
 }
