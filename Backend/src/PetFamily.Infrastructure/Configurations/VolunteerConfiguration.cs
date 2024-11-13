@@ -70,6 +70,5 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                 .IsRequired()
                 .HasMaxLength(ProjectConstants.MAX_LOW_TEXT_LENGTH);
         });
-
     }
 }

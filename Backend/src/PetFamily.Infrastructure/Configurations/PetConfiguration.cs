@@ -28,7 +28,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             .IsRequired()
             .HasMaxLength(ProjectConstants.MAX_HIGHT_TEXT_LENGTH);
         
-        builder.Property(p => p.Hight)
+        builder.Property(p => p.Height)
             .IsRequired();
         
         builder.Property(p => p.Weight)

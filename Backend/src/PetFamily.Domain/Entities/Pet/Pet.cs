@@ -15,7 +15,7 @@ public class Pet : BaseEntity<PetId>
     
     public Pet(PetId petId, string petsName, string species, GenderType gender, string description,
         string breed, string color, string healthInformation, LocationAddress locationAddress,
-        double weight, double hight, string ownersPhoneNumber, bool isSterilized, DateTime dateOfBirth,
+        double weight, double height, string ownersPhoneNumber, bool isSterilized, DateTime dateOfBirth,
         bool isVaccinated, HelpStatusType currentStatus, DonationInfoList donateForHelpInfos,
         DateTime petsPageCreationDate) : base(petId)
     {
@@ -28,7 +28,7 @@ public class Pet : BaseEntity<PetId>
         HealthInformation = healthInformation;
         LocationAddress = locationAddress;
         Weight = weight;
-        Hight = hight;
+        Height = height;
         OwnersPhoneNumber = ownersPhoneNumber;
         IsSterilized = isSterilized;
         DateOfBirth = dateOfBirth;
@@ -47,7 +47,7 @@ public class Pet : BaseEntity<PetId>
     public string HealthInformation { get; private set; } 
     public LocationAddress LocationAddress { get; private set; }
     public double Weight { get; private set; } = default!;
-    public double Hight { get; private set; } = default!;
+    public double Height { get; private set; } = default!;
     public string OwnersPhoneNumber { get; private set;}
     public bool IsSterilized { get; private set; }
     public DateTime DateOfBirth { get; private set; } 
@@ -61,7 +61,7 @@ public class Pet : BaseEntity<PetId>
                                             string species, GenderType gender, string description,
                                             string breed, string color, string healthInformation, 
                                             LocationAddress locationAddress,
-                                            double weight, double hight, 
+                                            double weight, double height, 
                                             string ownersPhoneNumber, bool isSterilized, 
                                             DateTime dateOfBirth,
                                             bool isVaccinated, HelpStatusType currentStatus, 
@@ -70,10 +70,28 @@ public class Pet : BaseEntity<PetId>
     {
         var pet = new Pet(petId, petsName, species, gender, description, breed,
                           color, healthInformation, locationAddress, weight, 
-                          hight, ownersPhoneNumber, isSterilized, dateOfBirth, 
+                          height, ownersPhoneNumber, isSterilized, dateOfBirth, 
                           isVaccinated, currentStatus, donateForHelpInfos, 
                           petsPageCreationDate);
 
+        if (string.IsNullOrWhiteSpace(petsName))
+            return "Pets name can not be empty";
+        if (string.IsNullOrWhiteSpace(species))
+            return "Species can not be empty";
+        if (string.IsNullOrWhiteSpace(description))
+            return "Description can not be empty";
+        if (string.IsNullOrWhiteSpace(breed))
+            return "Breed can not be empty";
+        if (string.IsNullOrWhiteSpace(healthInformation))
+            return "Health Information can not be empty";
+        if (weight == 0)
+            return "Weight can not be zero";
+        if (height == 0)
+            return "Height can not be zero";
+        if (string.IsNullOrWhiteSpace(ownersPhoneNumber))
+            return "Phone number can not be empty";
+                
+        
         return pet;
     }
 }
