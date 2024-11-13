@@ -1,4 +1,4 @@
-﻿namespace PetFamily.Domain.Entities;
+﻿namespace PetFamily.Domain.Entities.Others;
 public class DonateForHelpInfo
 {
     public string Name { get; private set; } = default!;

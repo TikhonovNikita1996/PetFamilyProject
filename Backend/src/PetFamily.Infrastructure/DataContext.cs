@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using PetFamily.Domain;
 using PetFamily.Domain.Entities;
+using PetFamily.Domain.Entities.Volunteer;
 
 namespace PetFamily.Infrastructure;
 

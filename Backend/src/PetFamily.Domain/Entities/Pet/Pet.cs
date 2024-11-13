@@ -1,13 +1,17 @@
-﻿using PetFamily.Domain.Shared;
+﻿using PetFamily.Domain.Entities.Ids;
+using PetFamily.Domain.Entities.Others;
+using PetFamily.Domain.Shared;
 
-namespace PetFamily.Domain.Entities;
+namespace PetFamily.Domain.Entities.Pet;
 
-public class Pet
+public class Pet : BaseEntity<PetId>
 {
     // ef core
-    private Pet() { }
+    public Pet(PetId petId) : base(petId)
+    {
+        
+    }
     
-    public Guid Id { get; private set; }
     public string PetsName { get; private set; } = default!;
     public string Species { get; private set; } = default!;
     public GenderType Gender { get; private set; } = default!;
@@ -23,7 +27,7 @@ public class Pet
     public DateTime DateOfBirth { get; private set; } = default!;
     public bool IsVaccinated { get; private set; } = default!;
     public HelpStatusType CurrentStatus { get; private set; } = default!;
-    /*public DonationInfo DonateForHelpInfos { get; private set; }*/
+    public DonationInfo DonateForHelpInfos { get; private set; }
     public DateTime PetsPageCreationDate { get; private set; } = default!;
     public Photos Photos { get; private set; }
     

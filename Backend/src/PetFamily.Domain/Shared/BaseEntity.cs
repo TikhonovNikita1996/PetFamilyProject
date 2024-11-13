@@ -1,7 +1,8 @@
 ﻿namespace PetFamily.Domain.Shared;
 
-public abstract class BaseEntity<T>(T id)
-     where T : notnull
+public abstract class BaseEntity<TId> where TId : notnull
 {
-     public T Id { get; private set; } = id;
+    protected BaseEntity(TId id) => Id = id;
+    
+    public TId Id { get; private set; }
 }
