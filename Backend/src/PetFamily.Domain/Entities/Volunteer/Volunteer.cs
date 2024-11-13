@@ -6,6 +6,8 @@ namespace PetFamily.Domain.Entities.Volunteer;
 
 public class Volunteer : BaseEntity<VolunteerId>
 {
+    private readonly List<Pet.Pet> _pets = [];
+    
     // ef core
     public Volunteer(VolunteerId id) : base(id)
     {
@@ -19,9 +21,9 @@ public class Volunteer : BaseEntity<VolunteerId>
     public string PhoneNumber { get; private set; } = default!;
     public DonationInfo DonateForHelpInfos { get; private set; }
     public SocialMediaDetails SocialMediaDetails { get; private set; }
-    public List<Pet.Pet> CurrentPets { get; private set; } = [];
-    public int PetsWhoFoundHome => CurrentPets.Where(p => p.CurrentStatus == HelpStatusType.FoundHome).Count();
-    public int PetsSearchingForHome => CurrentPets.Where(p => p.CurrentStatus == HelpStatusType.SerachingForHome).Count();
-    public int PetsOnTreatment => CurrentPets.Where(p => p.CurrentStatus == HelpStatusType.OnTreatment).Count();
+    public IReadOnlyList<Pet.Pet> CurrentPets => _pets;
+    public int PetsWhoFoundHome => _pets.Where(p => p.CurrentStatus == HelpStatusType.FoundHome).Count();
+    public int PetsSearchingForHome => _pets.Where(p => p.CurrentStatus == HelpStatusType.SerachingForHome).Count();
+    public int PetsOnTreatment => _pets.Where(p => p.CurrentStatus == HelpStatusType.OnTreatment).Count();
     
 }
