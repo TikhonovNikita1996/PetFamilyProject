@@ -2,7 +2,7 @@
 
 namespace PetFamily.Domain.Entities.Others;
 
-public record SocialMediaDetails
+public record DonationInfoList
 {
-    public List<SocialMedia> SocialMedias { get; }
+    public List<DonationInfo> DonationInfos { get; }
 }

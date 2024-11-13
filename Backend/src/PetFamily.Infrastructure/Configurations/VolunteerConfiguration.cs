@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetFamily.Domain;
 using PetFamily.Domain.Entities;
+using PetFamily.Domain.Entities.Ids;
 using PetFamily.Domain.Entities.Volunteer;
 using PetFamily.Domain.Shared;
 
@@ -12,8 +13,13 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
     public void Configure(EntityTypeBuilder<Volunteer> builder)
     {
         builder.ToTable("volunteers");
-        builder.HasKey(x => x.Id);
+        builder.HasKey(v => v.Id);
 
+        builder.Property(v => v.Id)
+            .HasConversion(
+                id => id.Value,
+                value => VolunteerId.Create(value));
+        
         builder.Property(p => p.Description)
             .IsRequired()
             .HasMaxLength(ProjectConstants.MAX_HIGHT_TEXT_LENGTH);
@@ -36,7 +42,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
             });
         });
 
-        /*builder.OwnsOne(v => v.DonateForHelpInfos, db =>
+        builder.OwnsOne(v => v.DonateForHelpInfos, db =>
         {
             db.ToJson();
 
@@ -48,7 +54,22 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                 m.Property(sm => sm.Description)
                     .IsRequired();
             });
-        });*/
+        });
+
+        builder.OwnsOne(v => v.Fullname, fn =>
+        {
+            fn.Property(n => n.Name)
+                .IsRequired()
+                .HasMaxLength(ProjectConstants.MAX_LOW_TEXT_LENGTH);
+            
+            fn.Property(n => n.LastName)
+                .IsRequired()
+                .HasMaxLength(ProjectConstants.MAX_LOW_TEXT_LENGTH);
+            
+            fn.Property(n => n.MiddleName)
+                .IsRequired()
+                .HasMaxLength(ProjectConstants.MAX_LOW_TEXT_LENGTH);
+        });
 
     }
 }
