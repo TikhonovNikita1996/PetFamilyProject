@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using PetFamily.Domain;
 using PetFamily.Domain.Entities;
+using PetFamily.Domain.Entities.Pet;
 using PetFamily.Domain.Entities.Volunteer;
 
 namespace PetFamily.Infrastructure;
@@ -10,6 +11,7 @@ namespace PetFamily.Infrastructure;
 public class DataContext(IConfiguration configuration) : DbContext
 {
     public DbSet<Volunteer> Volunteers { get; set; }
+    public DbSet<Specie> Species { get; set; }
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

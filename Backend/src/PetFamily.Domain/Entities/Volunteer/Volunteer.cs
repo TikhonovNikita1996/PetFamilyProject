@@ -38,9 +38,9 @@ public class Volunteer : BaseEntity<VolunteerId>
     public DonationInfoList DonateForHelpInfos { get; private set; }
     public SocialMediaDetails SocialMediaDetails { get; private set; }
     public IReadOnlyList<Pet.Pet> CurrentPets => _pets;
-    public int PetsWhoFoundHome => _pets.Where(p => p.CurrentStatus == HelpStatusType.FoundHome).Count();
-    public int PetsSearchingForHome => _pets.Where(p => p.CurrentStatus == HelpStatusType.SerachingForHome).Count();
-    public int PetsOnTreatment => _pets.Where(p => p.CurrentStatus == HelpStatusType.OnTreatment).Count();
+    public int PetsWhoFoundHome => _pets.Count(p => p.CurrentStatus == HelpStatusType.FoundHome);
+    public int PetsSearchingForHome => _pets.Count(p => p.CurrentStatus == HelpStatusType.SerachingForHome);
+    public int PetsOnTreatment => _pets.Count(p => p.CurrentStatus == HelpStatusType.OnTreatment);
     
     public static CustomResult<Volunteer> Create(VolunteerId id,
                                                 FullName fullname, int age, string email,
