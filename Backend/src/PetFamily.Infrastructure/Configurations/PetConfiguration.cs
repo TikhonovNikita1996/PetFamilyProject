@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetFamily.Domain;
 using PetFamily.Domain.Entities;
+using PetFamily.Domain.Entities.Ids;
 using PetFamily.Domain.Entities.Pet;
 using PetFamily.Domain.Shared;
 
@@ -14,6 +15,11 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         builder.ToTable("pets");
         builder.HasKey(p => p.Id);
         
+        builder.Property(p => p.Id)
+            .HasConversion(
+                id => id.Value,
+                value => PetId.Create(value));
+        
         builder.Property(p => p.Description)
             .IsRequired()
             .HasMaxLength(ProjectConstants.MAX_HIGHT_TEXT_LENGTH);
@@ -22,7 +28,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             .IsRequired()
             .HasMaxLength(ProjectConstants.MAX_HIGHT_TEXT_LENGTH);
         
-        builder.Property(p => p.Hight)
+        builder.Property(p => p.Height)
             .IsRequired();
         
         builder.Property(p => p.Weight)
@@ -46,9 +52,35 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         builder.Property(p => p.PetsName)
             .IsRequired();
 
-        builder.Property(p => p.LocationAdress)
-            .IsRequired()
-            .HasMaxLength(ProjectConstants.MAX_HIGHT_PHONENUMBER_LENGTH);
+        builder.OwnsOne(p => p.LocationAddress, la =>
+        {
+            la.ToJson();
+            
+            la.Property(p => p.Region)
+                .IsRequired()
+                .HasMaxLength(ProjectConstants.MAX_LOW_TEXT_LENGTH);
+            
+            la.Property(p => p.City)
+                .IsRequired()
+                .HasMaxLength(ProjectConstants.MAX_LOW_TEXT_LENGTH);
+            
+            la.Property(p => p.Street)
+                .IsRequired()
+                .HasMaxLength(ProjectConstants.MAX_LOW_TEXT_LENGTH);
+            
+            la.Property(p => p.HouseNumber)
+                .IsRequired()
+                .HasMaxLength(ProjectConstants.MAX_LOW_TEXT_LENGTH);
+            
+            la.Property(p => p.Floor)
+                .IsRequired()
+                .HasMaxLength(ProjectConstants.MAX_LOW_TEXT_LENGTH);
+            
+            la.Property(p => p.Apartment)
+                .IsRequired()
+                .HasMaxLength(ProjectConstants.MAX_LOW_TEXT_LENGTH);
+                
+        });
 
         builder.OwnsOne(p => p.Photos, ppb =>
         {
@@ -64,7 +96,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             });
         });
         
-        /*builder.OwnsOne(v => v.DonateForHelpInfos, db =>
+        builder.OwnsOne(v => v.DonateForHelpInfos, db =>
         {
             db.ToJson();
 
@@ -76,6 +108,6 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 m.Property(sm => sm.Description)
                     .IsRequired();
             });
-        });*/
+        });
     }
 }
