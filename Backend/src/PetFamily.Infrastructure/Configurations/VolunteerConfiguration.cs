@@ -56,7 +56,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
             });
         });
 
-        builder.OwnsOne(v => v.Fullname, fn =>
+        builder.ComplexProperty(v => v.Fullname, fn =>
         {
             fn.Property(n => n.Name)
                 .IsRequired()

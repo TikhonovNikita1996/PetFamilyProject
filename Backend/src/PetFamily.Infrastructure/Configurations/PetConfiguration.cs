@@ -52,6 +52,12 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         builder.Property(p => p.PetsName)
             .IsRequired();
 
+        builder.ComplexProperty(p => p.SpecieDetails, psd =>
+        {
+            psd.Property(psd => psd.BreedId)
+                .IsRequired();
+        });
+        
         builder.OwnsOne(p => p.LocationAddress, la =>
         {
             la.ToJson();

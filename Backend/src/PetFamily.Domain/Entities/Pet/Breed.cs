@@ -1,13 +1,31 @@
-﻿namespace PetFamily.Domain.Entities.Pet;
+﻿using PetFamily.Domain.Entities.Ids;
+using PetFamily.Domain.Shared;
 
-public class Breed
+namespace PetFamily.Domain.Entities.Pet;
+
+public class Breed : BaseEntity<BreedId>
 {
-    public Guid BreedId { get; private set; }
     public string Name { get; private set; }
 
-    public Breed(Guid breedId, string name)
+    //ef 
+    private Breed()
     {
-        BreedId = breedId;
+        
+    }
+    
+    public Breed(BreedId breedId, string name)
+    {
         Name = name;
     }
+    
+    public static CustomResult<Breed> Create(BreedId id, string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            return "Name can not be empty";
+
+        var breed = new Breed(id, name);
+
+        return breed;
+    }
+    
 }

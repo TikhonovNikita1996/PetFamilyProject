@@ -6,19 +6,25 @@ using PetFamily.Domain.Shared;
 
 namespace PetFamily.Infrastructure.Configurations;
 
-public class BreedConfiguration : IEntityTypeConfiguration<Breed>
+public class SpecieConfiguration: IEntityTypeConfiguration<Specie>
 {
-    public void Configure(EntityTypeBuilder<Breed> builder)
+    public void Configure(EntityTypeBuilder<Specie> builder)
     {
-        builder.HasKey(b => b.Id);
+        builder.ToTable("species");
+        builder.HasKey(s => s.Id);
         
         builder.Property(s => s.Id)
             .HasConversion(
                 id => id.Value,
-                value => BreedId.Create(value));
-        
-        builder.Property(b => b.Name)
+                value => SpecieId.Create(value));
+
+        builder.Property(s => s.Name)
             .IsRequired()
             .HasMaxLength(ProjectConstants.MAX_LOW_TEXT_LENGTH);
+        
+        builder.HasMany(s => s.Breeds)
+            .WithOne()
+            .HasForeignKey("specie_Id")
+            .IsRequired();
     }
 }
