@@ -84,14 +84,13 @@ public class Pet : BaseEntity<PetId>
             return "Breed can not be empty";
         if (string.IsNullOrWhiteSpace(healthInformation))
             return "Health Information can not be empty";
-        if (weight == 0)
-            return "Weight can not be zero";
-        if (height == 0)
-            return "Height can not be zero";
+        if (weight > 0)
+            return "Weight must be greater than zero";
+        if (height > 0)
+            return "Height must be greater than zero";
         if (string.IsNullOrWhiteSpace(ownersPhoneNumber))
             return "Phone number can not be empty";
                 
-        
         return pet;
     }
 }

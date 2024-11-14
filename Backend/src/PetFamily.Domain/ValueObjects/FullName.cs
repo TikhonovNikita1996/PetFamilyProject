@@ -20,11 +20,11 @@ public record FullName
         string name,
         string middleName)
     {
-        if (string.IsNullOrEmpty(lastName))
+        if (string.IsNullOrWhiteSpace(lastName))
             return "Last name can not be empty";
-        if (string.IsNullOrEmpty(name))
+        if (string.IsNullOrWhiteSpace(name))
             return "Name can not be empty";
-        if (string.IsNullOrEmpty(middleName))
+        if (string.IsNullOrWhiteSpace(middleName))
             return "Middle name can not be empty";
 
         var newFullName = new FullName(lastName, name, middleName);
