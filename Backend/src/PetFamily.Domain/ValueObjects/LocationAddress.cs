@@ -32,13 +32,13 @@ public record LocationAddress
         string? floor,
         string? apartment)
     {
-        if (string.IsNullOrEmpty(region))
+        if (string.IsNullOrWhiteSpace(region))
             return "Region can not be empty";
-        if (string.IsNullOrEmpty(city))
+        if (string.IsNullOrWhiteSpace(city))
             return "City can not be empty";
-        if (string.IsNullOrEmpty(street))
+        if (string.IsNullOrWhiteSpace(street))
             return "Street can not be empty";
-        if (string.IsNullOrEmpty(houseNumber))
+        if (string.IsNullOrWhiteSpace(houseNumber))
             return "House number can not be empty";
 
         var newLocationAddressAddress = new LocationAddress(region, city, street, houseNumber,

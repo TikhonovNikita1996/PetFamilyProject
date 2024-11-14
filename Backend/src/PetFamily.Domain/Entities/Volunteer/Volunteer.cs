@@ -48,11 +48,11 @@ public class Volunteer : BaseEntity<VolunteerId>
                                                 string phoneNumber, DonationInfoList donationInfoList,
                                                 SocialMediaDetails socialMediaDetails)
     {
-        if (age == 0)
-            return "Age cannot be zero";
+        if (age > 0)
+            return "Age must be greater than zero";
         if (string.IsNullOrWhiteSpace(email))
             return "Email name can not be empty";
-        if (workingExperience == 0)
+        if (workingExperience >= 0)
             return "Experience cannot be zero";
         if (string.IsNullOrWhiteSpace(description))
             return "Description name can not be empty";
