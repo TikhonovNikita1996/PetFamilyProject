@@ -4,5 +4,10 @@ namespace PetFamily.Domain.Entities.Others;
 
 public record SocialMediaDetails
 {
-    public List<SocialMedia> SocialMedias { get; }
+    public SocialMediaDetails()
+    {
+        
+    }
+    public IReadOnlyList<SocialMedia> SocialMedias { get; }
+    public SocialMediaDetails(List<SocialMedia> socialMedias) => SocialMedias = socialMedias;
 }

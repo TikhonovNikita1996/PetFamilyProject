@@ -4,5 +4,10 @@ namespace PetFamily.Domain.Entities.Others;
 
 public record DonationInfoList
 {
-    public List<DonationInfo> DonationInfos { get; }
+    public DonationInfoList()
+    {
+        
+    }
+    public IReadOnlyList<DonationInfo> DonationInfos { get; }
+    public DonationInfoList(List<DonationInfo> donationInfos) => DonationInfos = donationInfos;
 }

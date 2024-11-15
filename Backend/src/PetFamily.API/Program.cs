@@ -1,4 +1,7 @@
+using PetFamily.Application.Interfaces;
+using PetFamily.Application.Volunteers.CreateVolunteer;
 using PetFamily.Infrastructure;
+using PetFamily.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +13,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<DataContext>();
+builder.Services.AddScoped<CreateVolunteerHandler>();
+builder.Services.AddScoped<IVolunteerRepository, VolunteerRepository>();
 
 var app = builder.Build();
 
