@@ -7,7 +7,7 @@ public class Breed : BaseEntity<BreedId>
 {
     public string Name { get; private set; }
 
-    //ef 
+    //ef core
     private Breed()
     {
         

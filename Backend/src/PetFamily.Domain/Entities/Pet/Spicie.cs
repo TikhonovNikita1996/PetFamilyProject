@@ -5,7 +5,7 @@ namespace PetFamily.Domain.Entities.Pet;
 
 public class Specie : BaseEntity<SpecieId>
 {
-    //For EF Core
+    //ef core
     private Specie(SpecieId id) : base(id)
     {
             
@@ -26,9 +26,9 @@ public class Specie : BaseEntity<SpecieId>
         if (breeds.Count == 0)
             return "Breeds list can not be empty";
 
-        var species = new Specie(id, name, breeds);
+        var specie = new Specie(id, name, breeds);
 
-        return species;
+        return specie;
     }
     
 }
