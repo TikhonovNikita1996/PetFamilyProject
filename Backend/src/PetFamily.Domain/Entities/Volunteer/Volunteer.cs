@@ -1,4 +1,5 @@
-﻿using PetFamily.Domain.Entities.Ids;
+﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Entities.Ids;
 using PetFamily.Domain.Entities.Others;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.ValueObjects;
@@ -16,7 +17,7 @@ public class Volunteer : BaseEntity<VolunteerId>
     }
     public Volunteer(VolunteerId id, FullName fullname, int age, string email,
         GenderType gender, int workingExperience, string description,
-        string phoneNumber, DonationInfoList? donationInfoList = null!, SocialMediaDetails? socialMediaDetails= null!) : base(id)
+        string phoneNumber, DonationInfoList donationInfoList, SocialMediaDetails socialMediaDetails) : base(id)
     {
         Fullname = fullname;
         Age = age;
@@ -35,29 +36,29 @@ public class Volunteer : BaseEntity<VolunteerId>
     public int WorkingExperience { get; private set; } = default!;
     public string Description { get; private set; } = default!;
     public string PhoneNumber { get; private set; } = default!;
-    public DonationInfoList? DonateForHelpInfos { get; private set; }
-    public SocialMediaDetails? SocialMediaDetails { get; private set; }
+    public DonationInfoList DonateForHelpInfos { get; private set; }
+    public SocialMediaDetails SocialMediaDetails { get; private set; }
     public IReadOnlyList<Pet.Pet> CurrentPets => _pets;
     public int PetsWhoFoundHome => _pets.Count(p => p.CurrentStatus == HelpStatusType.FoundHome);
     public int PetsSearchingForHome => _pets.Count(p => p.CurrentStatus == HelpStatusType.SerachingForHome);
     public int PetsOnTreatment => _pets.Count(p => p.CurrentStatus == HelpStatusType.OnTreatment);
     
-    public static CustomResult<Volunteer> Create(VolunteerId id,
+    public static Result<Volunteer, CustomError> Create(VolunteerId id,
                                                 FullName fullname, int age, string email,
                                                 GenderType gender, int workingExperience, string description,
-                                                string phoneNumber, DonationInfoList? donationInfoList,
-                                                SocialMediaDetails? socialMediaDetails)
+                                                string phoneNumber, DonationInfoList donationInfoList,
+                                                SocialMediaDetails socialMediaDetails)
     {
         if (age > 0)
-            return "Age must be greater than zero";
+            return Errors.General.DigitValueIsInvalid("Age");
         if (string.IsNullOrWhiteSpace(email))
-            return "Email name can not be empty";
-        if (workingExperience >= 0)
-            return "Experience cannot be zero";
+            return Errors.General.ValueIsInvalid("Email");
+        if (workingExperience < 0)
+            return Errors.General.ValueIsInvalid("Working Experience");
         if (string.IsNullOrWhiteSpace(description))
-            return "Description name can not be empty";
+            return Errors.General.ValueIsInvalid("Description");
         if (string.IsNullOrWhiteSpace(phoneNumber))
-            return "Phone number name can not be empty";
+            return  Errors.General.ValueIsInvalid("PhoneNumber");
         
         var volunteer = new Volunteer(id, fullname, age, email, gender, workingExperience, description,
             phoneNumber, donationInfoList, socialMediaDetails);

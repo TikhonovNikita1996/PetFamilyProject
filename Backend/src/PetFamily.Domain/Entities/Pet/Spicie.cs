@@ -1,11 +1,12 @@
-﻿using PetFamily.Domain.Entities.Ids;
+﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Entities.Ids;
 using PetFamily.Domain.Shared;
 
 namespace PetFamily.Domain.Entities.Pet;
 
 public class Specie : BaseEntity<SpecieId>
 {
-    //ef core
+    //For EF Core
     private Specie(SpecieId id) : base(id)
     {
             
@@ -19,16 +20,16 @@ public class Specie : BaseEntity<SpecieId>
         _breeds = breeds;
     }
 
-    public static CustomResult<Specie> Create(SpecieId id, string name, List<Breed> breeds)
+    public static Result<Specie, CustomError> Create(SpecieId id, string name, List<Breed> breeds)
     {
         if (string.IsNullOrWhiteSpace(name))
-            return "Name can not be empty";
+            return Errors.General.ValueIsInvalid(name);
         if (breeds.Count == 0)
-            return "Breeds list can not be empty";
+            return Errors.General.ValueIsInvalid("Breeds");
 
-        var specie = new Specie(id, name, breeds);
+        var species = new Specie(id, name, breeds);
 
-        return specie;
+        return species;
     }
     
 }

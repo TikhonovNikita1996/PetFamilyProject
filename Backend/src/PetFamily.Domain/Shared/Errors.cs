@@ -10,6 +10,12 @@ public static class Errors
             return CustomError.Validation("value.is.invalid", $"{label} is invalid");
         }
         
+        public static CustomError DigitValueIsInvalid(string? name = null)
+        {
+            var label = name ?? "value";
+            return CustomError.Validation("value.is.invalid", $"{label} must be greater than 0");
+        }
+        
         public static CustomError NotFound(Guid? id = null)
         {
             var forid = id == null ? "" : $" for id: {id}";

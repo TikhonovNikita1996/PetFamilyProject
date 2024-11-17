@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PetFamily.API.Extensions;
 using PetFamily.Application.Volunteers.CreateVolunteer;
 
 namespace PetFamily.API.Controllers;
@@ -19,9 +20,9 @@ public class VolunteersController : BaseApiController
             request.Description, request.SocialMediaDetails, request.DonationInfo);
         
         var result = await createVolunteerHandler.Handle(createCommand, cancellationToken);
-        
-        if(result.IsFailure)
-            BadRequest(result.Error);
+
+        if (result.IsFailure)
+            return result.Error.ToResponse();
         
         return Ok(result.Value);
     }

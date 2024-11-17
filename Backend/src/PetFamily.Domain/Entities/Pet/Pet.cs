@@ -1,4 +1,5 @@
-﻿using PetFamily.Domain.Entities.Ids;
+﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Entities.Ids;
 using PetFamily.Domain.Entities.Others;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.ValueObjects;
@@ -56,7 +57,7 @@ public class Pet : BaseEntity<PetId>
     public DateTime PetsPageCreationDate { get; private set; } 
     public Photos Photos { get; private set; }
 
-    public static CustomResult<Pet> Create(PetId petId, string petsName, 
+    public static Result<Pet,CustomError> Create(PetId petId, string petsName, 
                                             SpicieDetails specieDetails, GenderType gender, 
                                             string description,
                                             string color, string healthInformation, 
@@ -75,17 +76,17 @@ public class Pet : BaseEntity<PetId>
                           petsPageCreationDate);
 
         if (string.IsNullOrWhiteSpace(petsName))
-            return "Pets name can not be empty";
+            return Errors.General.ValueIsInvalid(petsName);
         if (string.IsNullOrWhiteSpace(description))
-            return "Description can not be empty";
+            return Errors.General.ValueIsInvalid(description);
         if (string.IsNullOrWhiteSpace(healthInformation))
-            return "Health Information can not be empty";
+            return Errors.General.ValueIsInvalid(healthInformation);
         if (weight > 0)
-            return "Weight must be greater than zero";
+            return Errors.General.DigitValueIsInvalid("Weight");
         if (height > 0)
-            return "Height must be greater than zero";
+            return Errors.General.DigitValueIsInvalid("Height");
         if (string.IsNullOrWhiteSpace(ownersPhoneNumber))
-            return "Phone number can not be empty";
+            return Errors.General.ValueIsInvalid(ownersPhoneNumber);
         
         return pet;
     }
