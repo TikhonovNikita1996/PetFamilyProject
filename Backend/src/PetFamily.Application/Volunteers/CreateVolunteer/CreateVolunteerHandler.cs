@@ -1,10 +1,10 @@
-﻿using PetFamily.Application.Dtos;
+﻿using CSharpFunctionalExtensions;
 using PetFamily.Application.Interfaces;
 using PetFamily.Domain.Entities.Ids;
 using PetFamily.Domain.Entities.Others;
 using PetFamily.Domain.Entities.Volunteer;
+using PetFamily.Domain.Entities.Volunteer.ValueObjects;
 using PetFamily.Domain.Shared;
-using PetFamily.Domain.ValueObjects;
 
 namespace PetFamily.Application.Volunteers.CreateVolunteer;
 
@@ -17,40 +17,54 @@ public class CreateVolunteerHandler
         _volunteerRepository = volunteerRepository;
     }
     
-    public async Task<CustomResult<Guid>> Handle(CreateVolunteerCommand createVolunteerRCommand,
+    public async Task<Result<Guid, CustomError>> Handle(CreateVolunteerCommand createVolunteerCommand,
         CancellationToken cancellationToken = default)
     {
+        var emailResult = Email.Create(createVolunteerCommand.Email.Value);
+        if(emailResult.IsFailure)
+            return emailResult.Error;
+        
+        var existingVolunteer = await _volunteerRepository.GetByEmail(emailResult.Value);
+        if (existingVolunteer.IsSuccess)
+            return Errors.VolunteerValidation.AlreadyExist();
+        
         var volunterId = VolunteerId.NewVolonteerId();
-        var fullName = FullName.Create(createVolunteerRCommand.FullName.LastName, 
-            createVolunteerRCommand.FullName.Name, createVolunteerRCommand.FullName.MiddleName).Value;
+        var fullNameResult = FullName.Create(createVolunteerCommand.FullName.LastName, 
+            createVolunteerCommand.FullName.Name, createVolunteerCommand.FullName.MiddleName);
         
-        var age = createVolunteerRCommand.Age;
+        if(fullNameResult.IsFailure)
+            return fullNameResult.Error;
         
-        var email = createVolunteerRCommand.Email;
-
-        var workingExperience = createVolunteerRCommand.WorkingExperience;
+        var age = createVolunteerCommand.Age;
         
-        var description = createVolunteerRCommand.Description;
+        var workingExperience = createVolunteerCommand.WorkingExperience;
         
-        var phoneNumber = createVolunteerRCommand.PhoneNumber;
+        var description = createVolunteerCommand.Description;
         
-        var socialNetworks = createVolunteerRCommand.SocialMediaDetails
+        var phoneNumberRequest = PhoneNumber.Create(createVolunteerCommand.PhoneNumber.Value);
+        if(phoneNumberRequest.IsFailure)
+            return fullNameResult.Error;
+        
+        var socialNetworks = createVolunteerCommand.SocialMediaDetails
             .Select(s => SocialMedia.Create(s.Name, s.Url));
 
         var resultNetworksList = new SocialMediaDetails(socialNetworks.Select(x=> x.Value).ToList());
         
-        var donationInfos = createVolunteerRCommand.DonationInfo
+        var donationInfos = createVolunteerCommand.DonationInfo
             .Select(s => DonationInfo.Create(s.Name, s.Description));
 
         var resultDonationInfoList = new DonationInfoList(donationInfos.Select(x=> x.Value).ToList());
         
-        var gender = Enum.Parse<GenderType>(createVolunteerRCommand.Gender);
+        var gender = Enum.Parse<GenderType>(createVolunteerCommand.Gender);
         
-        var volunteer = new Volunteer(volunterId, fullName, age, email, gender,
-            workingExperience, description, phoneNumber, resultDonationInfoList, resultNetworksList);
+        var volunteer = Volunteer.Create(volunterId, fullNameResult.Value, age, emailResult.Value, gender,
+            workingExperience, description, phoneNumberRequest.Value, resultDonationInfoList, resultNetworksList);
         
-        await _volunteerRepository.AddAsync(volunteer, cancellationToken);
+        if((volunteer.IsFailure))
+            return volunteer.Error;
         
-        return volunteer.Id.Value;
+        await _volunteerRepository.AddAsync(volunteer.Value, cancellationToken);
+        
+        return volunteer.Value.Id.Value;
     }
 }

@@ -1,7 +1,8 @@
-﻿using PetFamily.Domain.Entities.Ids;
+﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Entities.Ids;
 using PetFamily.Domain.Shared;
 
-namespace PetFamily.Domain.Entities.Pet;
+namespace PetFamily.Domain.Entities.Pet.ValueObjects;
 
 public class Breed : BaseEntity<BreedId>
 {
@@ -18,10 +19,10 @@ public class Breed : BaseEntity<BreedId>
         Name = name;
     }
     
-    public static CustomResult<Breed> Create(BreedId id, string name)
+    public static Result<Breed, CustomError> Create(BreedId id, string name)
     {
         if (string.IsNullOrWhiteSpace(name))
-            return "Name can not be empty";
+            return Errors.General.ValueIsInvalid();
 
         var breed = new Breed(id, name);
 

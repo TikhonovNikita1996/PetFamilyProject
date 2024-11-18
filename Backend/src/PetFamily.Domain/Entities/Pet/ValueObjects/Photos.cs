@@ -1,4 +1,4 @@
-﻿namespace PetFamily.Domain.Entities.Pet;
+﻿namespace PetFamily.Domain.Entities.Pet.ValueObjects;
 
 public record Photos
 {

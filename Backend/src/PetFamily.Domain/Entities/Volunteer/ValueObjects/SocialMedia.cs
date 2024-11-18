@@ -1,6 +1,7 @@
-﻿using PetFamily.Domain.Shared;
+﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Shared;
 
-namespace PetFamily.Domain.ValueObjects;
+namespace PetFamily.Domain.Entities.Volunteer.ValueObjects;
 
 public record SocialMedia
 {
@@ -11,12 +12,12 @@ public record SocialMedia
     }
     public string Name { get; } = default!;
     public string Url { get; } = default!;
-    public static CustomResult<SocialMedia> Create(string name, string url)
+    public static Result<SocialMedia, CustomError> Create(string name, string url)
     {
         if (string.IsNullOrWhiteSpace(name))
-            return "Name can not be empty";
+            return Errors.General.ValueIsInvalid(name);
         if (string.IsNullOrWhiteSpace(url))
-            return "Link can not be empty";
+            return Errors.General.ValueIsInvalid(name);
 
         var newSocialNetwork = new SocialMedia(name, url);
 

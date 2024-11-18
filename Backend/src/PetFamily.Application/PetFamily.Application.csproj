@@ -9,5 +9,10 @@
     <ItemGroup>
       <ProjectReference Include="..\PetFamily.Domain\PetFamily.Domain.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
+    </ItemGroup>
     
 </Project>

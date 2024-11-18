@@ -1,6 +1,7 @@
-﻿using PetFamily.Domain.Shared;
+﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Shared;
 
-namespace PetFamily.Domain.ValueObjects;
+namespace PetFamily.Domain.Entities.Volunteer.ValueObjects;
 
 public record FullName
 {
@@ -16,16 +17,16 @@ public record FullName
     public string Name { get; } = default!;
     public string MiddleName { get; } = default!;
     
-    public static CustomResult<FullName> Create(string lastName,
+    public static Result<FullName, CustomError> Create(string lastName,
         string name,
         string middleName)
     {
         if (string.IsNullOrWhiteSpace(lastName))
-            return "Last name can not be empty";
+            return Errors.General.ValueIsInvalid("Lastname");
         if (string.IsNullOrWhiteSpace(name))
-            return "Name can not be empty";
+            return Errors.General.ValueIsInvalid("Firstname");
         if (string.IsNullOrWhiteSpace(middleName))
-            return "Middle name can not be empty";
+            return Errors.General.ValueIsInvalid("Middlename");
 
         var newFullName = new FullName(lastName, name, middleName);
 

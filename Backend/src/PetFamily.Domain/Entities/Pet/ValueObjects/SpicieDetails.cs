@@ -1,7 +1,8 @@
-﻿using PetFamily.Domain.Entities.Ids;
+﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Entities.Ids;
 using PetFamily.Domain.Shared;
 
-namespace PetFamily.Domain.Entities.Pet;
+namespace PetFamily.Domain.Entities.Pet.ValueObjects;
 
 public record SpicieDetails
 {
@@ -20,7 +21,7 @@ public record SpicieDetails
         BreedId = breedId;
     }
 
-    public static CustomResult<SpicieDetails> Create(SpecieId specieId, Guid breedId)
+    public static Result<SpicieDetails, CustomError> Create(SpecieId specieId, Guid breedId)
     {
         return new SpicieDetails(specieId, breedId);
     }
