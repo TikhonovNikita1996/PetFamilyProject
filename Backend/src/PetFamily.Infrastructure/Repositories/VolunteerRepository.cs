@@ -27,8 +27,16 @@ public class VolunteerRepository : IVolunteerRepository
     public async Task<Result<Volunteer, CustomError>> GetByFullname(FullName fullname)
     {
         var volunteer = await _dbContext.Volunteers
-            .FirstOrDefaultAsync(v =>
-                v.Fullname == fullname);
+            .Include(p => p.CurrentPets)
+            .FirstOrDefaultAsync(v => v.Fullname == fullname);
+        if (volunteer is null)
+            return Errors.General.NotFound();
+        return volunteer;
+    }
+    
+    public async Task<Result<Volunteer, CustomError>> GetByEmail(Email email)
+    {
+        var volunteer = await _dbContext.Volunteers.Where(x => x.Email == email).FirstOrDefaultAsync();
         if (volunteer is null)
             return Errors.General.NotFound();
         return volunteer;

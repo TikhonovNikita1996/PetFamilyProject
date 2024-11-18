@@ -32,6 +32,13 @@ public static class Errors
             var label = name == null ? "" : " " + name + " ";
             return CustomError.Validation("value.is.invalid", $"{label} is invalid");
         }
-        
+    }
+
+    public static class VolunteerValidation
+    {
+        public static CustomError AlreadyExist()
+        {
+            return CustomError.Validation("record.already.exist", $"volunteer already exist");
+        }
     }
 }

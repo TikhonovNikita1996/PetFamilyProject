@@ -20,6 +20,14 @@ public class CreateVolunteerHandler
     public async Task<Result<Guid, CustomError>> Handle(CreateVolunteerCommand createVolunteerCommand,
         CancellationToken cancellationToken = default)
     {
+        var emailResult = Email.Create(createVolunteerCommand.Email.Value);
+        if(emailResult.IsFailure)
+            return emailResult.Error;
+        
+        var existingVolunteer = await _volunteerRepository.GetByEmail(emailResult.Value);
+        if (existingVolunteer.IsSuccess)
+            return Errors.VolunteerValidation.AlreadyExist();
+        
         var volunterId = VolunteerId.NewVolonteerId();
         var fullNameResult = FullName.Create(createVolunteerCommand.FullName.LastName, 
             createVolunteerCommand.FullName.Name, createVolunteerCommand.FullName.MiddleName);
@@ -28,10 +36,6 @@ public class CreateVolunteerHandler
             return fullNameResult.Error;
         
         var age = createVolunteerCommand.Age;
-        
-        var emailResult = Email.Create(createVolunteerCommand.Email.Value);
-        if(emailResult.IsFailure)
-            return emailResult.Error;
         
         var workingExperience = createVolunteerCommand.WorkingExperience;
         

@@ -12,7 +12,6 @@ public class VolunteersController : BaseApiController
         [FromBody] CreateVolunteerRequest request,
         CancellationToken cancellationToken = default)
     {
-        
         var createCommand = new CreateVolunteerCommand(
             request.FullName,request.Age, request.Gender,
             request.Birthday, request.WorkingExperience,

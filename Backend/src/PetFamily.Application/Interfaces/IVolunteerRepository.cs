@@ -9,4 +9,6 @@ public interface IVolunteerRepository
 {
     public Task<Guid> AddAsync(Volunteer volunteer, CancellationToken cancellationToken = default);
     public Task<Result<Volunteer, CustomError>> GetByFullname(FullName fullname);
+
+    public Task<Result<Volunteer, CustomError>> GetByEmail(Email email);
 }
