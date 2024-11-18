@@ -22,6 +22,11 @@ public static class Errors
             return CustomError.NotFound("record.found", $"record not found for id : {forid}");
         }
         
+        public static CustomError NotFound()
+        {
+            return CustomError.NotFound("record.found", $"record not found");
+        }
+        
         public static CustomError ValueIsRequired(string? name = null)
         {
             var label = name == null ? "" : " " + name + " ";

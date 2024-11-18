@@ -1,8 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
 using PetFamily.Domain.Entities.Ids;
 using PetFamily.Domain.Entities.Others;
+using PetFamily.Domain.Entities.Volunteer.ValueObjects;
 using PetFamily.Domain.Shared;
-using PetFamily.Domain.ValueObjects;
 
 namespace PetFamily.Domain.Entities.Volunteer;
 
@@ -15,7 +15,7 @@ public class Volunteer : BaseEntity<VolunteerId>
     {
         
     }
-    public Volunteer(VolunteerId id, FullName fullname, int age, string email,
+    public Volunteer(VolunteerId id, FullName fullname, int age, Email email,
         GenderType gender, int workingExperience, string description,
         string phoneNumber, DonationInfoList donationInfoList, SocialMediaDetails socialMediaDetails) : base(id)
     {
@@ -31,7 +31,7 @@ public class Volunteer : BaseEntity<VolunteerId>
     }
     public FullName Fullname { get; private set; } = default!;
     public int Age { get; set; }
-    public string Email { get; private set; } = default!;
+    public Email Email { get; private set; } = default!;
     public GenderType Gender { get; private set; } = GenderType.Male;
     public int WorkingExperience { get; private set; } = default!;
     public string Description { get; private set; } = default!;
@@ -44,15 +44,13 @@ public class Volunteer : BaseEntity<VolunteerId>
     public int PetsOnTreatment => _pets.Count(p => p.CurrentStatus == HelpStatusType.OnTreatment);
     
     public static Result<Volunteer, CustomError> Create(VolunteerId id,
-                                                FullName fullname, int age, string email,
+                                                FullName fullname, int age, Email email,
                                                 GenderType gender, int workingExperience, string description,
                                                 string phoneNumber, DonationInfoList donationInfoList,
                                                 SocialMediaDetails socialMediaDetails)
     {
         if (age > 0)
             return Errors.General.DigitValueIsInvalid("Age");
-        if (string.IsNullOrWhiteSpace(email))
-            return Errors.General.ValueIsInvalid("Email");
         if (workingExperience < 0)
             return Errors.General.ValueIsInvalid("Working Experience");
         if (string.IsNullOrWhiteSpace(description))

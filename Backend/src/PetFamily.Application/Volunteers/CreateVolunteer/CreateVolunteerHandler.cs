@@ -3,8 +3,8 @@ using PetFamily.Application.Interfaces;
 using PetFamily.Domain.Entities.Ids;
 using PetFamily.Domain.Entities.Others;
 using PetFamily.Domain.Entities.Volunteer;
+using PetFamily.Domain.Entities.Volunteer.ValueObjects;
 using PetFamily.Domain.Shared;
-using PetFamily.Domain.ValueObjects;
 
 namespace PetFamily.Application.Volunteers.CreateVolunteer;
 
@@ -21,13 +21,18 @@ public class CreateVolunteerHandler
         CancellationToken cancellationToken = default)
     {
         var volunterId = VolunteerId.NewVolonteerId();
-        var fullName = FullName.Create(createVolunteerCommand.FullName.LastName, 
-            createVolunteerCommand.FullName.Name, createVolunteerCommand.FullName.MiddleName).Value;
+        var fullNameResult = FullName.Create(createVolunteerCommand.FullName.LastName, 
+            createVolunteerCommand.FullName.Name, createVolunteerCommand.FullName.MiddleName);
+        
+        if(fullNameResult.IsFailure)
+            return fullNameResult.Error;
         
         var age = createVolunteerCommand.Age;
         
-        var email = createVolunteerCommand.Email;
-
+        var emailResult = Email.Create(createVolunteerCommand.Email.Value);
+        if(emailResult.IsFailure)
+            return emailResult.Error;
+        
         var workingExperience = createVolunteerCommand.WorkingExperience;
         
         var description = createVolunteerCommand.Description;
@@ -46,7 +51,7 @@ public class CreateVolunteerHandler
         
         var gender = Enum.Parse<GenderType>(createVolunteerCommand.Gender);
         
-        var volunteer = Volunteer.Create(volunterId, fullName, age, email, gender,
+        var volunteer = Volunteer.Create(volunterId, fullNameResult.Value, age, emailResult.Value, gender,
             workingExperience, description, phoneNumber, resultDonationInfoList, resultNetworksList);
         
         if((volunteer.IsFailure))

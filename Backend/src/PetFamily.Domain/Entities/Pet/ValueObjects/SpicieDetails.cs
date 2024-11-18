@@ -2,7 +2,7 @@
 using PetFamily.Domain.Entities.Ids;
 using PetFamily.Domain.Shared;
 
-namespace PetFamily.Domain.Entities.Pet;
+namespace PetFamily.Domain.Entities.Pet.ValueObjects;
 
 public record SpicieDetails
 {

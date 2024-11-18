@@ -1,4 +1,5 @@
 ﻿using PetFamily.Application.Dtos;
+using PetFamily.Domain.Entities.Volunteer.ValueObjects;
 
 namespace PetFamily.Application.Volunteers.CreateVolunteer;
 
@@ -8,7 +9,7 @@ public record CreateVolunteerRequest(
     string Gender,
     DateTime Birthday,
     int WorkingExperience,
-    string Email,
+    EmailDto Email,
     string PhoneNumber,
     string Description,
     List<SocialMediaDetailsDto>? SocialMediaDetails,
