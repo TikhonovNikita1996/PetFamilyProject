@@ -17,7 +17,7 @@ public class Volunteer : BaseEntity<VolunteerId>
     }
     public Volunteer(VolunteerId id, FullName fullname, int age, Email email,
         GenderType gender, int workingExperience, string description,
-        string phoneNumber, DonationInfoList donationInfoList, SocialMediaDetails socialMediaDetails) : base(id)
+        PhoneNumber phoneNumber, DonationInfoList donationInfoList, SocialMediaDetails socialMediaDetails) : base(id)
     {
         Fullname = fullname;
         Age = age;
@@ -35,7 +35,7 @@ public class Volunteer : BaseEntity<VolunteerId>
     public GenderType Gender { get; private set; } = GenderType.Male;
     public int WorkingExperience { get; private set; } = default!;
     public string Description { get; private set; } = default!;
-    public string PhoneNumber { get; private set; } = default!;
+    public PhoneNumber PhoneNumber { get; private set; } = default!;
     public DonationInfoList DonateForHelpInfos { get; private set; }
     public SocialMediaDetails SocialMediaDetails { get; private set; }
     public IReadOnlyList<Pet.Pet> CurrentPets => _pets;
@@ -46,7 +46,7 @@ public class Volunteer : BaseEntity<VolunteerId>
     public static Result<Volunteer, CustomError> Create(VolunteerId id,
                                                 FullName fullname, int age, Email email,
                                                 GenderType gender, int workingExperience, string description,
-                                                string phoneNumber, DonationInfoList donationInfoList,
+                                                PhoneNumber phoneNumber, DonationInfoList donationInfoList,
                                                 SocialMediaDetails socialMediaDetails)
     {
         if (age > 0)
@@ -55,8 +55,6 @@ public class Volunteer : BaseEntity<VolunteerId>
             return Errors.General.ValueIsInvalid("Working Experience");
         if (string.IsNullOrWhiteSpace(description))
             return Errors.General.ValueIsInvalid("Description");
-        if (string.IsNullOrWhiteSpace(phoneNumber))
-            return  Errors.General.ValueIsInvalid("PhoneNumber");
         
         var volunteer = new Volunteer(id, fullname, age, email, gender, workingExperience, description,
             phoneNumber, donationInfoList, socialMediaDetails);

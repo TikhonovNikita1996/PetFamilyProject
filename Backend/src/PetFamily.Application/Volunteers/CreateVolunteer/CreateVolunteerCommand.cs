@@ -11,7 +11,7 @@ public record CreateVolunteerCommand(
                 DateTime Birthday,
                 int WorkingExperience,
                 EmailDto Email,
-                string PhoneNumber,
+                PhoneNumberDto PhoneNumber,
                 string Description,
                 List<SocialMediaDetailsDto>? SocialMediaDetails,
                 List<DonationInfoDto>? DonationInfo);

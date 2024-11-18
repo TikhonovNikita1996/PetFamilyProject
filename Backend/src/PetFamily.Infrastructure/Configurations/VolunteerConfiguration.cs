@@ -78,5 +78,13 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                 .HasMaxLength(ProjectConstants.MAX_LOW_TEXT_LENGTH)
                 .IsRequired();
         });
+        
+        builder.ComplexProperty(v => v.PhoneNumber, pm =>
+        {
+            pm.Property(p => p.Value)
+                .HasColumnName("phone_number")
+                .HasMaxLength(ProjectConstants.MAX_LOW_TEXT_LENGTH)
+                .IsRequired();
+        });
     }
 }

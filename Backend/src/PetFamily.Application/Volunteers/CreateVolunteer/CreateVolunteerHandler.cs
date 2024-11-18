@@ -41,7 +41,9 @@ public class CreateVolunteerHandler
         
         var description = createVolunteerCommand.Description;
         
-        var phoneNumber = createVolunteerCommand.PhoneNumber;
+        var phoneNumberRequest = PhoneNumber.Create(createVolunteerCommand.PhoneNumber.Value);
+        if(phoneNumberRequest.IsFailure)
+            return fullNameResult.Error;
         
         var socialNetworks = createVolunteerCommand.SocialMediaDetails
             .Select(s => SocialMedia.Create(s.Name, s.Url));
@@ -56,7 +58,7 @@ public class CreateVolunteerHandler
         var gender = Enum.Parse<GenderType>(createVolunteerCommand.Gender);
         
         var volunteer = Volunteer.Create(volunterId, fullNameResult.Value, age, emailResult.Value, gender,
-            workingExperience, description, phoneNumber, resultDonationInfoList, resultNetworksList);
+            workingExperience, description, phoneNumberRequest.Value, resultDonationInfoList, resultNetworksList);
         
         if((volunteer.IsFailure))
             return volunteer.Error;
