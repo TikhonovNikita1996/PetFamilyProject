@@ -2,6 +2,7 @@
 
 public record CustomError
 {
+    public const string SEPORATOR = "||";
     public string Code { get; }
     public string Message { get;}
     public ErrorType Type { get; }
@@ -21,5 +22,21 @@ public record CustomError
         new CustomError(code, message, ErrorType.Conflict);
     public static CustomError Failure(string code, string message) =>
         new CustomError(code, message, ErrorType.Failure);
-    
+
+    public string Serialize()
+    {
+        return string.Join(SEPORATOR, Code, Message, Type);
+    }
+
+    public static CustomError DeSerialize(string serialized)
+    {
+        var parts = serialized.Split(SEPORATOR);
+        if (parts.Length < 3)
+            throw new ArgumentException("Invalid serialized format");
+        
+        if(Enum.TryParse<ErrorType>(parts[2], out var type) == false)
+            throw new ArgumentException("Invalid serialized format");
+        
+        return new CustomError(parts[0], parts[1], type);
+    }
 }

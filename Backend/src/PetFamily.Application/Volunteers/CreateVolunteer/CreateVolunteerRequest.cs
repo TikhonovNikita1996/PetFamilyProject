@@ -7,12 +7,11 @@ namespace PetFamily.Application.Volunteers.CreateVolunteer;
 
 public record CreateVolunteerRequest(
     FullNameDto FullName,
-    int Age,
     string Gender,
     DateTime Birthday,
-    int WorkingExperience,
+    WorkingExperienceDto WorkingExperience,
     EmailDto Email,
-    string PhoneNumber,
-    string Description,
+    PhoneNumberDto PhoneNumber,
+    DescriptionDto Description,
     List<SocialMediaDetailsDto>? SocialMediaDetails,
     List<DonationInfoDto>? DonationInfo);

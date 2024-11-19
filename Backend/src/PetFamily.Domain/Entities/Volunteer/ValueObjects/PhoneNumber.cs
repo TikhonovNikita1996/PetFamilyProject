@@ -1,10 +1,14 @@
-﻿using CSharpFunctionalExtensions;
+﻿using System.Text.RegularExpressions;
+using CSharpFunctionalExtensions;
 using PetFamily.Domain.Shared;
 
 namespace PetFamily.Domain.Entities.Volunteer.ValueObjects;
 
 public class PhoneNumber
 {
+    private static readonly Regex ValidationRegex = new Regex(
+        @"^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$",
+        RegexOptions.Singleline | RegexOptions.Compiled);
     public string Value { get; }
 
     private PhoneNumber(string value)
@@ -14,8 +18,8 @@ public class PhoneNumber
 
     public static Result<PhoneNumber, CustomError> Create(string value)
     {
-        if (string.IsNullOrWhiteSpace(value))
-            return Errors.General.ValueIsInvalid("PhoneNumber");
+        if (!ValidationRegex.IsMatch(value))
+            return Errors.General.ValueIsInvalid(nameof(PhoneNumber));
         
         return new PhoneNumber(value);
     }
