@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation.Results;
+using Microsoft.AspNetCore.Mvc;
 using PetFamily.API.Response;
 using PetFamily.Domain.Shared;
 
@@ -17,8 +18,27 @@ public static class ResponseExtensions
             _ => StatusCodes.Status500InternalServerError
         };
 
-        var envelope = Envelope.Failure(error);
+        var responseError = new ResponseError(error.Code, error.Message, null);
+        
+        var envelope = Envelope.Failure([responseError]);
         
         return new ObjectResult(envelope) { StatusCode = statusCode };
+    }
+    
+    public static ActionResult ToValidationErrorResponse(this ValidationResult result)
+    {
+        if (result.IsValid)
+            throw new InvalidOperationException("Result can not be succeed");
+        
+        var validationErrors = result.Errors;
+        
+        var responseErrors = from validationError in validationErrors 
+            let errorMessage = validationError.ErrorMessage 
+            let error = CustomError.DeSerialize(errorMessage) 
+            select new ResponseError(error.Code, error.Message, validationError.PropertyName);
+
+        var envelope = Envelope.Failure(responseErrors);
+        
+        return new ObjectResult(envelope) { StatusCode = StatusCodes.Status400BadRequest };
     }
 }

@@ -19,10 +19,6 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
             .HasConversion(
                 id => id.Value,
                 value => VolunteerId.Create(value));
-        
-        builder.Property(p => p.Description)
-            .IsRequired()
-            .HasMaxLength(ProjectConstants.MAX_HIGHT_TEXT_LENGTH);
 
         builder.HasMany(v => v.CurrentPets)
             .WithOne()
@@ -78,12 +74,26 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                 .HasMaxLength(ProjectConstants.MAX_LOW_TEXT_LENGTH)
                 .IsRequired();
         });
-        
         builder.ComplexProperty(v => v.PhoneNumber, pm =>
         {
             pm.Property(p => p.Value)
                 .HasColumnName("phone_number")
-                .HasMaxLength(ProjectConstants.MAX_LOW_TEXT_LENGTH)
+                .HasMaxLength(ProjectConstants.MAX_HIGHT_PHONENUMBER_LENGTH)
+                .IsRequired();
+        });
+        
+        builder.ComplexProperty(v => v.Description, pm =>
+        {
+            pm.Property(p => p.Value)
+                .HasColumnName("description")
+                .HasMaxLength(ProjectConstants.MAX_HIGHT_TEXT_LENGTH)
+                .IsRequired();
+        });
+        
+        builder.ComplexProperty(v => v.WorkingExperience, pm =>
+        {
+            pm.Property(p => p.Value)
+                .HasColumnName("workingExperience")
                 .IsRequired();
         });
     }

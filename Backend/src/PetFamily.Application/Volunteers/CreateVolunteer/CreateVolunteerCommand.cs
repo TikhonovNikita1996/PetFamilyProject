@@ -5,13 +5,12 @@ namespace PetFamily.Application.Volunteers.CreateVolunteer;
 
 
 public record CreateVolunteerCommand(
-                FullNameDto FullName,
-                int Age,
-                string Gender,
-                DateTime Birthday,
-                int WorkingExperience,
-                EmailDto Email,
-                PhoneNumberDto PhoneNumber,
-                string Description,
-                List<SocialMediaDetailsDto>? SocialMediaDetails,
-                List<DonationInfoDto>? DonationInfo);
+    FullNameDto FullName,
+    string Gender,
+    DateTime Birthday,
+    WorkingExperienceDto WorkingExperience,
+    EmailDto Email,
+    PhoneNumberDto PhoneNumber,
+    DescriptionDto Description,
+    List<SocialMediaDetailsDto>? SocialMediaDetails,
+    List<DonationInfoDto>? DonationInfo);
