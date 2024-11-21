@@ -20,4 +20,10 @@ public static class CustomValidation
             context.AddFailure(result.Error.Serialize());
         });
     }
+
+    public static IRuleBuilderOptions<T, TProp> WithError <T, TProp>(
+        this IRuleBuilderOptions<T, TProp> rule, CustomError error)
+    {
+        return rule.WithMessage(error.Serialize());
+    }
 }
