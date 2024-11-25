@@ -82,9 +82,9 @@ public class Pet : BaseEntity<PetId>
             return Errors.General.ValueIsInvalid(description);
         if (string.IsNullOrWhiteSpace(healthInformation))
             return Errors.General.ValueIsInvalid(healthInformation);
-        if (weight > 0)
+        if (weight <= 0)
             return Errors.General.DigitValueIsInvalid("Weight");
-        if (height > 0)
+        if (height <= 0)
             return Errors.General.DigitValueIsInvalid("Height");
         if (string.IsNullOrWhiteSpace(ownersPhoneNumber))
             return Errors.General.ValueIsInvalid(ownersPhoneNumber);
