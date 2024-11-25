@@ -38,6 +38,7 @@ public class VolunteerRepository : IVolunteerRepository
         CancellationToken cancellationToken = default)
     {
         var volunteer = await _dbContext.Volunteers
+            .Include(v => v.CurrentPets)
             .FirstOrDefaultAsync(v =>v.Id == volunteerId, cancellationToken);
 
         if (volunteer is null)
@@ -50,6 +51,7 @@ public class VolunteerRepository : IVolunteerRepository
         CancellationToken cancellationToken = default)
     {
         var volunteer = await _dbContext.Volunteers
+            .Include(x => x.CurrentPets)
             .FirstOrDefaultAsync(v => v.Fullname == fullname, cancellationToken);
         if (volunteer is null)
             return Errors.General.NotFound();

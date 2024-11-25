@@ -1,6 +1,6 @@
 ﻿namespace PetFamily.Domain.Entities.Ids;
 
-public class VolunteerId
+public record VolunteerId
 {
     private VolunteerId(Guid value) => Value = value;
     public Guid Value { get; }
