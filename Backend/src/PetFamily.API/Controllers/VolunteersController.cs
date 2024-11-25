@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using PetFamily.API.Extensions;
 using PetFamily.API.Response;
 using PetFamily.Application.Volunteers.CreateVolunteer;
+using PetFamily.Application.Volunteers.Update.DonationInfo;
+using PetFamily.Application.Volunteers.Update.MainInfo;
+using PetFamily.Application.Volunteers.Update.SocialMediaDetails;
 using PetFamily.Domain.Shared;
 
 namespace PetFamily.API.Controllers;
@@ -36,5 +39,74 @@ public class VolunteersController : BaseApiController
             return result.Error.ToResponse();
         
         return Ok(result.Value);
+    }
+    
+    [HttpPut("{id:guid}/main-info")]
+    public async Task<ActionResult> UpdateMainInfo(
+        [FromRoute] Guid id,
+        [FromServices] UpdateMainInfoHandler handler,
+        [FromBody] UpdateMainInfoDto dto, 
+        [FromServices] IValidator<UpdateMainInfoRequest> validator,
+        CancellationToken cancellationToken)
+    {
+        var request = new UpdateMainInfoRequest(id, dto);
+        
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        if (validationResult.IsValid == false)
+        {
+            return validationResult.ToValidationErrorResponse();
+        }
+        
+        var result = await handler.Handle(request, cancellationToken);
+        if (result.IsFailure)
+            return result.Error.ToResponse();
+        
+        return Ok(result.Value); 
+    }
+    
+    [HttpPut("{id:guid}/social-media-info")]
+    public async Task<ActionResult> UpdateSocialMedia(
+        [FromRoute] Guid id,
+        [FromServices] UpdateSocialMediaDetailsHandler handler,
+        [FromBody] UpdateSocialNetworksDto dto, 
+        [FromServices] IValidator<UpdateSocialMediaDetailsRequest> validator,
+        CancellationToken cancellationToken)
+    {
+        var request = new UpdateSocialMediaDetailsRequest(id, dto);
+        
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        if (validationResult.IsValid == false)
+        {
+            return validationResult.ToValidationErrorResponse();
+        }
+        
+        var result = await handler.Handle(request, cancellationToken);
+        if (result.IsFailure)
+            return result.Error.ToResponse();
+        
+        return Ok(result.Value); 
+    }
+    
+    [HttpPut("{id:guid}/donation-info")]
+    public async Task<ActionResult> UpdateDonationInfo(
+        [FromRoute] Guid id,
+        [FromServices] UpdateDonationInfoHandler handler,
+        [FromBody] UpdateDonationInfoDto dto, 
+        [FromServices] IValidator<UpdateDonationInfoRequest> validator,
+        CancellationToken cancellationToken)
+    {
+        var request = new UpdateDonationInfoRequest(id, dto);
+        
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        if (validationResult.IsValid == false)
+        {
+            return validationResult.ToValidationErrorResponse();
+        }
+        
+        var result = await handler.Handle(request, cancellationToken);
+        if (result.IsFailure)
+            return result.Error.ToResponse();
+        
+        return Ok(result.Value); 
     }
 }
