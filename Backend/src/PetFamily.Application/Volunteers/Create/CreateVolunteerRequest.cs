@@ -1,9 +1,6 @@
-﻿using System.Data;
-using PetFamily.Application.Dtos;
-using PetFamily.Domain.Entities.Volunteer.ValueObjects;
-using PetFamily.Domain.Shared;
+﻿using PetFamily.Application.Dtos;
 
-namespace PetFamily.Application.Volunteers.CreateVolunteer;
+namespace PetFamily.Application.Volunteers.Create;
 
 public record CreateVolunteerRequest(
     FullNameDto FullName,
