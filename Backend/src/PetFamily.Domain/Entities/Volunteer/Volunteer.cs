@@ -55,4 +55,23 @@ public class Volunteer : BaseEntity<VolunteerId>
         return volunteer;
     }
     
+    public void UpdateMainInfo(FullName fullName, 
+        Description description, 
+        PhoneNumber phoneNumber, 
+        WorkingExperience workingExperience)
+    {
+        Fullname = fullName;
+        Description = description;
+        PhoneNumber = phoneNumber;
+        WorkingExperience = workingExperience;
+    }
+    
+    public void UpdateDonationInfo(DonationInfoList NewDonateForHelpInfos)
+    {
+        DonateForHelpInfos = NewDonateForHelpInfos;
+    }
+    public void UpdateSocialMediaDetails(SocialMediaDetails NewSocialMediaDetails)
+    {
+        SocialMediaDetails = NewSocialMediaDetails;
+    }
 }
