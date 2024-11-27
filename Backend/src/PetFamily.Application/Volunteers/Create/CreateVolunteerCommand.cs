@@ -1,7 +1,6 @@
 ﻿using PetFamily.Application.Dtos;
-using PetFamily.Domain.Entities.Volunteer.ValueObjects;
 
-namespace PetFamily.Application.Volunteers.CreateVolunteer;
+namespace PetFamily.Application.Volunteers.Create;
 
 
 public record CreateVolunteerCommand(

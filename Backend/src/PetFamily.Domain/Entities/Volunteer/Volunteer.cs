@@ -6,9 +6,10 @@ using PetFamily.Domain.Shared;
 
 namespace PetFamily.Domain.Entities.Volunteer;
 
-public class Volunteer : BaseEntity<VolunteerId>
+public class Volunteer : BaseEntity<VolunteerId>, ISoftDeletable
 {
     private readonly List<Pet.Pet> _pets = [];
+    private bool _isDeleted = false;
     
     // ef core
     public Volunteer(VolunteerId id) : base(id)
@@ -73,5 +74,17 @@ public class Volunteer : BaseEntity<VolunteerId>
     public void UpdateSocialMediaDetails(SocialMediaDetails NewSocialMediaDetails)
     {
         SocialMediaDetails = NewSocialMediaDetails;
+    }
+
+    public void Delete()
+    {
+        if (!_isDeleted)
+            _isDeleted = true;
+    }
+    
+    public void Restore()
+    {
+        if (_isDeleted)
+            _isDeleted = false;
     }
 }
