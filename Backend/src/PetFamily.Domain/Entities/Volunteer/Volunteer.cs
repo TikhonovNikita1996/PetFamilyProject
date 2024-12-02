@@ -12,10 +12,8 @@ public class Volunteer : BaseEntity<VolunteerId>, ISoftDeletable
     private bool _isDeleted = false;
     
     // ef core
-    public Volunteer(VolunteerId id) : base(id)
-    {
-        
-    }
+    public Volunteer(VolunteerId id) : base(id) {}
+
     public Volunteer(VolunteerId id, FullName fullname, Email email,
         GenderType gender, WorkingExperience workingExperience,
         Description description, PhoneNumber phoneNumber,
@@ -87,4 +85,7 @@ public class Volunteer : BaseEntity<VolunteerId>, ISoftDeletable
         if (_isDeleted)
             _isDeleted = false;
     }
+    
+    
+    
 }

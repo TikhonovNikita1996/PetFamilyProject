@@ -38,5 +38,6 @@ public record CustomError
             throw new ArgumentException("Invalid serialized format");
         
         return new CustomError(parts[0], parts[1], type);
+        
     }
 }

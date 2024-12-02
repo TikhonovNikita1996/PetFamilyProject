@@ -1,8 +1,10 @@
 ﻿using System.Runtime.InteropServices.JavaScript;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using PetFamily.API.Contracts;
 using PetFamily.API.Extensions;
 using PetFamily.API.Response;
+using PetFamily.Application.Volunteers.AddPet;
 using PetFamily.Application.Volunteers.Create;
 using PetFamily.Application.Volunteers.Delete;
 using PetFamily.Application.Volunteers.Update.DonationInfo;
@@ -131,5 +133,21 @@ public class VolunteersController : BaseApiController
             return result.Error.ToResponse();
         
         return Ok(result.Value); 
+    }
+    
+    [HttpPost("{id:guid}/pet")]
+    public async Task<ActionResult<Guid>> AddPet(
+        [FromRoute] Guid id,
+        [FromServices] AddPetHandler handler,
+        [FromBody] AddPetRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var command = request.ToCommand(id);
+
+        var result = await handler.Handle(command, cancellationToken);
+        if (result.IsFailure)
+            return BadRequest(result.Error);
+
+        return Ok(result.Value);
     }
 }

@@ -20,13 +20,29 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 id => id.Value,
                 value => PetId.Create(value));
         
-        builder.Property(p => p.Description)
-            .IsRequired()
-            .HasMaxLength(ProjectConstants.MAX_HIGHT_TEXT_LENGTH);
+        builder.ComplexProperty(v => v.Description, pm =>
+        {
+            pm.Property(p => p.Value)
+                .HasColumnName("description")
+                .HasMaxLength(ProjectConstants.MAX_HIGHT_TEXT_LENGTH)
+                .IsRequired();
+        });
         
-        builder.Property(p => p.HealthInformation)
-            .IsRequired()
-            .HasMaxLength(ProjectConstants.MAX_HIGHT_TEXT_LENGTH);
+        builder.ComplexProperty(v => v.HealthInformation, pm =>
+        {
+            pm.Property(p => p.Value)
+                .HasColumnName("healthInformation")
+                .HasMaxLength(ProjectConstants.MAX_HIGHT_TEXT_LENGTH)
+                .IsRequired();
+        });
+        
+        builder.ComplexProperty(v => v.OwnersPhoneNumber, pm =>
+        {
+            pm.Property(p => p.Value)
+                .HasColumnName("owners_phone_number")
+                .HasMaxLength(ProjectConstants.MAX_HIGHT_PHONENUMBER_LENGTH)
+                .IsRequired();
+        });
         
         builder.Property(p => p.Height)
             .IsRequired();
@@ -54,7 +70,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
 
         builder.ComplexProperty(p => p.SpecieDetails, psd =>
         {
-            psd.Property(psd => psd.BreedId)
+            psd.Property(p => p.BreedId)
                 .IsRequired();
         });
         
