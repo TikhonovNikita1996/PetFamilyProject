@@ -9,10 +9,7 @@ public class Breed : BaseEntity<BreedId>
     public string Name { get; private set; }
 
     //ef core
-    private Breed()
-    {
-        
-    }
+    private Breed() { }
     
     public Breed(BreedId breedId, string name)
     {

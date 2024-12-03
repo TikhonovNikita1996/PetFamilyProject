@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using PetFamily.API.Contracts;
 using PetFamily.API.Extensions;
 using PetFamily.API.Response;
+using PetFamily.Application.Dtos;
 using PetFamily.Application.Volunteers.AddPet;
 using PetFamily.Application.Volunteers.Create;
 using PetFamily.Application.Volunteers.Delete;
@@ -11,6 +12,7 @@ using PetFamily.Application.Volunteers.Update.DonationInfo;
 using PetFamily.Application.Volunteers.Update.MainInfo;
 using PetFamily.Application.Volunteers.Update.SocialMediaDetails;
 using PetFamily.Domain.Shared;
+using UpdateMainInfoRequest = PetFamily.API.Contracts.UpdateMainInfoRequest;
 
 namespace PetFamily.API.Controllers;
 
@@ -49,18 +51,18 @@ public class VolunteersController : BaseApiController
         [FromRoute] Guid id,
         [FromServices] UpdateMainInfoHandler handler,
         [FromBody] UpdateMainInfoDto dto, 
-        [FromServices] IValidator<UpdateMainInfoRequest> validator,
+        [FromServices] IValidator<UpdateMainInfoCommand> validator,
         CancellationToken cancellationToken)
     {
-        var request = new UpdateMainInfoRequest(id, dto);
+        var command = new UpdateMainInfoCommand(id, dto);
         
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        var validationResult = await validator.ValidateAsync(command, cancellationToken);
         if (validationResult.IsValid == false)
         {
             return validationResult.ToValidationErrorResponse();
         }
         
-        var result = await handler.Handle(request, cancellationToken);
+        var result = await handler.Handle(command, cancellationToken);
         if (result.IsFailure)
             return result.Error.ToResponse();
         
@@ -72,18 +74,18 @@ public class VolunteersController : BaseApiController
         [FromRoute] Guid id,
         [FromServices] UpdateSocialMediaDetailsHandler handler,
         [FromBody] UpdateSocialNetworksDto dto, 
-        [FromServices] IValidator<UpdateSocialMediaDetailsRequest> validator,
+        [FromServices] IValidator<UpdateSocialMediaDetailsCommand> validator,
         CancellationToken cancellationToken)
     {
-        var request = new UpdateSocialMediaDetailsRequest(id, dto);
+        var command = new UpdateSocialMediaDetailsCommand(id, dto);
         
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        var validationResult = await validator.ValidateAsync(command, cancellationToken);
         if (validationResult.IsValid == false)
         {
             return validationResult.ToValidationErrorResponse();
         }
         
-        var result = await handler.Handle(request, cancellationToken);
+        var result = await handler.Handle(command, cancellationToken);
         if (result.IsFailure)
             return result.Error.ToResponse();
         
@@ -95,18 +97,18 @@ public class VolunteersController : BaseApiController
         [FromRoute] Guid id,
         [FromServices] UpdateDonationInfoHandler handler,
         [FromBody] UpdateDonationInfoDto dto, 
-        [FromServices] IValidator<UpdateDonationInfoRequest> validator,
+        [FromServices] IValidator<UpdateDonationInfoCommand> validator,
         CancellationToken cancellationToken)
     {
-        var request = new UpdateDonationInfoRequest(id, dto);
+        var command = new UpdateDonationInfoCommand(id, dto);
         
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        var validationResult = await validator.ValidateAsync(command, cancellationToken);
         if (validationResult.IsValid == false)
         {
             return validationResult.ToValidationErrorResponse();
         }
         
-        var result = await handler.Handle(request, cancellationToken);
+        var result = await handler.Handle(command, cancellationToken);
         if (result.IsFailure)
             return result.Error.ToResponse();
         
@@ -117,18 +119,18 @@ public class VolunteersController : BaseApiController
     public async Task<ActionResult> Delete(
         [FromRoute] Guid id,
         [FromServices] DeleteVolunteerHandler handler,
-        [FromServices] IValidator<DeleteVolunteerRequest> validator,
+        [FromServices] IValidator<DeleteVolunteerCommand> validator,
         CancellationToken cancellationToken)
     {
-        var request = new DeleteVolunteerRequest(id);
+        var command = new DeleteVolunteerCommand(id);
         
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        var validationResult = await validator.ValidateAsync(command, cancellationToken);
         if (validationResult.IsValid == false)
         {
             return validationResult.ToValidationErrorResponse();
         }
         
-        var result = await handler.Handle(request, cancellationToken);
+        var result = await handler.Handle(command, cancellationToken);
         if (result.IsFailure)
             return result.Error.ToResponse();
         

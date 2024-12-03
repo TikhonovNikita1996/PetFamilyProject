@@ -1,13 +1,14 @@
 ﻿using FluentValidation;
+using PetFamily.Application.Dtos;
 using PetFamily.Application.Validation;
 using PetFamily.Domain.Entities.Volunteer.ValueObjects;
 using PetFamily.Domain.Shared;
 
 namespace PetFamily.Application.Volunteers.Update.MainInfo;
 
-public class UpdateMainInfoRequestValidator : AbstractValidator<UpdateMainInfoRequest>
+public class UpdateMainInfoValidator : AbstractValidator<UpdateMainInfoCommand>
 {
-    public UpdateMainInfoRequestValidator()
+    public UpdateMainInfoValidator()
     {
         RuleFor(r => r.VolunteerId).NotNull().WithError(Errors.General.ValueIsRequired());
         

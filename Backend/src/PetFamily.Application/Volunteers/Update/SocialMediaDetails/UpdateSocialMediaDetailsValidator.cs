@@ -6,7 +6,7 @@ using PetFamily.Domain.Shared;
 
 namespace PetFamily.Application.Volunteers.Update.SocialMediaDetails;
 
-public class UpdateSocialMediaDetailsValidator : AbstractValidator<UpdateSocialMediaDetailsRequest>
+public class UpdateSocialMediaDetailsValidator : AbstractValidator<UpdateSocialMediaDetailsCommand>
 {
     public UpdateSocialMediaDetailsValidator()
     {

@@ -1,17 +1,29 @@
 ﻿using PetFamily.Application.Dtos;
+using PetFamily.Application.Volunteers.AddPet;
+using PetFamily.Domain.Entities.Ids;
 using PetFamily.Domain.Entities.Volunteer.ValueObjects;
 using PetFamily.Domain.Shared;
 
 namespace PetFamily.API.Contracts;
 
 public record AddPetRequest(
-    string Name, Guid SpeciesId,
-    GenderType Gender, string Description,
-    string Color, string HealthInformation,
-    LocationAddress LocationAddress,
+    PetsNameDto Name, string SpecieName,
+    string BreedName, string Gender, 
+    DescriptionDto Description,
+    string Color, HealthInformationDto HealthInformation,
+    LocationAddressDto LocationAddress,
     double Weight, double Height,
-    string OwnersPhoneNumber, bool IsSterilized,
+    PhoneNumberDto OwnersPhoneNumber, bool IsSterilized,
     DateTime DateOfBirth,
-    bool IsVaccinated, HelpStatusType CurrentStatus,
+    bool IsVaccinated, string CurrentStatus,
     List<DonationInfoDto>? DonateForHelpInfos,
-    DateTime PetsPageCreationDate);
+    DateTime PetsPageCreationDate)
+
+{
+    public AddPetCommand ToCommand(Guid volunteerId) =>
+        new(volunteerId, Name, SpecieName, BreedName, 
+            Gender, Description, Color, HealthInformation, 
+            LocationAddress, Weight, Height,OwnersPhoneNumber, 
+            IsSterilized, DateOfBirth, IsVaccinated, CurrentStatus, 
+            DonateForHelpInfos, PetsPageCreationDate);
+}

@@ -5,7 +5,7 @@ using PetFamily.Domain.Entities.Volunteer.ValueObjects;
 
 namespace PetFamily.Application.Volunteers.Update.DonationInfo;
 
-public class UpdateDonationInfoValidation : AbstractValidator<UpdateDonationInfoRequest>
+public class UpdateDonationInfoValidation : AbstractValidator<UpdateDonationInfoCommand>
 {
     public UpdateDonationInfoValidation()
     {
