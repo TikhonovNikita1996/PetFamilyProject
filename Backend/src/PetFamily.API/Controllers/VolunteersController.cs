@@ -21,23 +21,21 @@ public class VolunteersController : BaseApiController
     [HttpPost]
     public async Task<ActionResult> Create(
         [FromServices] CreateVolunteerHandler createVolunteerHandler,
-        [FromServices] IValidator<CreateVolunteerRequest> validator,
+        [FromServices] IValidator<CreateVolunteerCommand> validator,
         [FromBody] CreateVolunteerRequest request,
         CancellationToken cancellationToken = default)
     {
-        var validationResult = validator.Validate(request);
-
-        if (!validationResult.IsValid)
-        {
-            return validationResult.ToValidationErrorResponse();
-        }
-        
         var createCommand = new CreateVolunteerCommand(
             request.FullName, request.Gender,
             request.Birthday, request.WorkingExperience,
             request.Email, request.PhoneNumber,
             request.Description, request.SocialMediaDetails, request.DonationInfo);
         
+        var validationResult = validator.Validate(createCommand);
+        if (!validationResult.IsValid)
+        {
+            return validationResult.ToValidationErrorResponse();
+        }
         var result = await createVolunteerHandler.Handle(createCommand, cancellationToken);
 
         if (result.IsFailure)

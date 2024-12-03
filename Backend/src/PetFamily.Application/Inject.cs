@@ -3,6 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Application.FileManagement.Delete;
 using PetFamily.Application.FileManagement.GetFile;
 using PetFamily.Application.FileManagement.Upload;
+using PetFamily.Application.PetsSpecies.AddBreed;
+using PetFamily.Application.PetsSpecies.Create;
+using PetFamily.Application.Volunteers.AddPet;
 using PetFamily.Application.Volunteers.Create;
 using PetFamily.Application.Volunteers.Delete;
 using PetFamily.Application.Volunteers.Update.DonationInfo;
@@ -20,6 +23,9 @@ public static class Inject
         services.AddScoped<UpdateSocialMediaDetailsHandler>();
         services.AddScoped<UpdateDonationInfoHandler>();
         services.AddScoped<DeleteVolunteerHandler>();
+        services.AddScoped<CreateSpecieHandler>();
+        services.AddScoped<AddBreedHandler>();
+        services.AddScoped<AddPetHandler>();
         //Minio handlers
         services.AddScoped<UploadFileHandler>();
         services.AddScoped<DeleteFileHandler>();

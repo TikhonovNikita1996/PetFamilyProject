@@ -5,6 +5,7 @@ using PetFamily.Application.DataBase;
 using PetFamily.Application.Extensions;
 using PetFamily.Application.Interfaces;
 using PetFamily.Domain.Entities.Ids;
+using PetFamily.Domain.Entities.Others;
 using PetFamily.Domain.Entities.Pet;
 using PetFamily.Domain.Entities.Pet.ValueObjects;
 using PetFamily.Domain.Entities.Volunteer.ValueObjects;
@@ -53,31 +54,52 @@ public class AddPetHandler
         if (volunteerResult.IsFailure)
             return volunteerResult.Error.ToErrorList();
         
-        var petId = PetId.NewId().Value;
+        var petId = PetId.NewId();
         var petsName = PetsName.Create(command.Name.Name).Value;
-        var gender  = command.Gender;
+        var gender  = Enum.Parse<GenderType>(command.Gender);
         var description = Description.Create(command.Description.Value).Value;
-        var color = command.Color;
+        var color = Color.Create(command.Color).Value;
         var healthInformation = HealthInformation.Create(command.HealthInformation.Value).Value;
         var height = command.Height;
         var weight = command.Weight;
         var ownersPhoneNumber = OwnersPhoneNumber.Create(command.OwnersPhoneNumber.Value).Value;
         var isSterilized = command.IsSterilized;
         var isVaccinated = command.IsVaccinated;
+        var dateOfBirth = command.DateOfBirth;
         var helpStatus = Enum.Parse<HelpStatusType>(command.CurrentStatus);
-        var dateTime = command.PetsPageCreationDate;
+        var pageCreationDate = command.PetsPageCreationDate;
         var locationAddress = LocationAddress.Create(command.LocationAddress.Region,
             command.LocationAddress.City, command.LocationAddress.Street, command.LocationAddress.HouseNumber,
             command.LocationAddress.Floor, command.LocationAddress.Apartment).Value;
 
         var specieName = command.SpecieName;
+        var specieResult = await _speciesRepository.GetByName(specieName, cancellationToken);
         
-        
-        
+        var donationInfos = command.DonateForHelpInfos
+            .Select(s => DonationInfo.Create(s.Name, s.Description));
 
+        var resultDonationInfoList = new DonationInfoList(donationInfos.Select(x=> x.Value).ToList());
+        
+        if (specieResult.IsFailure)
+            return volunteerResult.Error.ToErrorList();
+        
+        var specieId = specieResult.Value.Id;
+        var breedId = specieResult.Value.Breeds.First(x => x.Name == command.BreedName).Id;
+        var specieDetails = SpecieDetails.Create(specieId, breedId).Value;
+
+
+        var newPet = Pet.Create(petId, petsName, specieDetails,
+            gender, description, color, healthInformation,
+            locationAddress, weight, height, ownersPhoneNumber,
+            isSterilized, dateOfBirth, isVaccinated, helpStatus, resultDonationInfoList, pageCreationDate, new Photos()).Value;
+        
+        volunteerResult.Value.AddPet(newPet);
+        
         await _unitOfWork.SaveChanges(cancellationToken);
-        _logger.LogInformation("Pet added with id: {PetId}.", pet.Id.Value);
-
-        return pet.Id.Value;
+        
+        transaction.Commit();
+        
+        _logger.LogInformation("Pet added with id: {PetId}.", newPet.Id.Value);
+        return newPet.Id.Value;
     }
 }

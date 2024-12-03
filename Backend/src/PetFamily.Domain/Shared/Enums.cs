@@ -2,7 +2,7 @@ namespace PetFamily.Domain.Shared;
 public enum HelpStatusType
 {
     NeedHelp,
-    SerachingForHome,
+    SearchingForHome,
     FoundHome,
     OnTreatment
 }

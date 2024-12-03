@@ -2,4 +2,4 @@
 
 namespace PetFamily.Application.PetsSpecies.AddBreed;
 
-public record AddBreedCommand(Guid SpecieId, BreedDto dto);
+public record AddBreedCommand(Guid SpecieId, string Name);

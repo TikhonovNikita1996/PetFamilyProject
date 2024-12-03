@@ -1,3 +1,6 @@
-﻿namespace PetFamily.Application.PetsSpecies.Create;
+﻿using PetFamily.Application.Dtos;
+using PetFamily.Domain.Entities.Pet.ValueObjects;
 
-public record CreateSpecieCommand(string Name);
+namespace PetFamily.Application.PetsSpecies.Create;
+
+public record CreateSpecieCommand(string Name, List<BreedDto> Breeds);

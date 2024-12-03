@@ -43,11 +43,11 @@ public class SpeciesRepository(DataContext context) : ISpeciesRepository
         return species;
     }
     
-    public async Task<Result<Specie, CustomError>> GetByName(
-        string name,
+    public async Task<Result<Specie, CustomError>> GetByName(string name,
         CancellationToken cancellationToken = default)
     {
         var species = await context.Species
+            .Include(s => s.Breeds)
             .FirstOrDefaultAsync(s => s.Name == name, cancellationToken);
         if (species is null)
             return Errors.General.NotFound();

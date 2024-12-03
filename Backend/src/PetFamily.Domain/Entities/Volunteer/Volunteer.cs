@@ -38,7 +38,7 @@ public class Volunteer : BaseEntity<VolunteerId>, ISoftDeletable
     public SocialMediaDetails SocialMediaDetails { get; private set; }
     public IReadOnlyList<Pet.Pet> CurrentPets => _pets;
     public int PetsWhoFoundHome => _pets.Count(p => p.CurrentStatus == HelpStatusType.FoundHome);
-    public int PetsSearchingForHome => _pets.Count(p => p.CurrentStatus == HelpStatusType.SerachingForHome);
+    public int PetsSearchingForHome => _pets.Count(p => p.CurrentStatus == HelpStatusType.SearchingForHome);
     public int PetsOnTreatment => _pets.Count(p => p.CurrentStatus == HelpStatusType.OnTreatment);
     
     public static Result<Volunteer, CustomError> Create(VolunteerId id,
@@ -85,7 +85,10 @@ public class Volunteer : BaseEntity<VolunteerId>, ISoftDeletable
         if (_isDeleted)
             _isDeleted = false;
     }
-    
-    
+
+    public void AddPet(Pet.Pet pet)
+    {
+        _pets.Add(pet);
+    }
     
 }

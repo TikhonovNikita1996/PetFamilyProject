@@ -44,6 +44,22 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .IsRequired();
         });
         
+        builder.ComplexProperty(v => v.Color, pm =>
+        {
+            pm.Property(p => p.Value)
+                .HasColumnName("color")
+                .HasMaxLength(ProjectConstants.MAX_HIGHT_PHONENUMBER_LENGTH)
+                .IsRequired();
+        });
+        
+        builder.ComplexProperty(v => v.PetsName, pm =>
+        {
+            pm.Property(p => p.Value)
+                .HasColumnName("pets_name")
+                .HasMaxLength(ProjectConstants.MAX_LOW_TEXT_LENGTH)
+                .IsRequired();
+        });
+        
         builder.Property(p => p.Height)
             .IsRequired();
         
@@ -63,9 +79,6 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             .IsRequired();
         
         builder.Property(p => p.Gender)
-            .IsRequired();
-
-        builder.Property(p => p.PetsName)
             .IsRequired();
 
         builder.ComplexProperty(p => p.SpecieDetails, psd =>

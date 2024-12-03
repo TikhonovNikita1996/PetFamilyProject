@@ -12,17 +12,18 @@ public class Specie : BaseEntity<SpecieId>
     private readonly List<Breed> _breeds = [];
     public string Name { get; private set; } = default!;
     public IReadOnlyList<Breed> Breeds => _breeds;
-    private Specie(SpecieId id, string name) : base(id)
+    private Specie(SpecieId id, string name, List<Breed>? breeds = null) : base(id)
     {
         Name = name;
+        _breeds = breeds;
     }
 
-    public static Result<Specie, CustomError> Create(SpecieId id, string name)
+    public static Result<Specie, CustomError> Create(SpecieId id, string name, List<Breed>? breeds = null)
     {
         if (string.IsNullOrWhiteSpace(name))
             return Errors.General.ValueIsInvalid(name);
         
-        var species = new Specie(id, name);
+        var species = new Specie(id, name, breeds);
 
         return species;
     }

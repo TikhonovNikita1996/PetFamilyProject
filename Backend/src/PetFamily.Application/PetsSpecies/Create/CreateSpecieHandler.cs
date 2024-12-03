@@ -1,6 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
+using FluentValidation.TestHelper;
 using Microsoft.Extensions.Logging;
+using PetFamily.Application.DataBase;
 using PetFamily.Application.Extensions;
 using PetFamily.Application.Interfaces;
 using PetFamily.Domain.Entities.Ids;
@@ -11,34 +13,33 @@ namespace PetFamily.Application.PetsSpecies.Create;
 
 public class CreateSpecieHandler
 {
-    private readonly IValidator<CreateSpecieCommand> _validator;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly ISpeciesRepository _speciesRepository;
     private readonly ILogger<CreateSpecieHandler> _logger;
 
     public CreateSpecieHandler(
-        IValidator<CreateSpecieCommand> validator,
+        IUnitOfWork unitOfWork,
         ISpeciesRepository speciesRepository,
         ILogger<CreateSpecieHandler> logger)
     {
-        _validator = validator;
+        _unitOfWork = unitOfWork;
         _speciesRepository = speciesRepository;
         _logger = logger;
     }
     
     public async Task<Result<Guid, CustomErrorsList>> Handle(
-        CreateSpecieCommand request,
+        CreateSpecieCommand command,
         CancellationToken cancellationToken = default)
     {
-        var validationResult = await _validator.ValidateAsync(request, cancellationToken);
-        if (validationResult.IsValid == false)
-            return validationResult.ToErrorList();
-
         var specieId = SpecieId.NewId();
-        var name = request.Name;
+        var name = command.Name;
 
-        var specie = Specie.Create(specieId, name).Value;
+        var newBreeds = new List<Breed>();
+        
+        var specie = Specie.Create(specieId, name, newBreeds).Value;
 
         await _speciesRepository.Add(specie, cancellationToken);
+        await _unitOfWork.SaveChanges(cancellationToken);
         
         _logger.LogInformation("Species added with id {specieId}.", specieId.Value);
 

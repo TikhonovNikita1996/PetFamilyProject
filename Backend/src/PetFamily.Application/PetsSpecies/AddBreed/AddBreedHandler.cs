@@ -45,7 +45,7 @@ public class AddBreedHandler
         
         var name = command.Name;
         
-        var breed = Breed.Create(breedId, name).Value;
+        var breed = new Breed(breedId, name);
 
         var addBreedResult = speciesResult.Value.AddBreed(breed);
         if (addBreedResult.IsFailure)

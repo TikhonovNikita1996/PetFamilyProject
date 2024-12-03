@@ -13,11 +13,11 @@ public class Pet : BaseEntity<PetId>, ISoftDeletable
     private bool _isDeleted = false;
     // ef core
     public Pet(PetId id) : base(id) {}
-    public Pet(PetId petId, PetsName petsName, SpicieDetails specieDetails, GenderType gender, Description description,
+    public Pet(PetId petId, PetsName petsName, SpecieDetails specieDetails, GenderType gender, Description description,
         Color color, HealthInformation healthInformation, LocationAddress locationAddress,
         double weight, double height, OwnersPhoneNumber ownersPhoneNumber, bool isSterilized, DateTime dateOfBirth,
         bool isVaccinated, HelpStatusType currentStatus, DonationInfoList donateForHelpInfos,
-        DateTime petsPageCreationDate) : base(petId)
+        DateTime petsPageCreationDate, Photos photos) : base(petId)
     {
         PetsName = petsName;
         SpecieDetails = specieDetails;
@@ -35,10 +35,11 @@ public class Pet : BaseEntity<PetId>, ISoftDeletable
         CurrentStatus = currentStatus;
         DonateForHelpInfos = donateForHelpInfos;
         PetsPageCreationDate = petsPageCreationDate;
+        Photos = photos;
     }
     
     public PetsName PetsName { get; private set; }
-    public SpicieDetails SpecieDetails { get; private set; }
+    public SpecieDetails SpecieDetails { get; private set; }
     public GenderType Gender { get; private set; }
     public Description Description { get; private set; }
     public Color Color { get; private set; }
@@ -56,7 +57,7 @@ public class Pet : BaseEntity<PetId>, ISoftDeletable
     public Photos Photos { get; private set; }
 
     public static Result<Pet,CustomError> Create(PetId petId, PetsName petsName, 
-                                            SpicieDetails specieDetails, GenderType gender, 
+                                            SpecieDetails specieDetails, GenderType gender, 
                                             Description description,
                                             Color color, HealthInformation healthInformation, 
                                             LocationAddress locationAddress,
@@ -65,13 +66,13 @@ public class Pet : BaseEntity<PetId>, ISoftDeletable
                                             DateTime dateOfBirth,
                                             bool isVaccinated, HelpStatusType currentStatus, 
                                             DonationInfoList donateForHelpInfos,
-                                            DateTime petsPageCreationDate)
+                                            DateTime petsPageCreationDate, Photos? photos)
     {
         var pet = new Pet(petId, petsName, specieDetails, gender, description,
                           color, healthInformation, locationAddress, weight, 
                           height, ownersPhoneNumber, isSterilized, dateOfBirth, 
                           isVaccinated, currentStatus, donateForHelpInfos, 
-                          petsPageCreationDate);
+                          petsPageCreationDate, photos);
         return pet;
     }
 
