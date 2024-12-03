@@ -1,6 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
+using FluentValidation;
 using Microsoft.Extensions.Logging;
 using PetFamily.Application.DataBase;
+using PetFamily.Application.Extensions;
 using PetFamily.Application.Interfaces;
 using PetFamily.Domain.Entities.Ids;
 using PetFamily.Domain.Entities.Others;
@@ -15,23 +17,30 @@ public class CreateVolunteerHandler
     private readonly IVolunteerRepository _volunteerRepository;
     private readonly ILogger<CreateVolunteerHandler> _logger;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IValidator<CreateVolunteerCommand> _validator;
 
     public CreateVolunteerHandler(IVolunteerRepository volunteerRepository,
         ILogger<CreateVolunteerHandler> logger,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork, 
+        IValidator<CreateVolunteerCommand> validator)
     {
         _volunteerRepository = volunteerRepository;
         _logger = logger;
         _unitOfWork = unitOfWork;
+        _validator = validator;
     }
-    public async Task<Result<Guid, CustomError>> Handle(CreateVolunteerCommand createVolunteerCommand,
+    public async Task<Result<Guid, CustomErrorsList>> Handle(CreateVolunteerCommand createVolunteerCommand,
         CancellationToken cancellationToken = default)
     {
+        var validationResult = _validator.Validate(createVolunteerCommand);
+        if (!validationResult.IsValid)
+            return validationResult.ToErrorList();
+        
         var email = Email.Create(createVolunteerCommand.Email.Value).Value;
         
         var existingVolunteer = await _volunteerRepository.GetByEmail(email);
         if (existingVolunteer.IsSuccess)
-            return Errors.VolunteerValidation.AlreadyExist();
+            return existingVolunteer.Error.ToErrorList();
         
         var volunterId = VolunteerId.NewVolonteerId();
         var fullName = FullName.Create(createVolunteerCommand.FullName.LastName, 
@@ -59,7 +68,7 @@ public class CreateVolunteerHandler
             workingExperience, description, phoneNumber, resultDonationInfoList, resultNetworksList);
         
         if((volunteer.IsFailure))
-            return volunteer.Error;
+            return volunteer.Error.ToErrorList();
         
         await _volunteerRepository.AddAsync(volunteer.Value, cancellationToken);
         await _unitOfWork.SaveChanges(cancellationToken);

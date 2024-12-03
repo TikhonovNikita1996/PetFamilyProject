@@ -16,21 +16,30 @@ public class CreateSpecieHandler
     private readonly IUnitOfWork _unitOfWork;
     private readonly ISpeciesRepository _speciesRepository;
     private readonly ILogger<CreateSpecieHandler> _logger;
+    private readonly IValidator<CreateSpecieCommand> _validator;
 
     public CreateSpecieHandler(
         IUnitOfWork unitOfWork,
         ISpeciesRepository speciesRepository,
-        ILogger<CreateSpecieHandler> logger)
+        ILogger<CreateSpecieHandler> logger,
+        IValidator<CreateSpecieCommand> validator)
     {
         _unitOfWork = unitOfWork;
         _speciesRepository = speciesRepository;
         _logger = logger;
+        _validator = validator;
     }
     
     public async Task<Result<Guid, CustomErrorsList>> Handle(
         CreateSpecieCommand command,
         CancellationToken cancellationToken = default)
     {
+        var validationResult = await _validator.ValidateAsync(
+            command, cancellationToken);
+        
+        if (validationResult.IsValid == false)
+            return validationResult.ToErrorList();
+        
         var specieId = SpecieId.NewId();
         var name = command.Name;
 

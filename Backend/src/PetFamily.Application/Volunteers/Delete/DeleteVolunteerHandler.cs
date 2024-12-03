@@ -1,6 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
+using FluentValidation;
 using Microsoft.Extensions.Logging;
 using PetFamily.Application.DataBase;
+using PetFamily.Application.Extensions;
 using PetFamily.Application.Interfaces;
 using PetFamily.Domain.Shared;
 
@@ -11,22 +13,28 @@ public class DeleteVolunteerHandler
     private readonly IVolunteerRepository _volunteerRepository;
     private readonly ILogger<DeleteVolunteerHandler> _logger;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IValidator<DeleteVolunteerCommand> _validator;
 
     public DeleteVolunteerHandler(IVolunteerRepository volunteerRepository,
         ILogger<DeleteVolunteerHandler> logger,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork, IValidator<DeleteVolunteerCommand> validator)
     {
         _volunteerRepository = volunteerRepository;
         _logger = logger;
         _unitOfWork = unitOfWork;
+        _validator = validator;
     }
     
-    public async Task<Result<Guid, CustomError>> Handle(DeleteVolunteerCommand command,
+    public async Task<Result<Guid, CustomErrorsList>> Handle(DeleteVolunteerCommand command,
         CancellationToken cancellationToken = default)
     {
+        var validationResult = _validator.Validate(command);
+        if (!validationResult.IsValid)
+            return validationResult.ToErrorList();
+        
         var volunteerResult = await _volunteerRepository.GetById(command.VolunteerId, cancellationToken);
         if (volunteerResult.IsFailure)
-            return volunteerResult.Error;
+            return volunteerResult.Error.ToErrorList();
         
         var result = await _volunteerRepository.Delete(volunteerResult.Value, cancellationToken);
 

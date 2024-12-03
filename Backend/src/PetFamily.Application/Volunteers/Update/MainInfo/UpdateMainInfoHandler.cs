@@ -1,7 +1,9 @@
 ﻿using System.Reflection.Metadata;
 using CSharpFunctionalExtensions;
+using FluentValidation;
 using Microsoft.Extensions.Logging;
 using PetFamily.Application.DataBase;
+using PetFamily.Application.Extensions;
 using PetFamily.Application.Interfaces;
 using PetFamily.Domain.Entities.Volunteer.ValueObjects;
 using PetFamily.Domain.Shared;
@@ -13,23 +15,30 @@ public class UpdateMainInfoHandler
     private readonly IVolunteerRepository _volunteerRepository;
     private readonly ILogger<UpdateMainInfoHandler> _logger;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IValidator<UpdateMainInfoCommand> _validator;
 
     public UpdateMainInfoHandler(IVolunteerRepository volunteerRepository,
         ILogger<UpdateMainInfoHandler> logger, 
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        IValidator<UpdateMainInfoCommand> validator)
     {
         _volunteerRepository = volunteerRepository;
         _logger = logger;
         _unitOfWork = unitOfWork;
+        _validator = validator;
     }
 
-    public async Task<Result<Guid, CustomError>> Handle(UpdateMainInfoCommand command,
-        CancellationToken cancellationTokentoken = default)
+    public async Task<Result<Guid, CustomErrorsList>> Handle(UpdateMainInfoCommand command,
+        CancellationToken cancellationToken = default)
     {
-        var volunteerResult = await _volunteerRepository.GetById(command.VolunteerId, cancellationTokentoken);
+        var validationResult = _validator.Validate(command);
+        if (!validationResult.IsValid)
+            return validationResult.ToErrorList();
+        
+        var volunteerResult = await _volunteerRepository.GetById(command.VolunteerId, cancellationToken);
 
         if (volunteerResult.IsFailure)
-            return volunteerResult.Error;
+            return volunteerResult.Error.ToErrorList();
 
         var fullName = FullName.Create(command.Dto.LastName, command.Dto.FirstName, command.Dto.MiddleName).Value;
         
@@ -41,7 +50,7 @@ public class UpdateMainInfoHandler
         
         volunteerResult.Value.UpdateMainInfo(fullName, description, phoneNumber, experienceYears);
         
-        await _unitOfWork.SaveChanges(cancellationTokentoken);
+        await _unitOfWork.SaveChanges(cancellationToken);
         
         _logger.LogInformation( "For volunteer with ID: {id} was updated social networks", volunteerResult.Value.Id);
         

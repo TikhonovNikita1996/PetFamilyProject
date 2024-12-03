@@ -14,16 +14,9 @@ public class SpeciesController : BaseApiController
     public async Task<ActionResult<Guid>> Create(
         [FromServices] CreateSpecieHandler handler,
         [FromBody] CreateSpecieRequest request,
-        [FromServices] IValidator<CreateSpecieCommand> validator,
         CancellationToken cancellationToken)
     {
         var command = new CreateSpecieCommand(request.Name, request.Breeds);
-        
-        var validationResult = await validator.ValidateAsync(
-            command, cancellationToken);
-        
-        if (validationResult.IsValid == false)
-            return validationResult.ToValidationErrorResponse();
 
         var result = await handler.Handle(command, cancellationToken);
 
@@ -38,7 +31,6 @@ public class SpeciesController : BaseApiController
         [FromServices] AddBreedHandler handler,
         [FromRoute] Guid specieId,
         [FromBody] AddBreedRequest request,
-        [FromServices] IValidator<AddBreedCommand> validator,
         CancellationToken cancellationToken = default)
     {
         var command = new AddBreedCommand(specieId, request.Name);

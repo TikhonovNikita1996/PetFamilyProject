@@ -11,7 +11,6 @@ public class UpdateMainInfoValidator : AbstractValidator<UpdateMainInfoCommand>
     public UpdateMainInfoValidator()
     {
         RuleFor(r => r.VolunteerId).NotNull().WithError(Errors.General.ValueIsRequired());
-        
     }
 }
 
