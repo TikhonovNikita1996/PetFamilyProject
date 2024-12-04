@@ -20,7 +20,7 @@ public class GetFileHandler
         CancellationToken cancellationToken)
     {
         var fileMetaData = new FileMetaData(request.BucketName, request.ObjectName);
-        var result = await _fileProvider.GetFile(fileMetaData, cancellationToken);
+        var result = await _fileProvider.GetFileAsync(fileMetaData, cancellationToken);
 
         return result;
     }

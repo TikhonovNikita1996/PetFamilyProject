@@ -20,13 +20,45 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 id => id.Value,
                 value => PetId.Create(value));
         
-        builder.Property(p => p.Description)
-            .IsRequired()
-            .HasMaxLength(ProjectConstants.MAX_HIGHT_TEXT_LENGTH);
+        builder.ComplexProperty(v => v.Description, pm =>
+        {
+            pm.Property(p => p.Value)
+                .HasColumnName("description")
+                .HasMaxLength(ProjectConstants.MAX_HIGHT_TEXT_LENGTH)
+                .IsRequired();
+        });
         
-        builder.Property(p => p.HealthInformation)
-            .IsRequired()
-            .HasMaxLength(ProjectConstants.MAX_HIGHT_TEXT_LENGTH);
+        builder.ComplexProperty(v => v.HealthInformation, pm =>
+        {
+            pm.Property(p => p.Value)
+                .HasColumnName("healthInformation")
+                .HasMaxLength(ProjectConstants.MAX_HIGHT_TEXT_LENGTH)
+                .IsRequired();
+        });
+        
+        builder.ComplexProperty(v => v.OwnersPhoneNumber, pm =>
+        {
+            pm.Property(p => p.Value)
+                .HasColumnName("owners_phone_number")
+                .HasMaxLength(ProjectConstants.MAX_HIGHT_PHONENUMBER_LENGTH)
+                .IsRequired();
+        });
+        
+        builder.ComplexProperty(v => v.Color, pm =>
+        {
+            pm.Property(p => p.Value)
+                .HasColumnName("color")
+                .HasMaxLength(ProjectConstants.MAX_HIGHT_PHONENUMBER_LENGTH)
+                .IsRequired();
+        });
+        
+        builder.ComplexProperty(v => v.PetsName, pm =>
+        {
+            pm.Property(p => p.Value)
+                .HasColumnName("pets_name")
+                .HasMaxLength(ProjectConstants.MAX_LOW_TEXT_LENGTH)
+                .IsRequired();
+        });
         
         builder.Property(p => p.Height)
             .IsRequired();
@@ -49,12 +81,9 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         builder.Property(p => p.Gender)
             .IsRequired();
 
-        builder.Property(p => p.PetsName)
-            .IsRequired();
-
         builder.ComplexProperty(p => p.SpecieDetails, psd =>
         {
-            psd.Property(psd => psd.BreedId)
+            psd.Property(p => p.BreedId)
                 .IsRequired();
         });
         
@@ -88,7 +117,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 
         });
 
-        builder.OwnsOne(p => p.Photos, ppb =>
+        builder.OwnsOne(p => p.PhotosList, ppb =>
         {
             ppb.ToJson();
 

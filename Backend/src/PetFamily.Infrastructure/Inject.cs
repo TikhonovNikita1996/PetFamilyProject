@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Minio;
+using PetFamily.Application.DataBase;
 using PetFamily.Application.Interfaces;
 using PetFamily.Infrastructure.Interceptors;
 using PetFamily.Infrastructure.Options;
@@ -15,8 +16,9 @@ public static class Inject
         IConfiguration configuration)
     {
         services.AddScoped<DataContext>();
-        services.AddSingleton<SoftDeleteInterceptor>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IVolunteerRepository, VolunteerRepository> ();
+        services.AddScoped<ISpeciesRepository, SpeciesRepository> ();
         services.AddMinioCustom(configuration);
         services.AddScoped<IFileProvider, MinioProvider>();
         return services;

@@ -1,3 +1,3 @@
-﻿namespace PetFamily.Application.Volunteers.Delete;
+﻿namespace PetFamily.API.Contracts;
 
 public record DeleteVolunteerRequest(Guid VolunteerId);

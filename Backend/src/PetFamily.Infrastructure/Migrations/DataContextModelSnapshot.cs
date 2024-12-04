@@ -29,11 +29,6 @@ namespace PetFamily.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<string>("Color")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("color");
-
                     b.Property<int>("CurrentStatus")
                         .HasColumnType("integer")
                         .HasColumnName("current_status");
@@ -42,21 +37,9 @@ namespace PetFamily.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("date_of_birth");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
-                        .HasColumnName("description");
-
                     b.Property<int>("Gender")
                         .HasColumnType("integer")
                         .HasColumnName("gender");
-
-                    b.Property<string>("HealthInformation")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
-                        .HasColumnName("health_information");
 
                     b.Property<double>("Height")
                         .HasColumnType("double precision")
@@ -69,16 +52,6 @@ namespace PetFamily.Infrastructure.Migrations
                     b.Property<bool>("IsVaccinated")
                         .HasColumnType("boolean")
                         .HasColumnName("is_vaccinated");
-
-                    b.Property<string>("OwnersPhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("owners_phone_number");
-
-                    b.Property<string>("PetsName")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("pets_name");
 
                     b.Property<DateTime>("PetsPageCreationDate")
                         .HasColumnType("timestamp with time zone")
@@ -96,7 +69,62 @@ namespace PetFamily.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("volunteer_id");
 
-                    b.ComplexProperty<Dictionary<string, object>>("SpecieDetails", "PetFamily.Domain.Entities.Pet.Pet.SpecieDetails#SpicieDetails", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("Color", "PetFamily.Domain.Entities.Pet.Pet.Color#Color", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(20)
+                                .HasColumnType("character varying(20)")
+                                .HasColumnName("color");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("Description", "PetFamily.Domain.Entities.Pet.Pet.Description#Description", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(255)
+                                .HasColumnType("character varying(255)")
+                                .HasColumnName("description");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("HealthInformation", "PetFamily.Domain.Entities.Pet.Pet.HealthInformation#HealthInformation", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(255)
+                                .HasColumnType("character varying(255)")
+                                .HasColumnName("healthInformation");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("OwnersPhoneNumber", "PetFamily.Domain.Entities.Pet.Pet.OwnersPhoneNumber#OwnersPhoneNumber", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(20)
+                                .HasColumnType("character varying(20)")
+                                .HasColumnName("owners_phone_number");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("PetsName", "PetFamily.Domain.Entities.Pet.Pet.PetsName#PetsName", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("character varying(100)")
+                                .HasColumnName("pets_name");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("SpecieDetails", "PetFamily.Domain.Entities.Pet.Pet.SpecieDetails#SpecieDetails", b1 =>
                         {
                             b1.IsRequired();
 
@@ -295,7 +323,7 @@ namespace PetFamily.Infrastructure.Migrations
                             b1.Navigation("DonationInfos");
                         });
 
-                    b.OwnsOne("PetFamily.Domain.Entities.Pet.ValueObjects.Photos", "Photos", b1 =>
+                    b.OwnsOne("PetFamily.Domain.Entities.Pet.ValueObjects.PhotosList", "PhotosList", b1 =>
                         {
                             b1.Property<Guid>("PetId")
                                 .HasColumnType("uuid")
@@ -305,7 +333,7 @@ namespace PetFamily.Infrastructure.Migrations
 
                             b1.ToTable("pets");
 
-                            b1.ToJson("Photos");
+                            b1.ToJson("PhotosList");
 
                             b1.WithOwner()
                                 .HasForeignKey("PetId")
@@ -313,7 +341,7 @@ namespace PetFamily.Infrastructure.Migrations
 
                             b1.OwnsMany("PetFamily.Domain.Entities.Pet.ValueObjects.PetPhoto", "PetPhotos", b2 =>
                                 {
-                                    b2.Property<Guid>("PhotosPetId")
+                                    b2.Property<Guid>("PhotosListPetId")
                                         .HasColumnType("uuid");
 
                                     b2.Property<int>("Id")
@@ -327,14 +355,14 @@ namespace PetFamily.Infrastructure.Migrations
                                     b2.Property<bool>("IsMain")
                                         .HasColumnType("boolean");
 
-                                    b2.HasKey("PhotosPetId", "Id")
+                                    b2.HasKey("PhotosListPetId", "Id")
                                         .HasName("pk_pets");
 
                                     b2.ToTable("pets");
 
                                     b2.WithOwner()
-                                        .HasForeignKey("PhotosPetId")
-                                        .HasConstraintName("fk_pets_pets_photos_pet_id");
+                                        .HasForeignKey("PhotosListPetId")
+                                        .HasConstraintName("fk_pets_pets_photos_list_pet_id");
                                 });
 
                             b1.Navigation("PetPhotos");
@@ -393,7 +421,7 @@ namespace PetFamily.Infrastructure.Migrations
                     b.Navigation("LocationAddress")
                         .IsRequired();
 
-                    b.Navigation("Photos")
+                    b.Navigation("PhotosList")
                         .IsRequired();
                 });
 

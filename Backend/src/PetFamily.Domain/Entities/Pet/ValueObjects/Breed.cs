@@ -6,27 +6,14 @@ namespace PetFamily.Domain.Entities.Pet.ValueObjects;
 
 public class Breed : BaseEntity<BreedId>
 {
-    public string Name { get; private set; }
-
-    //ef core
-    private Breed()
+    private Breed(BreedId id) : base(id)
     {
-        
     }
     
-    public Breed(BreedId breedId, string name)
+    public Breed(BreedId id, string name) : base(id)
     {
         Name = name;
     }
-    
-    public static Result<Breed, CustomError> Create(BreedId id, string name)
-    {
-        if (string.IsNullOrWhiteSpace(name))
-            return Errors.General.ValueIsInvalid();
-
-        var breed = new Breed(id, name);
-
-        return breed;
-    }
+    public string Name { get; private set; }
     
 }

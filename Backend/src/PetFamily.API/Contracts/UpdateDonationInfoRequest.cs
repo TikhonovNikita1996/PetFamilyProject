@@ -1,9 +1,6 @@
 ﻿using PetFamily.Application.Dtos;
 
-namespace PetFamily.Application.Volunteers.Update.DonationInfo;
+namespace PetFamily.API.Contracts;
 
 public record UpdateDonationInfoRequest(Guid VolonteerId,
     UpdateDonationInfoDto UpdateDonationInfoDto);
-
-public record UpdateDonationInfoDto (
-    List<DonationInfoDto> DonationInfos);

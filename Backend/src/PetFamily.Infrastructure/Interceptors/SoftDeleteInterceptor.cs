@@ -8,22 +8,19 @@ public class SoftDeleteInterceptor : SaveChangesInterceptor
 {
     public override async ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData,
         InterceptionResult<int> result,
-        CancellationToken cancellationToken = new CancellationToken())
+        CancellationToken cancellationToken = default)
     {
         if(eventData.Context is null)
             return await base.SavingChangesAsync(eventData, result, cancellationToken);   
         
         var entries = eventData.Context.ChangeTracker
-            .Entries()
+            .Entries<ISoftDeletable>()
             .Where(e => e.State == EntityState.Deleted);
 
         foreach (var entry in entries)
         {
             entry.State = EntityState.Modified;
-            if (entry.Entity is ISoftDeletable item)
-            {
-                item.Delete();
-            }
+            entry.Entity.Delete();
         }
         
         return await base.SavingChangesAsync(eventData, result, cancellationToken);   
