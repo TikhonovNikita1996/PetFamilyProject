@@ -91,4 +91,12 @@ public class Volunteer : BaseEntity<VolunteerId>, ISoftDeletable
         _pets.Add(pet);
     }
     
+    public Result<Pet.Pet, CustomError> GetPetById(Guid petId)
+    {
+        var pet = CurrentPets.FirstOrDefault(p => p.Id == petId);
+        if (pet is null)
+            return Errors.General.NotFound(petId);
+
+        return pet;
+    }
 }

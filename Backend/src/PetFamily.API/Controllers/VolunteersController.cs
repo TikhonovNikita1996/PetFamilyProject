@@ -3,9 +3,11 @@ using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using PetFamily.API.Contracts;
 using PetFamily.API.Extensions;
+using PetFamily.API.Processors;
 using PetFamily.API.Response;
 using PetFamily.Application.Dtos;
 using PetFamily.Application.Volunteers.AddPet;
+using PetFamily.Application.Volunteers.AddPhotosToPet;
 using PetFamily.Application.Volunteers.Create;
 using PetFamily.Application.Volunteers.Delete;
 using PetFamily.Application.Volunteers.Update.DonationInfo;
@@ -113,6 +115,25 @@ public class VolunteersController : BaseApiController
         if (result.IsFailure)
             return BadRequest(result.Error);
 
+        return Ok(result.Value);
+    }
+    [HttpPost("{volunteerId:guid}/pet/{petId:guid}/files")]
+    public async Task<ActionResult> UploadFilesToPet(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromForm] IFormFileCollection files,
+        [FromServices] AddPhotosToPetHandler handler,
+        CancellationToken cancellationToken)
+    {
+        await using var fileProcessor = new FormFileProcessor();
+        var fileDtos = fileProcessor.Process(files);
+            
+        var command = new AddPhotosToPetCommand(volunteerId, petId, fileDtos);
+            
+        var result = await handler.Handle(command, cancellationToken);
+        if(result.IsFailure)
+            return BadRequest(result.Error); 
+            
         return Ok(result.Value);
     }
 }

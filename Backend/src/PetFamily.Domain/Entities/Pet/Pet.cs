@@ -17,7 +17,7 @@ public class Pet : BaseEntity<PetId>, ISoftDeletable
         Color color, HealthInformation healthInformation, LocationAddress locationAddress,
         double weight, double height, OwnersPhoneNumber ownersPhoneNumber, bool isSterilized, DateTime dateOfBirth,
         bool isVaccinated, HelpStatusType currentStatus, DonationInfoList donateForHelpInfos,
-        DateTime petsPageCreationDate, Photos photos) : base(petId)
+        DateTime petsPageCreationDate, PhotosList photosList) : base(petId)
     {
         PetsName = petsName;
         SpecieDetails = specieDetails;
@@ -35,7 +35,7 @@ public class Pet : BaseEntity<PetId>, ISoftDeletable
         CurrentStatus = currentStatus;
         DonateForHelpInfos = donateForHelpInfos;
         PetsPageCreationDate = petsPageCreationDate;
-        Photos = photos;
+        PhotosList = photosList;
     }
     
     public PetsName PetsName { get; private set; }
@@ -54,7 +54,7 @@ public class Pet : BaseEntity<PetId>, ISoftDeletable
     public HelpStatusType CurrentStatus { get; private set; } 
     public DonationInfoList DonateForHelpInfos { get; private set; }
     public DateTime PetsPageCreationDate { get; private set; } 
-    public Photos Photos { get; private set; }
+    public PhotosList PhotosList { get; private set; }
 
     public static Result<Pet,CustomError> Create(PetId petId, PetsName petsName, 
                                             SpecieDetails specieDetails, GenderType gender, 
@@ -66,7 +66,7 @@ public class Pet : BaseEntity<PetId>, ISoftDeletable
                                             DateTime dateOfBirth,
                                             bool isVaccinated, HelpStatusType currentStatus, 
                                             DonationInfoList donateForHelpInfos,
-                                            DateTime petsPageCreationDate, Photos? photos)
+                                            DateTime petsPageCreationDate, PhotosList? photos)
     {
         var pet = new Pet(petId, petsName, specieDetails, gender, description,
                           color, healthInformation, locationAddress, weight, 
@@ -87,4 +87,10 @@ public class Pet : BaseEntity<PetId>, ISoftDeletable
         if (_isDeleted)
             _isDeleted = false;
     }
+
+    public void UpdatePhotos(PhotosList photosList)
+    {
+        PhotosList = photosList;
+    }
+
 }

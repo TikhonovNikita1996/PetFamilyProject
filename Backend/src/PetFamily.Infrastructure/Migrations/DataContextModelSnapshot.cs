@@ -323,7 +323,7 @@ namespace PetFamily.Infrastructure.Migrations
                             b1.Navigation("DonationInfos");
                         });
 
-                    b.OwnsOne("PetFamily.Domain.Entities.Pet.ValueObjects.Photos", "Photos", b1 =>
+                    b.OwnsOne("PetFamily.Domain.Entities.Pet.ValueObjects.PhotosList", "PhotosList", b1 =>
                         {
                             b1.Property<Guid>("PetId")
                                 .HasColumnType("uuid")
@@ -333,7 +333,7 @@ namespace PetFamily.Infrastructure.Migrations
 
                             b1.ToTable("pets");
 
-                            b1.ToJson("Photos");
+                            b1.ToJson("PhotosList");
 
                             b1.WithOwner()
                                 .HasForeignKey("PetId")
@@ -341,7 +341,7 @@ namespace PetFamily.Infrastructure.Migrations
 
                             b1.OwnsMany("PetFamily.Domain.Entities.Pet.ValueObjects.PetPhoto", "PetPhotos", b2 =>
                                 {
-                                    b2.Property<Guid>("PhotosPetId")
+                                    b2.Property<Guid>("PhotosListPetId")
                                         .HasColumnType("uuid");
 
                                     b2.Property<int>("Id")
@@ -355,14 +355,14 @@ namespace PetFamily.Infrastructure.Migrations
                                     b2.Property<bool>("IsMain")
                                         .HasColumnType("boolean");
 
-                                    b2.HasKey("PhotosPetId", "Id")
+                                    b2.HasKey("PhotosListPetId", "Id")
                                         .HasName("pk_pets");
 
                                     b2.ToTable("pets");
 
                                     b2.WithOwner()
-                                        .HasForeignKey("PhotosPetId")
-                                        .HasConstraintName("fk_pets_pets_photos_pet_id");
+                                        .HasForeignKey("PhotosListPetId")
+                                        .HasConstraintName("fk_pets_pets_photos_list_pet_id");
                                 });
 
                             b1.Navigation("PetPhotos");
@@ -421,7 +421,7 @@ namespace PetFamily.Infrastructure.Migrations
                     b.Navigation("LocationAddress")
                         .IsRequired();
 
-                    b.Navigation("Photos")
+                    b.Navigation("PhotosList")
                         .IsRequired();
                 });
 

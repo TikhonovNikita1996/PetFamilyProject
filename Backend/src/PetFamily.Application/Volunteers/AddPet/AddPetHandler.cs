@@ -39,8 +39,6 @@ public class AddPetHandler
     public async Task<Result<Guid, CustomErrorsList>> Handle(AddPetCommand command,
         CancellationToken cancellationToken = default)
     {
-        var transaction = await _unitOfWork.BeginTransaction(cancellationToken);
-        
         var validationResult = await _validator.ValidateAsync(command, cancellationToken);
         if (validationResult.IsValid == false)
             return validationResult.ToErrorList();
@@ -84,18 +82,15 @@ public class AddPetHandler
         var specieId = specieResult.Value.Id;
         var breedId = specieResult.Value.Breeds.First(x => x.Name == command.BreedName).Id;
         var specieDetails = SpecieDetails.Create(specieId, breedId).Value;
-
-
+        
         var newPet = Pet.Create(petId, petsName, specieDetails,
             gender, description, color, healthInformation,
             locationAddress, weight, height, ownersPhoneNumber,
-            isSterilized, dateOfBirth, isVaccinated, helpStatus, resultDonationInfoList, pageCreationDate, new Photos()).Value;
+            isSterilized, dateOfBirth, isVaccinated, helpStatus, resultDonationInfoList, pageCreationDate, new PhotosList()).Value;
         
         volunteerResult.Value.AddPet(newPet);
         
         await _unitOfWork.SaveChanges(cancellationToken);
-        
-        transaction.Commit();
         
         _logger.LogInformation("Pet added with id: {PetId}.", newPet.Id.Value);
         return newPet.Id.Value;

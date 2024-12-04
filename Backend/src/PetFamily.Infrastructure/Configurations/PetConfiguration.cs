@@ -117,7 +117,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 
         });
 
-        builder.OwnsOne(p => p.Photos, ppb =>
+        builder.OwnsOne(p => p.PhotosList, ppb =>
         {
             ppb.ToJson();
 

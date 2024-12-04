@@ -17,8 +17,7 @@ public record PetPhoto
     }
     public string FilePath { get; }
     public bool IsMain { get; }
-    public static Result<PetPhoto, CustomError> Create(Guid id,
-        string path,
+    public static Result<PetPhoto, CustomError> Create(string path,
         bool isMain)
     {
         if (string.IsNullOrWhiteSpace(path))

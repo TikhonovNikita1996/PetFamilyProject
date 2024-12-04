@@ -19,7 +19,7 @@ public class DeleteFileHandler
         CancellationToken cancellationToken)
     {
         var fileMetaData = new FileMetaData(request.BucketName, request.ObjectName);
-        var result = await _fileProvider.DeleteFile(fileMetaData, cancellationToken);
+        var result = await _fileProvider.DeleteFileAsync(fileMetaData, cancellationToken);
 
         return result;
     }

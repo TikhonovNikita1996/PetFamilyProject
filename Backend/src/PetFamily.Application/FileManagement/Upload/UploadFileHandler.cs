@@ -18,12 +18,13 @@ public class UploadFileHandler
         UploadFileRequest request,
         CancellationToken cancellationToken = default)
     {
+        var filePath = FilePath.Create(request.FilePath).Value;
         var fileData = new FileData(
             request.FileStream,
             request.BucketName,
-            request.FilePath);
+            filePath);
         
-        var result = await _fileProvider.UploadFile(fileData, cancellationToken);
+        var result = await _fileProvider.UploadFileAsync(fileData, cancellationToken);
 
         return result;
     }

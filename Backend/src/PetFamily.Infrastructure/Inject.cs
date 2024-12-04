@@ -16,7 +16,6 @@ public static class Inject
         IConfiguration configuration)
     {
         services.AddScoped<DataContext>();
-        services.AddSingleton<SoftDeleteInterceptor>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IVolunteerRepository, VolunteerRepository> ();
         services.AddScoped<ISpeciesRepository, SpeciesRepository> ();
