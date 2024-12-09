@@ -10,7 +10,6 @@ using PetFamily.Domain.Entities.Pet;
 using PetFamily.Domain.Entities.Pet.ValueObjects;
 using PetFamily.Domain.Entities.Volunteer.ValueObjects;
 using PetFamily.Domain.Shared;
-using Description = PetFamily.Domain.Entities.Pet.ValueObjects.Description;
 
 namespace PetFamily.Application.Volunteers.AddPet;
 
@@ -53,7 +52,7 @@ public class AddPetHandler
         var petId = PetId.NewId();
         var petsName = PetsName.Create(command.Name.Name).Value;
         var gender  = Enum.Parse<GenderType>(command.Gender);
-        var description = Description.Create(command.Description.Value).Value;
+        var description = PetsDescription.Create(command.Description.Value).Value;
         var color = Color.Create(command.Color).Value;
         var healthInformation = HealthInformation.Create(command.HealthInformation.Value).Value;
         var height = command.Height;
@@ -86,7 +85,7 @@ public class AddPetHandler
         var newPet = Pet.Create(petId, petsName, specieDetails,
             gender, description, color, healthInformation,
             locationAddress, weight, height, ownersPhoneNumber,
-            isSterilized, dateOfBirth, isVaccinated, helpStatus, resultDonationInfoList, pageCreationDate, new PhotosList()).Value;
+            isSterilized, dateOfBirth, isVaccinated, helpStatus, resultDonationInfoList, pageCreationDate).Value;
         
         volunteerResult.Value.AddPet(newPet);
         

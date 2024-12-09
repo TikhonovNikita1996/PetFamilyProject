@@ -20,7 +20,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 id => id.Value,
                 value => PetId.Create(value));
         
-        builder.ComplexProperty(v => v.Description, pm =>
+        builder.ComplexProperty(v => v.PetsDescription, pm =>
         {
             pm.Property(p => p.Value)
                 .HasColumnName("description")
@@ -57,6 +57,13 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             pm.Property(p => p.Value)
                 .HasColumnName("pets_name")
                 .HasMaxLength(ProjectConstants.MAX_LOW_TEXT_LENGTH)
+                .IsRequired();
+        });
+        
+        builder.ComplexProperty(v => v.PositionNumber, pm =>
+        {
+            pm.Property(p => p.Value)
+                .HasColumnName("pets_position_number")
                 .IsRequired();
         });
         

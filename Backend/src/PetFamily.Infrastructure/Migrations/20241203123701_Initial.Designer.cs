@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PetFamily.Infrastructure;
@@ -12,9 +13,11 @@ using PetFamily.Infrastructure;
 namespace PetFamily.Infrastructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20241203123701_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -80,6 +83,17 @@ namespace PetFamily.Infrastructure.Migrations
                                 .HasColumnName("color");
                         });
 
+                    b.ComplexProperty<Dictionary<string, object>>("Description", "PetFamily.Domain.Entities.Pet.Pet.Description#Description", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(255)
+                                .HasColumnType("character varying(255)")
+                                .HasColumnName("description");
+                        });
+
                     b.ComplexProperty<Dictionary<string, object>>("HealthInformation", "PetFamily.Domain.Entities.Pet.Pet.HealthInformation#HealthInformation", b1 =>
                         {
                             b1.IsRequired();
@@ -102,17 +116,6 @@ namespace PetFamily.Infrastructure.Migrations
                                 .HasColumnName("owners_phone_number");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("PetsDescription", "PetFamily.Domain.Entities.Pet.Pet.PetsDescription#PetsDescription", b1 =>
-                        {
-                            b1.IsRequired();
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasMaxLength(255)
-                                .HasColumnType("character varying(255)")
-                                .HasColumnName("description");
-                        });
-
                     b.ComplexProperty<Dictionary<string, object>>("PetsName", "PetFamily.Domain.Entities.Pet.Pet.PetsName#PetsName", b1 =>
                         {
                             b1.IsRequired();
@@ -124,16 +127,7 @@ namespace PetFamily.Infrastructure.Migrations
                                 .HasColumnName("pets_name");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("PositionNumber", "PetFamily.Domain.Entities.Pet.Pet.PositionNumber#PositionNumber", b1 =>
-                        {
-                            b1.IsRequired();
-
-                            b1.Property<int>("Value")
-                                .HasColumnType("integer")
-                                .HasColumnName("pets_position_number");
-                        });
-
-                    b.ComplexProperty<Dictionary<string, object>>("SpecieDetails", "PetFamily.Domain.Entities.Pet.Pet.SpecieDetails#SpecieDetails", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("SpecieDetails", "PetFamily.Domain.Entities.Pet.Pet.SpecieDetails#SpicieDetails", b1 =>
                         {
                             b1.IsRequired();
 
@@ -332,7 +326,7 @@ namespace PetFamily.Infrastructure.Migrations
                             b1.Navigation("DonationInfos");
                         });
 
-                    b.OwnsOne("PetFamily.Domain.Entities.Pet.ValueObjects.PhotosList", "PhotosList", b1 =>
+                    b.OwnsOne("PetFamily.Domain.Entities.Pet.ValueObjects.Photos", "Photos", b1 =>
                         {
                             b1.Property<Guid>("PetId")
                                 .HasColumnType("uuid")
@@ -342,7 +336,7 @@ namespace PetFamily.Infrastructure.Migrations
 
                             b1.ToTable("pets");
 
-                            b1.ToJson("PhotosList");
+                            b1.ToJson("Photos");
 
                             b1.WithOwner()
                                 .HasForeignKey("PetId")
@@ -350,7 +344,7 @@ namespace PetFamily.Infrastructure.Migrations
 
                             b1.OwnsMany("PetFamily.Domain.Entities.Pet.ValueObjects.PetPhoto", "PetPhotos", b2 =>
                                 {
-                                    b2.Property<Guid>("PhotosListPetId")
+                                    b2.Property<Guid>("PhotosPetId")
                                         .HasColumnType("uuid");
 
                                     b2.Property<int>("Id")
@@ -364,14 +358,14 @@ namespace PetFamily.Infrastructure.Migrations
                                     b2.Property<bool>("IsMain")
                                         .HasColumnType("boolean");
 
-                                    b2.HasKey("PhotosListPetId", "Id")
+                                    b2.HasKey("PhotosPetId", "Id")
                                         .HasName("pk_pets");
 
                                     b2.ToTable("pets");
 
                                     b2.WithOwner()
-                                        .HasForeignKey("PhotosListPetId")
-                                        .HasConstraintName("fk_pets_pets_photos_list_pet_id");
+                                        .HasForeignKey("PhotosPetId")
+                                        .HasConstraintName("fk_pets_pets_photos_pet_id");
                                 });
 
                             b1.Navigation("PetPhotos");
@@ -430,7 +424,7 @@ namespace PetFamily.Infrastructure.Migrations
                     b.Navigation("LocationAddress")
                         .IsRequired();
 
-                    b.Navigation("PhotosList")
+                    b.Navigation("Photos")
                         .IsRequired();
                 });
 

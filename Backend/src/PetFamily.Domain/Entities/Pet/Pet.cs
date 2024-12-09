@@ -4,7 +4,6 @@ using PetFamily.Domain.Entities.Others;
 using PetFamily.Domain.Entities.Pet.ValueObjects;
 using PetFamily.Domain.Entities.Volunteer.ValueObjects;
 using PetFamily.Domain.Shared;
-using Description = PetFamily.Domain.Entities.Pet.ValueObjects.Description;
 
 namespace PetFamily.Domain.Entities.Pet;
 
@@ -13,7 +12,7 @@ public class Pet : BaseEntity<PetId>, ISoftDeletable
     private bool _isDeleted = false;
     // ef core
     public Pet(PetId id) : base(id) {}
-    public Pet(PetId petId, PetsName petsName, SpecieDetails specieDetails, GenderType gender, Description description,
+    private Pet(PetId petId, PetsName petsName, SpecieDetails specieDetails, GenderType gender, PetsDescription petsDescription,
         Color color, HealthInformation healthInformation, LocationAddress locationAddress,
         double weight, double height, OwnersPhoneNumber ownersPhoneNumber, bool isSterilized, DateTime dateOfBirth,
         bool isVaccinated, HelpStatusType currentStatus, DonationInfoList donateForHelpInfos,
@@ -22,7 +21,7 @@ public class Pet : BaseEntity<PetId>, ISoftDeletable
         PetsName = petsName;
         SpecieDetails = specieDetails;
         Gender = gender;
-        Description = description;
+        PetsDescription = petsDescription;
         Color = color;
         HealthInformation = healthInformation;
         LocationAddress = locationAddress;
@@ -41,7 +40,7 @@ public class Pet : BaseEntity<PetId>, ISoftDeletable
     public PetsName PetsName { get; private set; }
     public SpecieDetails SpecieDetails { get; private set; }
     public GenderType Gender { get; private set; }
-    public Description Description { get; private set; }
+    public PetsDescription PetsDescription { get; private set; }
     public Color Color { get; private set; }
     public HealthInformation HealthInformation { get; private set; } 
     public LocationAddress LocationAddress { get; private set; }
@@ -55,10 +54,12 @@ public class Pet : BaseEntity<PetId>, ISoftDeletable
     public DonationInfoList DonateForHelpInfos { get; private set; }
     public DateTime PetsPageCreationDate { get; private set; } 
     public PhotosList PhotosList { get; private set; }
+    
+    public PositionNumber PositionNumber { get; private set; }
 
-    public static Result<Pet,CustomError> Create(PetId petId, PetsName petsName, 
+    public static Result<Pet,CustomError> Create(PetId petId, PetsName petsName,
                                             SpecieDetails specieDetails, GenderType gender, 
-                                            Description description,
+                                            PetsDescription petsDescription,
                                             Color color, HealthInformation healthInformation, 
                                             LocationAddress locationAddress,
                                             double weight, double height, 
@@ -66,13 +67,20 @@ public class Pet : BaseEntity<PetId>, ISoftDeletable
                                             DateTime dateOfBirth,
                                             bool isVaccinated, HelpStatusType currentStatus, 
                                             DonationInfoList donateForHelpInfos,
-                                            DateTime petsPageCreationDate, PhotosList? photos)
+                                            DateTime petsPageCreationDate)
     {
-        var pet = new Pet(petId, petsName, specieDetails, gender, description,
+        
+        
+        var photos = new PhotosList();
+        
+        var pet = new Pet(petId, petsName,specieDetails, gender, petsDescription,
                           color, healthInformation, locationAddress, weight, 
                           height, ownersPhoneNumber, isSterilized, dateOfBirth, 
                           isVaccinated, currentStatus, donateForHelpInfos, 
                           petsPageCreationDate, photos);
+        
+        
+        
         return pet;
     }
 
@@ -92,5 +100,21 @@ public class Pet : BaseEntity<PetId>, ISoftDeletable
     {
         PhotosList = photosList;
     }
+        
+    public void SetPositionNumberToPet(PositionNumber positionNumber) =>
+        PositionNumber = positionNumber;
+    
+    public void MoveUp(int currentPetsListCount)
+    {
+        var newPosition = PositionNumber.Value + 1;
+        if (newPosition > currentPetsListCount) return;
+        PositionNumber = PositionNumber.Create(PositionNumber.Value + 1).Value;
+    }
 
+    public void MoveDown(int currentPetsListCount)
+    {
+        var newPosition = PositionNumber.Value - 1;
+        if (newPosition < 1) return;
+        PositionNumber = PositionNumber.Create(newPosition).Value;
+    }
 }

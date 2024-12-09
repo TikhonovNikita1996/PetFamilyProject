@@ -7,6 +7,7 @@ using PetFamily.Application.PetsSpecies.AddBreed;
 using PetFamily.Application.PetsSpecies.Create;
 using PetFamily.Application.Volunteers.AddPet;
 using PetFamily.Application.Volunteers.AddPhotosToPet;
+using PetFamily.Application.Volunteers.ChangePetsPosition;
 using PetFamily.Application.Volunteers.Create;
 using PetFamily.Application.Volunteers.Delete;
 using PetFamily.Application.Volunteers.Update.DonationInfo;
@@ -28,12 +29,12 @@ public static class Inject
         services.AddScoped<AddBreedHandler>();
         services.AddScoped<AddPetHandler>();
         services.AddScoped<AddPhotosToPetHandler>();
+        services.AddScoped<ChangePetsPositionHandler>();
         //Minio handlers
         services.AddScoped<UploadFileHandler>();
         services.AddScoped<DeleteFileHandler>();
         services.AddScoped<GetFileHandler>();
         //
-        
         services.AddValidatorsFromAssembly(typeof(Inject).Assembly);
         
         return services;

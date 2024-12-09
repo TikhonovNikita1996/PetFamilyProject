@@ -42,7 +42,7 @@ public class CreateVolunteerHandler
         if (existingVolunteer.IsSuccess)
             return existingVolunteer.Error.ToErrorList();
         
-        var volunterId = VolunteerId.NewVolonteerId();
+        var volunterId = VolunteerId.NewId();
         var fullName = FullName.Create(createVolunteerCommand.FullName.LastName, 
             createVolunteerCommand.FullName.Name, createVolunteerCommand.FullName.MiddleName).Value;
         
