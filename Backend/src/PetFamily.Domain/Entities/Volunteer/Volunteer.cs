@@ -1,8 +1,10 @@
 ﻿using CSharpFunctionalExtensions;
 using PetFamily.Domain.Entities.Ids;
 using PetFamily.Domain.Entities.Others;
+using PetFamily.Domain.Entities.Pet.ValueObjects;
 using PetFamily.Domain.Entities.Volunteer.ValueObjects;
 using PetFamily.Domain.Shared;
+using Description = PetFamily.Domain.Entities.Volunteer.ValueObjects.Description;
 
 namespace PetFamily.Domain.Entities.Volunteer;
 
@@ -89,6 +91,8 @@ public class Volunteer : BaseEntity<VolunteerId>, ISoftDeletable
     public void AddPet(Pet.Pet pet)
     {
         _pets.Add(pet);
+        var positionNumber = PositionNumber.Create(CurrentPets.Count).Value;
+        pet.SetPositionNumberToPet(positionNumber);
     }
     
     public Result<Pet.Pet, CustomError> GetPetById(Guid petId)
@@ -98,5 +102,39 @@ public class Volunteer : BaseEntity<VolunteerId>, ISoftDeletable
             return Errors.General.NotFound(petId);
 
         return pet;
+    }
+    
+    public Result UpdatePetsPositions()
+    {
+        if (_pets.Count < 2)
+            return Result.Success();
+
+        for (int i = 0; i < _pets.Count; i++)
+        {
+            var pet = _pets[i];
+
+            if (pet.PositionNumber.Value == i + 1)
+                continue;
+            
+            var positionNumberResult = PositionNumber.Create(i + 1);
+
+            if (positionNumberResult.IsFailure)
+                return Result.Failure("Failed to update pets position");
+
+            pet.SetPositionNumberToPet(positionNumberResult.Value);
+        }
+        return Result.Success();
+    }
+
+    public void ChangePetsPosition(Pet.Pet pet, int newPositionNumber)
+    {
+        var currentPetsPosition = _pets.IndexOf(pet);
+        if (newPositionNumber >= 0 
+            && newPositionNumber <= _pets.Count 
+            && currentPetsPosition != newPositionNumber - 1)
+        {
+            _pets.RemoveAt(currentPetsPosition);
+            _pets.Insert(newPositionNumber - 1, pet);
+        }
     }
 }

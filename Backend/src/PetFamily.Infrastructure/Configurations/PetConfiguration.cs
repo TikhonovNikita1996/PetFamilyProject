@@ -20,7 +20,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 id => id.Value,
                 value => PetId.Create(value));
         
-        builder.ComplexProperty(v => v.Description, pm =>
+        builder.ComplexProperty(v => v.PetsDescription, pm =>
         {
             pm.Property(p => p.Value)
                 .HasColumnName("description")

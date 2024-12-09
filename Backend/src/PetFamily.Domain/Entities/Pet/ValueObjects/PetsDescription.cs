@@ -2,19 +2,19 @@
 using PetFamily.Domain.Shared;
 
 namespace PetFamily.Domain.Entities.Pet.ValueObjects;
-public record Description
+public record PetsDescription
 {
-    private Description(string value)
+    private PetsDescription(string value)
     {
         Value = value;
     }
     public string Value { get; } = default!;
-    public static Result<Description, CustomError> Create(string description)
+    public static Result<PetsDescription, CustomError> Create(string description)
     {
         if (string.IsNullOrWhiteSpace(description))
             return Errors.General.ValueIsInvalid("Description");
         
-        var newDescription = new Description(description);
+        var newDescription = new PetsDescription(description);
 
         return newDescription;
     }
