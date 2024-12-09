@@ -8,6 +8,7 @@ using PetFamily.API.Response;
 using PetFamily.Application.Dtos;
 using PetFamily.Application.Volunteers.AddPet;
 using PetFamily.Application.Volunteers.AddPhotosToPet;
+using PetFamily.Application.Volunteers.ChangePetsPosition;
 using PetFamily.Application.Volunteers.Create;
 using PetFamily.Application.Volunteers.Delete;
 using PetFamily.Application.Volunteers.Update.DonationInfo;
@@ -129,6 +130,23 @@ public class VolunteersController : BaseApiController
         var fileDtos = fileProcessor.Process(files);
             
         var command = new AddPhotosToPetCommand(volunteerId, petId, fileDtos);
+            
+        var result = await handler.Handle(command, cancellationToken);
+        if(result.IsFailure)
+            return BadRequest(result.Error); 
+            
+        return Ok(result.Value);
+    }
+    
+    [HttpPut("{volunteerId:guid}/pet/{petId:guid}/pets-position-number")]
+    public async Task<ActionResult> ChangePetsPosition(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromBody] ChangePetsPositionRequest request,
+        [FromServices] ChangePetsPositionHandler handler,
+        CancellationToken cancellationToken)
+    {
+        var command = new ChangePetsPositionCommand(volunteerId, petId, request.newPosition);
             
         var result = await handler.Handle(command, cancellationToken);
         if(result.IsFailure)

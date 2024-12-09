@@ -120,7 +120,6 @@ public class VolunteerTests
         volunteer.AddPet(pet3);
         volunteer.AddPet(pet4);
         volunteer.ChangePetsPosition(pet1, 3);
-        volunteer.UpdatePetsPositions();
         
         //Assert
         Assert.Equal(3, pet1.PositionNumber.Value);
@@ -144,12 +143,11 @@ public class VolunteerTests
         volunteer.AddPet(pet2);
         volunteer.AddPet(pet3);
         volunteer.AddPet(pet4);
-        volunteer.ChangePetsPosition(pet1, 1);
-        volunteer.UpdatePetsPositions();
+        volunteer.ChangePetsPosition(pet1, 2);
         
         //Assert
-        Assert.Equal(1, pet1.PositionNumber.Value);
-        Assert.Equal(2, pet2.PositionNumber.Value);
+        Assert.Equal(2, pet1.PositionNumber.Value);
+        Assert.Equal(1, pet2.PositionNumber.Value);
         Assert.Equal(3, pet3.PositionNumber.Value);
         Assert.Equal(4, pet4.PositionNumber.Value);
     }
@@ -170,7 +168,6 @@ public class VolunteerTests
         volunteer.AddPet(pet3);
         volunteer.AddPet(pet4);
         volunteer.ChangePetsPosition(pet1, 7);
-        volunteer.UpdatePetsPositions();
         
         //Assert
         Assert.Equal(1, pet1.PositionNumber.Value);

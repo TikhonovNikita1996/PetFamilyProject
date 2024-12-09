@@ -104,14 +104,14 @@ public class Volunteer : BaseEntity<VolunteerId>, ISoftDeletable
         return pet;
     }
     
-    public Result UpdatePetsPositions()
+    private Result UpdatePetsPositions(List<Pet.Pet> orderedList)
     {
         if (_pets.Count < 2)
             return Result.Success();
-
+        
         for (int i = 0; i < _pets.Count; i++)
         {
-            var pet = _pets[i];
+            var pet = orderedList[i];
 
             if (pet.PositionNumber.Value == i + 1)
                 continue;
@@ -123,18 +123,24 @@ public class Volunteer : BaseEntity<VolunteerId>, ISoftDeletable
 
             pet.SetPositionNumberToPet(positionNumberResult.Value);
         }
+        
         return Result.Success();
     }
 
     public void ChangePetsPosition(Pet.Pet pet, int newPositionNumber)
     {
-        var currentPetsPosition = _pets.IndexOf(pet);
+        var orderedList = _pets.OrderBy(x=>x.PositionNumber.Value).ToList();
+        
+        var currentPetsPosition = orderedList.IndexOf(pet);
+        
         if (newPositionNumber >= 0 
             && newPositionNumber <= _pets.Count 
             && currentPetsPosition != newPositionNumber - 1)
         {
-            _pets.RemoveAt(currentPetsPosition);
-            _pets.Insert(newPositionNumber - 1, pet);
+            orderedList.RemoveAt(currentPetsPosition);
+            orderedList.Insert(newPositionNumber - 1, pet);
         }
+
+        UpdatePetsPositions(orderedList);
     }
 }

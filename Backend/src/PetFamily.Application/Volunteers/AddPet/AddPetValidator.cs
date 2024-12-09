@@ -18,7 +18,5 @@ public class AddPetValidator : AbstractValidator<AddPetCommand>
         RuleFor(c => c.Color).NotNull().NotEmpty();
         RuleFor(c => c.Weight).NotNull().Must(weight => weight > 0).WithError(Errors.General.ValueIsInvalid("Weight"));
         RuleFor(c => c.Height).NotNull().Must(height => height > 0).WithError(Errors.General.ValueIsInvalid("Height"));
-        
-        
     }
 }
