@@ -56,7 +56,7 @@ public class FileController : BaseApiController
             return result.Error.ToResponse();
         }
 
-        return Ok(result.Value);
+        return Ok(result);
     }
     
     [HttpGet("{fileName:guid}")]

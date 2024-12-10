@@ -2,8 +2,13 @@
 using Microsoft.Extensions.DependencyInjection;
 using Minio;
 using PetFamily.Application.DataBase;
+using PetFamily.Application.FileProvider;
 using PetFamily.Application.Interfaces;
+using PetFamily.Application.Messaging;
+using PetFamily.Infrastructure.BackgroundServices;
+using PetFamily.Infrastructure.Files;
 using PetFamily.Infrastructure.Interceptors;
+using PetFamily.Infrastructure.MessageQueues;
 using PetFamily.Infrastructure.Options;
 using PetFamily.Infrastructure.Providers;
 using PetFamily.Infrastructure.Repositories;
@@ -21,6 +26,11 @@ public static class Inject
         services.AddScoped<ISpeciesRepository, SpeciesRepository> ();
         services.AddMinioCustom(configuration);
         services.AddScoped<IFileProvider, MinioProvider>();
+
+        services.AddHostedService<FilesCleanerBackgroundService>();
+        services.AddScoped<IFileCleanerService, FileCleanerService>();
+
+        services.AddSingleton<IMessageQueue<IEnumerable<FileMetaData>>,InMemoryMessageQueue<IEnumerable<FileMetaData>>>();
         return services;
     }
 

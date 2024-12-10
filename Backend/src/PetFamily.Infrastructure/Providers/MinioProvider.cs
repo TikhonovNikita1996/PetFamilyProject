@@ -1,4 +1,5 @@
-﻿using CSharpFunctionalExtensions;
+﻿using System.Runtime.InteropServices.JavaScript;
+using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
 using Minio;
 using Minio.DataModel.Args;
@@ -29,10 +30,10 @@ namespace PetFamily.Infrastructure.Providers
                 await IfBucketsNotExistCreateBucketAsync([fileData], cancellationToken);
             
                 var putObjectArgs = new PutObjectArgs()
-                    .WithBucket(fileData.BucketName)
+                    .WithBucket(fileData.FileMetaData.BucketName)
                     .WithStreamData(fileData.FileStream)
                     .WithObjectSize(fileData.FileStream.Length)
-                    .WithObject(fileData.FilePath.Path);
+                    .WithObject(fileData.FileMetaData.FilePath.Path);
 
                 var result = await _minioClient.PutObjectAsync(putObjectArgs, cancellationToken);
                 return result.ObjectName;
@@ -76,7 +77,7 @@ namespace PetFamily.Infrastructure.Providers
             }
         }
         
-        public async Task<Result<string, CustomError>> DeleteFileAsync(
+        public async Task<UnitResult<CustomError>> DeleteFileAsync(
             FileMetaData fileMetaData,
             CancellationToken cancellationToken = default)
         {
@@ -84,19 +85,26 @@ namespace PetFamily.Infrastructure.Providers
             {
                 var bucketExist = await IsBucketExistAsync(fileMetaData.BucketName, cancellationToken);
                 if (bucketExist == false)
-                {
                     return CustomError.Failure("file.delete", $"Bucket {fileMetaData.BucketName} not found");
-                }
 
+                var statArgs = new StatObjectArgs()
+                    .WithBucket(fileMetaData.BucketName)
+                    .WithObject(fileMetaData.FilePath.Path);
+
+                var objectStat = await _minioClient.StatObjectAsync(statArgs, cancellationToken);
+
+                if (objectStat == null)
+                    return Result.Success<CustomError>();
+                
                 var removeObjectArgs = new RemoveObjectArgs()
                     .WithBucket(fileMetaData.BucketName)
-                    .WithObject(fileMetaData.ObjectName);
+                    .WithObject(fileMetaData.FilePath.Path);
 
                 await _minioClient.RemoveObjectAsync(removeObjectArgs, cancellationToken);
 
-                _logger.LogInformation("Deleted file {objectName} from minio", fileMetaData.ObjectName);
+                _logger.LogInformation("Deleted file {objectName} from minio", fileMetaData.FilePath.Path);
 
-                return fileMetaData.ObjectName;
+                return Result.Success<CustomError>();
             }
             catch (Exception ex)
             {
@@ -114,17 +122,17 @@ namespace PetFamily.Infrastructure.Providers
             {
                 var statObjectArgs = new StatObjectArgs()
                     .WithBucket(fileMetaData.BucketName)
-                    .WithObject(fileMetaData.ObjectName);
+                    .WithObject(fileMetaData.FilePath.Path);
                 
                 var statObject = await _minioClient.StatObjectAsync(statObjectArgs, cancellationToken);
                 if (statObject.Size == 0)
                 {
-                    return CustomError.Failure("file.get", $"File {fileMetaData.ObjectName} not found");
+                    return CustomError.Failure("file.get", $"File {fileMetaData.FilePath} not found");
                 }
             
                 var presignedObjectArgs = new PresignedGetObjectArgs()
                     .WithBucket(fileMetaData.BucketName)
-                    .WithObject(fileMetaData.ObjectName)
+                    .WithObject(fileMetaData.FilePath.Path)
                     .WithExpiry(EXPIRY);
 
                 return await _minioClient.PresignedGetObjectAsync(presignedObjectArgs);
@@ -140,7 +148,7 @@ namespace PetFamily.Infrastructure.Providers
             IEnumerable<FileData> filesData,
             CancellationToken cancellationToken)
         {
-            HashSet<string> bucketNames = [..filesData.Select(file => file.BucketName)];
+            HashSet<string> bucketNames = [..filesData.Select(file => file.FileMetaData.BucketName)];
 
             foreach (var bucketName in bucketNames)
             {
@@ -168,24 +176,24 @@ namespace PetFamily.Infrastructure.Providers
             await semaphoreSlim.WaitAsync(cancellationToken);
 
             var putObjectArgs = new PutObjectArgs()
-                .WithBucket(fileData.BucketName)
+                .WithBucket(fileData.FileMetaData.BucketName)
                 .WithStreamData(fileData.FileStream)
                 .WithObjectSize(fileData.FileStream.Length)
-                .WithObject(fileData.FilePath.Path);
+                .WithObject(fileData.FileMetaData.FilePath.Path);
 
             try
             {
                 await _minioClient
                     .PutObjectAsync(putObjectArgs, cancellationToken);
 
-                return fileData.FilePath;
+                return fileData.FileMetaData.FilePath;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex,
                     "Fail to upload file in minio with path {path} in bucket {bucket}",
-                    fileData.FilePath.Path,
-                    fileData.BucketName);
+                    fileData.FileMetaData.FilePath.Path,
+                    fileData.FileMetaData.BucketName);
 
                 return CustomError.Failure("file.upload", "Fail to upload file in minio");
             }

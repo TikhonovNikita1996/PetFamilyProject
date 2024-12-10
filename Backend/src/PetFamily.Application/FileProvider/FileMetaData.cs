@@ -1,3 +1,5 @@
-﻿namespace PetFamily.Application.FileProvider;
+﻿using PetFamily.Domain.Shared;
 
-public record FileMetaData(string BucketName, string ObjectName);
+namespace PetFamily.Application.FileProvider;
+
+public record FileMetaData(string BucketName, FilePath FilePath);
