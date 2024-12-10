@@ -14,11 +14,11 @@ public class DeleteFileHandler
         _fileProvider = fileProvider;
     }
 
-    public async Task<Result<string, CustomError>> Handle(
+    public async Task<UnitResult<CustomError>> Handle(
         DeleteFileRequest request, 
         CancellationToken cancellationToken)
     {
-        var fileMetaData = new FileMetaData(request.BucketName, request.ObjectName);
+        var fileMetaData = new FileMetaData(request.BucketName, FilePath.Create(request.ObjectName).Value);
         var result = await _fileProvider.DeleteFileAsync(fileMetaData, cancellationToken);
 
         return result;
