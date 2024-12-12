@@ -1,6 +1,7 @@
-﻿using PetFamily.Application.Dtos;
+﻿using PetFamily.Application.Abstractions;
+using PetFamily.Application.Dtos;
 
 namespace PetFamily.Application.Volunteers.Update.DonationInfo;
 
 public record UpdateDonationInfoCommand(Guid VolonteerId,
-    UpdateDonationInfoDto UpdateDonationInfoDto);
+    UpdateDonationInfoDto UpdateDonationInfoDto) : ICommand;

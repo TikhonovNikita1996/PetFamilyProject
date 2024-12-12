@@ -1,3 +1,5 @@
-﻿namespace PetFamily.Application.Volunteers.Delete;
+﻿using PetFamily.Application.Abstractions;
 
-public record DeleteVolunteerCommand(Guid VolunteerId);
+namespace PetFamily.Application.Volunteers.Delete;
+
+public record DeleteVolunteerCommand(Guid VolunteerId) : ICommand;

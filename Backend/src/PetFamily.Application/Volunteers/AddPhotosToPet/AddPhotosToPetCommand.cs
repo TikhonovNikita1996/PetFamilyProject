@@ -1,8 +1,9 @@
-﻿using PetFamily.Application.Dtos;
+﻿using PetFamily.Application.Abstractions;
+using PetFamily.Application.Dtos;
 
 namespace PetFamily.Application.Volunteers.AddPhotosToPet;
 
 public record AddPhotosToPetCommand(
     Guid VolunteerId,
     Guid PetId,
-    IEnumerable<CreateFileDto> Files);
+    IEnumerable<CreateFileDto> Files) : ICommand;

@@ -1,6 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
+using PetFamily.Application.Abstractions;
 using PetFamily.Application.DataBase;
 using PetFamily.Application.Extensions;
 using PetFamily.Application.Interfaces;
@@ -8,7 +9,7 @@ using PetFamily.Domain.Shared;
 
 namespace PetFamily.Application.Volunteers.ChangePetsPosition;
 
-public class ChangePetsPositionHandler
+public class ChangePetsPositionHandler : ICommandHandler<Guid,ChangePetsPositionCommand>
 {
     private readonly IVolunteerRepository _volunteerRepository;
     private readonly ILogger<ChangePetsPositionHandler> _logger;
