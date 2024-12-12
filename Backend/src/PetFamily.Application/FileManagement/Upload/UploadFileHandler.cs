@@ -21,8 +21,7 @@ public class UploadFileHandler
         var filePath = FilePath.Create(request.FilePath).Value;
         var fileData = new FileData(
             request.FileStream,
-            request.BucketName,
-            filePath);
+            new FileMetaData(request.BucketName, FilePath.Create(request.FilePath).Value));
         
         var result = await _fileProvider.UploadFileAsync(fileData, cancellationToken);
 

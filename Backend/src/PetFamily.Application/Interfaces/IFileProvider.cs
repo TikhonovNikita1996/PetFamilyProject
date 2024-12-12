@@ -14,7 +14,7 @@ public interface IFileProvider
         FileData fileData,
         CancellationToken cancellationToken = default);
     
-    Task<Result<string, CustomError>> DeleteFileAsync(FileMetaData fileMetaData,
+    Task<UnitResult<CustomError>> DeleteFileAsync(FileMetaData fileMetaData,
         CancellationToken cancellationToken = default);
     
     Task<Result<string, CustomError>> GetFileAsync(FileMetaData fileMetaData,

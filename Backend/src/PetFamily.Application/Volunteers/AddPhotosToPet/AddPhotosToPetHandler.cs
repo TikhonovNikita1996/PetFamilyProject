@@ -5,6 +5,7 @@ using PetFamily.Application.DataBase;
 using PetFamily.Application.Extensions;
 using PetFamily.Application.FileProvider;
 using PetFamily.Application.Interfaces;
+using PetFamily.Application.Messaging;
 using PetFamily.Domain.Entities.Pet.ValueObjects;
 using PetFamily.Domain.Shared;
 
@@ -17,6 +18,7 @@ public class AddPhotosToPetHandler
     private readonly IUnitOfWork _unitOfWork;
     private readonly ISpeciesRepository _speciesRepository;
     private readonly IValidator<AddPhotosToPetCommand> _validator;
+    private readonly IMessageQueue<IEnumerable<FileMetaData>> _messageQueue;
     private readonly IFileProvider _fileProvider;
     private const string BUCKET_NAME = "photos";
 
@@ -26,6 +28,7 @@ public class AddPhotosToPetHandler
         IUnitOfWork unitOfWork,
         ISpeciesRepository speciesRepository,
         IValidator<AddPhotosToPetCommand> validator, 
+        IMessageQueue<IEnumerable<FileMetaData>> messageQueue,
         IFileProvider fileProvider)
     {
         _logger = logger;
@@ -33,6 +36,7 @@ public class AddPhotosToPetHandler
         _unitOfWork = unitOfWork;
         _speciesRepository = speciesRepository;
         _validator = validator;
+        _messageQueue = messageQueue;
         _fileProvider = fileProvider;
     }
 
@@ -61,15 +65,19 @@ public class AddPhotosToPetHandler
             if (filePath.IsFailure)
                 return filePath.Error.ToErrorList();
 
-            var fileContent = new FileData(file.Stream,BUCKET_NAME ,filePath.Value);
+            var fileContent = new FileData(file.Stream,new FileMetaData(BUCKET_NAME,
+                FilePath.Create(file.FileName).Value));
 
             filesData.Add(fileContent);
         }
         
         var filePathsResult = await _fileProvider.UploadFilesAsync(filesData, cancellationToken);
         if (filePathsResult.IsFailure)
+        {
+            await _messageQueue.WriteAsync(filesData.Select(f => f.FileMetaData),cancellationToken);
             return filePathsResult.Error.ToErrorList();
-
+        }
+        
         var petPhotos = filePathsResult.Value
             .Select(f => PetPhoto.Create(f.Path, false).Value)
             .ToList();
