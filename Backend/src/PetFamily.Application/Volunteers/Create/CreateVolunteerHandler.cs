@@ -39,9 +39,9 @@ public class CreateVolunteerHandler : ICommandHandler<Guid,CreateVolunteerComman
         
         var email = Email.Create(createVolunteerCommand.Email.Value).Value;
         
-        var existingVolunteer = await _volunteerRepository.GetByEmail(email);
-        if (existingVolunteer.IsSuccess)
-            return existingVolunteer.Error.ToErrorList();
+        // var existingVolunteer = await _volunteerRepository.GetByEmail(email);
+        // if (existingVolunteer.IsSuccess)
+        //     return existingVolunteer.Error.ToErrorList();
         
         var volunterId = VolunteerId.NewId();
         var fullName = FullName.Create(createVolunteerCommand.FullName.LastName, 

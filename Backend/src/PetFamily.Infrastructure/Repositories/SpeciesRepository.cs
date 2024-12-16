@@ -4,10 +4,11 @@ using PetFamily.Application.Interfaces;
 using PetFamily.Domain.Entities.Ids;
 using PetFamily.Domain.Entities.Pet.ValueObjects;
 using PetFamily.Domain.Shared;
+using PetFamily.Infrastructure.DataContexts;
 
 namespace PetFamily.Infrastructure.Repositories;
 
-public class SpeciesRepository(DataContext context) : ISpeciesRepository
+public class SpeciesRepository(WriteDbContext context) : ISpeciesRepository
 {
     public async Task<Result<Guid, CustomError>> Add(Specie specie, CancellationToken cancellationToken = default)
     {

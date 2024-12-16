@@ -1,12 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PetFamily.Domain;
-using PetFamily.Domain.Entities;
 using PetFamily.Domain.Entities.Ids;
 using PetFamily.Domain.Entities.Volunteer;
 using PetFamily.Domain.Shared;
 
-namespace PetFamily.Infrastructure.Configurations;
+namespace PetFamily.Infrastructure.Configurations.Write;
 
 public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 {
@@ -23,6 +21,11 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         builder.HasMany(v => v.CurrentPets)
             .WithOne()
             .HasForeignKey("volunteer_id");
+        
+        builder.Property(v=> v.Gender)
+            .HasConversion<string>()
+            .HasColumnName("gender")
+            .IsRequired();
         
         builder.OwnsOne(v => v.SocialMediaDetails, sb =>
         {
@@ -56,15 +59,18 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         {
             fn.Property(n => n.Name)
                 .IsRequired()
-                .HasMaxLength(ProjectConstants.MAX_LOW_TEXT_LENGTH);
+                .HasMaxLength(ProjectConstants.MAX_LOW_TEXT_LENGTH)
+                .HasColumnName("name");
             
             fn.Property(n => n.LastName)
                 .IsRequired()
-                .HasMaxLength(ProjectConstants.MAX_LOW_TEXT_LENGTH);
+                .HasMaxLength(ProjectConstants.MAX_LOW_TEXT_LENGTH)
+                .HasColumnName("last_name");
             
             fn.Property(n => n.MiddleName)
                 .IsRequired()
-                .HasMaxLength(ProjectConstants.MAX_LOW_TEXT_LENGTH);
+                .HasMaxLength(ProjectConstants.MAX_LOW_TEXT_LENGTH)
+                .HasColumnName("middle_name");
         });
         
         builder.ComplexProperty(v => v.Email, pm =>
@@ -87,6 +93,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
             pm.Property(p => p.Value)
                 .HasColumnName("description")
                 .HasMaxLength(ProjectConstants.MAX_HIGHT_TEXT_LENGTH)
+                .HasColumnName("description")
                 .IsRequired();
         });
         
@@ -94,6 +101,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         {
             pm.Property(p => p.Value)
                 .HasColumnName("workingExperience")
+                .HasColumnName("working_experience")
                 .IsRequired();
         });
         
