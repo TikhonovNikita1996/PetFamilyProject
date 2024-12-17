@@ -50,7 +50,7 @@ public class VolunteerRepository : IVolunteerRepository
             .FirstOrDefaultAsync(v =>v.Id == volunteerId, cancellationToken);
 
         if (volunteer is null)
-            return Errors.General.NotFound();
+            return Errors.General.NotFound("");
 
         return volunteer;
     }
@@ -62,7 +62,7 @@ public class VolunteerRepository : IVolunteerRepository
             .Include(x => x.CurrentPets)
             .FirstOrDefaultAsync(v => v.Fullname == fullname, cancellationToken);
         if (volunteer is null)
-            return Errors.General.NotFound();
+            return Errors.General.NotFound("");
         return volunteer;
     }
 
@@ -72,7 +72,7 @@ public class VolunteerRepository : IVolunteerRepository
         var volunteer = await _dbContext.Volunteers
             .Where(x => x.Email == email).FirstOrDefaultAsync(cancellationToken);
         if (volunteer is null)
-            return Errors.General.NotFound();
+            return Errors.General.NotFound("");
         return volunteer;
     }
 }

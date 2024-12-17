@@ -176,7 +176,7 @@ public class VolunteersController : BaseApiController
         var result = await handler.Handle(query, cancellationToken);
         
         if(result is null)
-            return BadRequest(Errors.General.NotFound());
+            return BadRequest(Errors.General.NotFound(""));
         return Ok(result); 
     }
     

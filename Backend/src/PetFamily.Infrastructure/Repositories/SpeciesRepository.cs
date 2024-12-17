@@ -52,7 +52,7 @@ public class SpeciesRepository(WriteDbContext context) : ISpeciesRepository
             .Include(s => s.Breeds)
             .FirstOrDefaultAsync(s => s.Name == name, cancellationToken);
         if (species is null)
-            return Errors.General.NotFound();
+            return Errors.General.NotFound("");
         return species;
     }
 }
