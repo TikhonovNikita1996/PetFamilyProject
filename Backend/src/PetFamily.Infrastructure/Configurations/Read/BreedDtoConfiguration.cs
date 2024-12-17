@@ -11,7 +11,8 @@ public class BreedDtoConfiguration : IEntityTypeConfiguration<BreedDto>
         builder.ToTable("breed");
         builder.HasKey(v => v.BreedId);
 
-        builder.Property(v => v.BreedId);
+        builder.Property(v => v.BreedId)
+            .HasColumnName("breed_id");
 
     }
 }

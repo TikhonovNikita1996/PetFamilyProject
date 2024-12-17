@@ -8,6 +8,8 @@ using PetFamily.Application.PetsSpecies.AddBreed;
 using PetFamily.Application.PetsSpecies.Create;
 using PetFamily.Application.PetsSpecies.DeleteBreed;
 using PetFamily.Application.PetsSpecies.DeleteSpecie;
+using PetFamily.Application.Queries.GetAllSpecies;
+using PetFamily.Application.Queries.GetBreedsBySpecieId;
 
 namespace PetFamily.API.Controllers;
 
@@ -74,5 +76,30 @@ public class SpeciesController : BaseApiController
             return BadRequest(result.Error);
         
         return Ok(result.Value); 
+    }
+    
+    [HttpGet]
+    public async Task<ActionResult> GetAllSpecies(
+        [FromServices] GetAllSpeciesHandler handler,
+        [FromQuery] GetAllSpeciesRequest request, 
+        CancellationToken cancellationToken)
+    {
+        var query = request.ToQuery();
+        var result = await handler.Handle(query, cancellationToken);
+        
+        return Ok(result); 
+    }
+    
+    [HttpGet("{specieId:guid}/breeds-by-specieId")]
+    public async Task<ActionResult> GetBreedsBySpecieId(
+        [FromRoute] Guid specieId,
+        [FromServices] GetBreedsBySpecieIdHandler handler,
+        [FromQuery] GetBreedsBySpecieIdRequest request, 
+        CancellationToken cancellationToken)
+    {
+        var query = new GetBreedsBySpecieIdQuery(specieId, request.Page, request.PageSize);
+        var result = await handler.Handle(query, cancellationToken);
+        
+        return Ok(result); 
     }
 }

@@ -11,7 +11,7 @@ public class SpecieDtoConfiguration : IEntityTypeConfiguration<SpecieDto>
         builder.ToTable("species");
         builder.HasKey(v => v.SpecieId);
 
-        builder.Property(v => v.SpecieId);
-
+        builder.Property(v => v.SpecieId)
+            .HasColumnName("specie_id");
     }
 }

@@ -3,24 +3,28 @@ using PetFamily.Application.DataBase;
 using PetFamily.Application.Dtos;
 using PetFamily.Application.Extensions;
 using PetFamily.Application.Models;
+using PetFamily.Application.Queries.GetAllSpecies;
 
-namespace PetFamily.Application.Queries.GetAllVolunteers;
+namespace PetFamily.Application.Queries.GetBreedsBySpecieId;
 
-public class GetAllVolunteersHandler : IQueryHandler<PagedList<VolunteerDto>, GetAllVolunteersQuery>
+public class GetBreedsBySpecieIdHandler : IQueryHandler<PagedList<BreedDto>, GetBreedsBySpecieIdQuery>
 {
     private readonly IReadDbContext _readDbContext;
 
-    public GetAllVolunteersHandler(
+    public GetBreedsBySpecieIdHandler(
         IReadDbContext readDbContext)
     {
         _readDbContext = readDbContext;
     }
 
-    public async Task<PagedList<VolunteerDto>> Handle(
-        GetAllVolunteersQuery query,
+    public async Task<PagedList<BreedDto>> Handle(
+        GetBreedsBySpecieIdQuery query,
         CancellationToken cancellationToken)
     {
-        var volunteersQuery = _readDbContext.Volunteers.AsQueryable();
+        var volunteersQuery = _readDbContext.Breeds.AsQueryable();
+        
+        volunteersQuery = volunteersQuery.WhereIf(
+            !string.IsNullOrWhiteSpace(query.SpecieId.ToString()), x => x.SpecieId == query.SpecieId);
         
         var pagedList = await volunteersQuery.ToPagedList(
             query.Page,

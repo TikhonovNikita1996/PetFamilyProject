@@ -1,5 +1,5 @@
 ﻿using PetFamily.Application.Dtos;
-using PetFamily.Application.Queries.SpecieBreeds;
+using PetFamily.Application.Queries.GetSpecieById;
 
 namespace PetFamily.API.Contracts.Specie;
 

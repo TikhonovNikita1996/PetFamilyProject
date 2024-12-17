@@ -16,7 +16,8 @@ public class SpecieConfiguration: IEntityTypeConfiguration<Specie>
         builder.Property(s => s.Id)
             .HasConversion(
                 id => id.Value,
-                value => SpecieId.Create(value));
+                value => SpecieId.Create(value))
+            .HasColumnName("specie_id");
 
         builder.Property(s => s.Name)
             .IsRequired()
