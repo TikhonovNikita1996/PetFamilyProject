@@ -1,11 +1,9 @@
-﻿using System.Runtime.InteropServices.JavaScript;
-using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PetFamily.API.Contracts;
-using PetFamily.API.Extensions;
 using PetFamily.API.Processors;
-using PetFamily.API.Response;
 using PetFamily.Application.Dtos;
+using PetFamily.Application.Queries.GetAllVolunteers;
+using PetFamily.Application.Queries.GetVolunteerById;
 using PetFamily.Application.Volunteers.AddPet;
 using PetFamily.Application.Volunteers.AddPhotosToPet;
 using PetFamily.Application.Volunteers.ChangePetsPosition;
@@ -15,7 +13,6 @@ using PetFamily.Application.Volunteers.Update.DonationInfo;
 using PetFamily.Application.Volunteers.Update.MainInfo;
 using PetFamily.Application.Volunteers.Update.SocialMediaDetails;
 using PetFamily.Domain.Shared;
-using UpdateMainInfoRequest = PetFamily.API.Contracts.UpdateMainInfoRequest;
 
 namespace PetFamily.API.Controllers;
 
@@ -154,4 +151,31 @@ public class VolunteersController : BaseApiController
             
         return Ok(result.Value);
     }
+    
+    [HttpGet]
+    public async Task<ActionResult> GetAllVolunteers(
+        [FromServices] GetAllVolunteersHandler handler,
+        [FromQuery] GetAllVolunteersRequest request, 
+        CancellationToken cancellationToken)
+    {
+        var query = request.ToQuery();
+        var result = await handler.Handle(query, cancellationToken);
+        
+        return Ok(result); 
+    }
+    
+    [HttpGet("/volunteer-by-id")]
+    public async Task<ActionResult> GetVolunteerById(
+        [FromServices] GetVolunteerByIdHandler handler,
+        [FromQuery] GetVolunteerByIdRequest request, 
+        CancellationToken cancellationToken)
+    {
+        var query = request.ToQuery();
+        var result = await handler.Handle(query, cancellationToken);
+        
+        if(result is null)
+            return BadRequest(Errors.General.NotFound());
+        return Ok(result); 
+    }
+    
 }

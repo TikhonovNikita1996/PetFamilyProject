@@ -1,4 +1,5 @@
-﻿using PetFamily.Application.Dtos;
+﻿using PetFamily.Application.Abstractions;
+using PetFamily.Application.Dtos;
 using PetFamily.Domain.Shared;
 
 namespace PetFamily.Application.Volunteers.AddPet;
@@ -15,4 +16,4 @@ public record AddPetCommand(
     DateTime DateOfBirth,
     bool IsVaccinated, string CurrentStatus,
     List<DonationInfoDto>? DonateForHelpInfos,
-    DateTime PetsPageCreationDate);
+    DateTime PetsPageCreationDate) : ICommand;

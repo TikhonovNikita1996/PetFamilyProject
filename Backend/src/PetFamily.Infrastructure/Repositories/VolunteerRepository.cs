@@ -5,14 +5,15 @@ using PetFamily.Domain.Entities.Ids;
 using PetFamily.Domain.Entities.Volunteer;
 using PetFamily.Domain.Entities.Volunteer.ValueObjects;
 using PetFamily.Domain.Shared;
+using PetFamily.Infrastructure.DataContexts;
 
 namespace PetFamily.Infrastructure.Repositories;
 
 public class VolunteerRepository : IVolunteerRepository
 {
-    private readonly DataContext _dbContext;
+    private readonly WriteDbContext _dbContext;
 
-    public VolunteerRepository(DataContext dbContext)
+    public VolunteerRepository(WriteDbContext dbContext)
     {
         _dbContext = dbContext;
     }

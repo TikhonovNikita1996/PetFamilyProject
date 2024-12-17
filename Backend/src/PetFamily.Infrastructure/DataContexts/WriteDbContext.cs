@@ -1,16 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using PetFamily.Domain;
-using PetFamily.Domain.Entities;
-using PetFamily.Domain.Entities.Pet;
 using PetFamily.Domain.Entities.Pet.ValueObjects;
 using PetFamily.Domain.Entities.Volunteer;
 using PetFamily.Infrastructure.Interceptors;
 
-namespace PetFamily.Infrastructure;
+namespace PetFamily.Infrastructure.DataContexts;
 
-public class DataContext(IConfiguration configuration) : DbContext
+public class WriteDbContext(IConfiguration configuration) : DbContext
 {
     public DbSet<Volunteer> Volunteers { get; set; }
     public DbSet<Specie> Species { get; set; }
@@ -26,7 +23,9 @@ public class DataContext(IConfiguration configuration) : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(DataContext).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(
+            typeof(WriteDbContext).Assembly,
+            x => x.FullName!.Contains("Configurations.Write"));
     }
 
     private ILoggerFactory CreateLoggerFactory() =>

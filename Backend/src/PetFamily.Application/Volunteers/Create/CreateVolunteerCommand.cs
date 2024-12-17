@@ -1,4 +1,5 @@
-﻿using PetFamily.Application.Dtos;
+﻿using PetFamily.Application.Abstractions;
+using PetFamily.Application.Dtos;
 
 namespace PetFamily.Application.Volunteers.Create;
 
@@ -12,4 +13,4 @@ public record CreateVolunteerCommand(
     PhoneNumberDto PhoneNumber,
     DescriptionDto Description,
     List<SocialMediaDetailsDto>? SocialMediaDetails,
-    List<DonationInfoDto>? DonationInfo);
+    List<DonationInfoDto>? DonationInfo) : ICommand;

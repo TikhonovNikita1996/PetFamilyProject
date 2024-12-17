@@ -6,6 +6,7 @@ using PetFamily.Application.FileProvider;
 using PetFamily.Application.Interfaces;
 using PetFamily.Application.Messaging;
 using PetFamily.Infrastructure.BackgroundServices;
+using PetFamily.Infrastructure.DataContexts;
 using PetFamily.Infrastructure.Files;
 using PetFamily.Infrastructure.Interceptors;
 using PetFamily.Infrastructure.MessageQueues;
@@ -20,25 +21,47 @@ public static class Inject
     public static IServiceCollection AddInfrastructure(this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddScoped<DataContext>();
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
-        services.AddScoped<IVolunteerRepository, VolunteerRepository> ();
-        services.AddScoped<ISpeciesRepository, SpeciesRepository> ();
-        services.AddMinioCustom(configuration);
-        services.AddScoped<IFileProvider, MinioProvider>();
+        services.AddDBContexts()
+                .AddRepositories()
+                .AddUnitOfWork()
+                .AddMinioCustom(configuration);
 
         services.AddHostedService<FilesCleanerBackgroundService>();
         services.AddScoped<IFileCleanerService, FileCleanerService>();
 
-        services.AddSingleton<IMessageQueue<IEnumerable<FileMetaData>>,InMemoryMessageQueue<IEnumerable<FileMetaData>>>();
+        services.AddSingleton<IMessageQueue<IEnumerable<FileMetaData>>
+            ,InMemoryMessageQueue<IEnumerable<FileMetaData>>>();
         return services;
     }
 
+    private static IServiceCollection AddUnitOfWork(this IServiceCollection services)
+    {
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        return services;
+    }
+    
+    private static IServiceCollection AddDBContexts(this IServiceCollection services)
+    {
+        services.AddScoped<WriteDbContext>();
+        services.AddScoped<IReadDbContext, ReadDbContext>();
+
+        return services;
+    }
+    
+    private static IServiceCollection AddRepositories(
+        this IServiceCollection services)
+    {
+        services.AddScoped<IVolunteerRepository, VolunteerRepository> ();
+        services.AddScoped<ISpeciesRepository, SpeciesRepository>();
+
+        return services;
+    }
+    
     private static IServiceCollection AddMinioCustom(this IServiceCollection services,
         IConfiguration configuration)
     {
         services.Configure<MinioOptions>(configuration.GetSection(MinioOptions.MINIO));
-        
+        services.AddScoped<IFileProvider, MinioProvider>();
         services.AddMinio(options =>
         {
             var minioOptions = configuration.GetSection(MinioOptions.MINIO).Get<MinioOptions>()

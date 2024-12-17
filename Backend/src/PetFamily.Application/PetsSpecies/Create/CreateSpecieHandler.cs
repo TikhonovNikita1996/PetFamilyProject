@@ -2,6 +2,7 @@
 using FluentValidation;
 using FluentValidation.TestHelper;
 using Microsoft.Extensions.Logging;
+using PetFamily.Application.Abstractions;
 using PetFamily.Application.DataBase;
 using PetFamily.Application.Extensions;
 using PetFamily.Application.Interfaces;
@@ -11,7 +12,7 @@ using PetFamily.Domain.Shared;
 
 namespace PetFamily.Application.PetsSpecies.Create;
 
-public class CreateSpecieHandler
+public class CreateSpecieHandler : ICommandHandler<Guid,CreateSpecieCommand>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly ISpeciesRepository _speciesRepository;

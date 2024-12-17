@@ -1,3 +1,5 @@
-﻿namespace PetFamily.Application.Volunteers.ChangePetsPosition;
+﻿using PetFamily.Application.Abstractions;
 
-public record ChangePetsPositionCommand(Guid VolunteerId, Guid PetId, int NewPosition);
+namespace PetFamily.Application.Volunteers.ChangePetsPosition;
+
+public record ChangePetsPositionCommand(Guid VolunteerId, Guid PetId, int NewPosition) : ICommand;

@@ -1,9 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
+using PetFamily.Application.Abstractions;
 using PetFamily.Application.DataBase;
 using PetFamily.Application.Extensions;
 using PetFamily.Application.Interfaces;
+using PetFamily.Application.PetsSpecies.AddBreed;
 using PetFamily.Domain.Entities.Ids;
 using PetFamily.Domain.Entities.Others;
 using PetFamily.Domain.Entities.Pet;
@@ -13,7 +15,7 @@ using PetFamily.Domain.Shared;
 
 namespace PetFamily.Application.Volunteers.AddPet;
 
-public class AddPetHandler
+public class AddPetHandler : ICommandHandler<Guid,AddPetCommand>
 {
     private readonly IVolunteerRepository _volunteersRepository;
     private readonly ISpeciesRepository _speciesRepository;
