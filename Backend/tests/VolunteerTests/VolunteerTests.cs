@@ -56,7 +56,7 @@ public class VolunteerTests
         double height = 10;
         var phoneNumber = OwnersPhoneNumber.Create("+7-777-777-77-77").Value;
         bool isSterilized = true;
-        DateTime birthday = DateTime.Now;
+        DateOnly birthday = new DateOnly(1, 1, 1);
         bool isVaccinated = true;
         HelpStatusType helpStatus = HelpStatusType.SearchingForHome;
         List<DonationInfo> donationInfos = new List<DonationInfo>()

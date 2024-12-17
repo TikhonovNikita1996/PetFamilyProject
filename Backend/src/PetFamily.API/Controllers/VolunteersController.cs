@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PetFamily.API.Contracts;
+using PetFamily.API.Contracts.Pet;
+using PetFamily.API.Contracts.Volunteer;
 using PetFamily.API.Processors;
 using PetFamily.Application.Dtos;
 using PetFamily.Application.Queries.GetAllVolunteers;

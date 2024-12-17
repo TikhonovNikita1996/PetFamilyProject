@@ -38,6 +38,13 @@ public static class Errors
             var label = name == null ? "" : " " + name + " ";
             return CustomError.Validation("record.already.exist", $"record with name: {label} already exist");
         }
+        
+        public static CustomError DeleteFailure(string? name = null)
+        {
+            var label = name == null ? "" : " " + name + " ";
+            return CustomError.Validation("can not.delete.record", $"can not delete record: " +
+                                                                   $"{label}. It used in another record");
+        }
     }
 
     public static class VolunteerValidation

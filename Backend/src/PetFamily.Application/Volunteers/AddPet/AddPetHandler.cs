@@ -72,13 +72,13 @@ public class AddPetHandler : ICommandHandler<Guid,AddPetCommand>
         var specieName = command.SpecieName;
         var specieResult = await _speciesRepository.GetByName(specieName, cancellationToken);
         
+        if (specieResult.IsFailure)
+            return volunteerResult.Error.ToErrorList();
+        
         var donationInfos = command.DonateForHelpInfos
             .Select(s => DonationInfo.Create(s.Name, s.Description));
 
         var resultDonationInfoList = new DonationInfoList(donationInfos.Select(x=> x.Value).ToList());
-        
-        if (specieResult.IsFailure)
-            return volunteerResult.Error.ToErrorList();
         
         var specieId = specieResult.Value.Id;
         var breedId = specieResult.Value.Breeds.First(x => x.Name == command.BreedName).Id;

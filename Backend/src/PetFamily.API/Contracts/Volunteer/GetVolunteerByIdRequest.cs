@@ -1,7 +1,6 @@
-﻿using PetFamily.Application.Queries.GetAllVolunteers;
-using PetFamily.Application.Queries.GetVolunteerById;
+﻿using PetFamily.Application.Queries.GetVolunteerById;
 
-namespace PetFamily.API.Contracts
+namespace PetFamily.API.Contracts.Volunteer
 {
     public record GetVolunteerByIdRequest(
         Guid? VolunteerId)

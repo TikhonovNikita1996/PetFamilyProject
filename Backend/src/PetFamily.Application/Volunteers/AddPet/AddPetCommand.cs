@@ -13,7 +13,7 @@ public record AddPetCommand(
     LocationAddressDto LocationAddress,
     double Weight, double Height,
     PhoneNumberDto OwnersPhoneNumber, bool IsSterilized,
-    DateTime DateOfBirth,
+    DateOnly DateOfBirth,
     bool IsVaccinated, string CurrentStatus,
     List<DonationInfoDto>? DonateForHelpInfos,
     DateTime PetsPageCreationDate) : ICommand;

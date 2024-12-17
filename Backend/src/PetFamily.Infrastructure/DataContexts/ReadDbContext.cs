@@ -11,6 +11,9 @@ namespace PetFamily.Infrastructure.DataContexts;
 public class ReadDbContext(IConfiguration configuration) : DbContext, IReadDbContext
 {
     public DbSet<VolunteerDto> Volunteers => Set<VolunteerDto>();
+    public DbSet<SpecieDto> Species => Set<SpecieDto>();
+    public DbSet<BreedDto> Breeds => Set<BreedDto>();
+    public DbSet<PetDto> Pets => Set<PetDto>();
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

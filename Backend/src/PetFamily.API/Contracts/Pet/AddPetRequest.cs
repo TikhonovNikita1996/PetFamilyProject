@@ -1,10 +1,7 @@
 ﻿using PetFamily.Application.Dtos;
 using PetFamily.Application.Volunteers.AddPet;
-using PetFamily.Domain.Entities.Ids;
-using PetFamily.Domain.Entities.Volunteer.ValueObjects;
-using PetFamily.Domain.Shared;
 
-namespace PetFamily.API.Contracts;
+namespace PetFamily.API.Contracts.Pet;
 
 public record AddPetRequest(
     PetsNameDto Name, string SpecieName,
@@ -14,7 +11,7 @@ public record AddPetRequest(
     LocationAddressDto LocationAddress,
     double Weight, double Height,
     PhoneNumberDto OwnersPhoneNumber, bool IsSterilized,
-    DateTime DateOfBirth,
+    DateOnly DateOfBirth,
     bool IsVaccinated, string CurrentStatus,
     List<DonationInfoDto>? DonateForHelpInfos,
     DateTime PetsPageCreationDate)

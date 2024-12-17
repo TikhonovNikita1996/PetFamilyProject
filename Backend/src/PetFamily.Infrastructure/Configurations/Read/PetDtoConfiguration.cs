@@ -4,11 +4,11 @@ using PetFamily.Application.Dtos;
 
 namespace PetFamily.Infrastructure.Configurations.Read;
 
-public class VolunteerDtoConfiguration : IEntityTypeConfiguration<VolunteerDto>
+public class PetDtoConfiguration : IEntityTypeConfiguration<PetDto>
 {
-    public void Configure(EntityTypeBuilder<VolunteerDto> builder)
+    public void Configure(EntityTypeBuilder<PetDto> builder)
     {
-        builder.ToTable("volunteers");
+        builder.ToTable("pets");
         builder.HasKey(v => v.Id);
 
         builder.Property(v => v.Id);
