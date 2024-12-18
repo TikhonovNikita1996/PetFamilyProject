@@ -40,11 +40,12 @@ public class Specie : BaseEntity<SpecieId>
         return breed.Id.Value;
     }
     
-    public Result<Guid, CustomError> DeleteBreed(Breed breed)
+    public Result<Guid, CustomError> DeleteBreed(Guid breedId)
     {
-        _breeds.Remove(breed);
+        var result = _breeds.FirstOrDefault(b => b.Id == breedId);
+        _breeds.Remove(result);
 
-        return breed.Id.Value;
+        return result.Id.Value;
     }
     
 }

@@ -44,7 +44,8 @@ public class CreateSpecieHandler : ICommandHandler<Guid,CreateSpecieCommand>
         var specieId = SpecieId.NewId();
         var name = command.Name;
 
-        var newBreeds = new List<Breed>();
+        var newBreeds = command.Breeds.Select(breed => 
+            new Breed(BreedId.NewId(),breed.Name)).ToList();
         
         var specie = Specie.Create(specieId, name, newBreeds).Value;
 

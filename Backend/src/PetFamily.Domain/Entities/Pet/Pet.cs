@@ -14,7 +14,7 @@ public class Pet : BaseEntity<PetId>, ISoftDeletable
     public Pet(PetId id) : base(id) {}
     private Pet(PetId petId, PetsName petsName, SpecieDetails specieDetails, GenderType gender, PetsDescription petsDescription,
         Color color, HealthInformation healthInformation, LocationAddress locationAddress,
-        double weight, double height, OwnersPhoneNumber ownersPhoneNumber, bool isSterilized, DateTime dateOfBirth,
+        double weight, double height, OwnersPhoneNumber ownersPhoneNumber, bool isSterilized, DateOnly dateOfBirth,
         bool isVaccinated, HelpStatusType currentStatus, DonationInfoList donateForHelpInfos,
         DateTime petsPageCreationDate, PhotosList photosList) : base(petId)
     {
@@ -48,7 +48,7 @@ public class Pet : BaseEntity<PetId>, ISoftDeletable
     public double Height { get; private set; } = default!;
     public OwnersPhoneNumber OwnersPhoneNumber { get; private set;}
     public bool IsSterilized { get; private set; }
-    public DateTime DateOfBirth { get; private set; } 
+    public DateOnly DateOfBirth { get; private set; } 
     public bool IsVaccinated { get; private set; } 
     public HelpStatusType CurrentStatus { get; private set; } 
     public DonationInfoList DonateForHelpInfos { get; private set; }
@@ -64,13 +64,11 @@ public class Pet : BaseEntity<PetId>, ISoftDeletable
                                             LocationAddress locationAddress,
                                             double weight, double height, 
                                             OwnersPhoneNumber ownersPhoneNumber, bool isSterilized, 
-                                            DateTime dateOfBirth,
+                                            DateOnly dateOfBirth,
                                             bool isVaccinated, HelpStatusType currentStatus, 
                                             DonationInfoList donateForHelpInfos,
                                             DateTime petsPageCreationDate)
     {
-        
-        
         var photos = new PhotosList();
         
         var pet = new Pet(petId, petsName,specieDetails, gender, petsDescription,
@@ -78,9 +76,6 @@ public class Pet : BaseEntity<PetId>, ISoftDeletable
                           height, ownersPhoneNumber, isSterilized, dateOfBirth, 
                           isVaccinated, currentStatus, donateForHelpInfos, 
                           petsPageCreationDate, photos);
-        
-        
-        
         return pet;
     }
 

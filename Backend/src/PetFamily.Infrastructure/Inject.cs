@@ -21,7 +21,7 @@ public static class Inject
     public static IServiceCollection AddInfrastructure(this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddDBContexts()
+        services.AddDbContexts()
                 .AddRepositories()
                 .AddUnitOfWork()
                 .AddMinioCustom(configuration);
@@ -40,7 +40,7 @@ public static class Inject
         return services;
     }
     
-    private static IServiceCollection AddDBContexts(this IServiceCollection services)
+    private static IServiceCollection AddDbContexts(this IServiceCollection services)
     {
         services.AddScoped<WriteDbContext>();
         services.AddScoped<IReadDbContext, ReadDbContext>();

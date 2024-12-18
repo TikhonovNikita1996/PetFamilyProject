@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PetFamily.Application.Abstractions;
 using PetFamily.Application.DataBase;
@@ -22,19 +23,22 @@ public class AddPetHandler : ICommandHandler<Guid,AddPetCommand>
     private readonly IValidator<AddPetCommand> _validator;
     private readonly ILogger<AddPetHandler> _logger;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IReadDbContext _readDbContext;
 
     public AddPetHandler(
         ILogger<AddPetHandler> logger,
         IVolunteerRepository volunteersRepository,
         ISpeciesRepository speciesRepository,
         IValidator<AddPetCommand> validator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        IReadDbContext readDbContext)
     {
         _logger = logger;
         _volunteersRepository = volunteersRepository;
         _speciesRepository = speciesRepository;
         _validator = validator;
         _unitOfWork = unitOfWork;
+        _readDbContext = readDbContext;
     }
 
     public async Task<Result<Guid, CustomErrorsList>> Handle(AddPetCommand command,
@@ -69,20 +73,30 @@ public class AddPetHandler : ICommandHandler<Guid,AddPetCommand>
             command.LocationAddress.City, command.LocationAddress.Street, command.LocationAddress.HouseNumber,
             command.LocationAddress.Floor, command.LocationAddress.Apartment).Value;
 
-        var specieName = command.SpecieName;
-        var specieResult = await _speciesRepository.GetByName(specieName, cancellationToken);
+        var specieQuery = _readDbContext.Species;
+        var specieDto = await specieQuery
+            .SingleOrDefaultAsync(s => s.Name == command.SpecieName, cancellationToken);
+        
+        if (specieDto == null)
+            return Errors.General.NotFound("specie").ToErrorList();
         
         var donationInfos = command.DonateForHelpInfos
             .Select(s => DonationInfo.Create(s.Name, s.Description));
 
         var resultDonationInfoList = new DonationInfoList(donationInfos.Select(x=> x.Value).ToList());
+
+        var specieId = specieDto.SpecieId;
         
-        if (specieResult.IsFailure)
-            return volunteerResult.Error.ToErrorList();
+        var breedQuery = _readDbContext.Breeds;
+        var breedDto = await breedQuery
+            .SingleOrDefaultAsync(b => b.Name == command.BreedName
+                                       && b.SpecieId == specieId, cancellationToken);
+        if (breedDto == null)
+            return Errors.General.NotFound("breed").ToErrorList();
+
+        var breedId = breedDto.BreedId;
         
-        var specieId = specieResult.Value.Id;
-        var breedId = specieResult.Value.Breeds.First(x => x.Name == command.BreedName).Id;
-        var specieDetails = SpecieDetails.Create(specieId, breedId).Value;
+        var specieDetails = SpecieDetails.Create(SpecieId.Create(specieId), BreedId.Create(breedId)).Value;
         
         var newPet = Pet.Create(petId, petsName, specieDetails,
             gender, description, color, healthInformation,

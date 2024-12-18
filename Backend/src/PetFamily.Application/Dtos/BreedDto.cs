@@ -1,3 +1,3 @@
 ﻿namespace PetFamily.Application.Dtos;
 
-public record BreedDto(string Name);
+public record BreedDto(Guid BreedId, Guid SpecieId, string Name);

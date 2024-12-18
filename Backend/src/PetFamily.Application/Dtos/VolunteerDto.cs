@@ -9,6 +9,6 @@ public class VolunteerDto
     public string Email { get; init; }  = string.Empty;
     public string Gender { get; init; }  = string.Empty;
     public int WorkingExperience { get;  init; }
-    public string Description { get; private set; }  = string.Empty;
-    public string PhoneNumber { get; private set; }  = string.Empty;
+    public string Description { get; init; }  = string.Empty;
+    public string PhoneNumber { get; init; }  = string.Empty;
 }

@@ -22,9 +22,9 @@ public static class Errors
             return CustomError.NotFound("record.found", $"record not found for id : {forid}");
         }
         
-        public static CustomError NotFound()
+        public static CustomError NotFound(string? label = null)
         {
-            return CustomError.NotFound("record.found", $"record not found");
+            return CustomError.NotFound("record.found", $"record {label} not found");
         }
         
         public static CustomError ValueIsRequired(string? name = null)
@@ -37,6 +37,13 @@ public static class Errors
         {
             var label = name == null ? "" : " " + name + " ";
             return CustomError.Validation("record.already.exist", $"record with name: {label} already exist");
+        }
+        
+        public static CustomError DeleteFailure(string? name = null)
+        {
+            var label = name == null ? "" : " " + name + " ";
+            return CustomError.Validation("can not.delete.record", $"can not delete record: " +
+                                                                   $"{label}. It used in another record");
         }
     }
 

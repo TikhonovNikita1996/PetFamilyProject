@@ -26,7 +26,7 @@ public class SpeciesRepository(WriteDbContext context) : ISpeciesRepository
 
     public async Task<Result<Guid>> Delete(Specie specie, CancellationToken cancellationToken = default)
     { 
-        await context.Species.AddAsync(specie, cancellationToken);
+        context.Species.Remove(specie);
         await context.SaveChangesAsync(cancellationToken);
         
         return specie.Id.Value;
@@ -36,6 +36,7 @@ public class SpeciesRepository(WriteDbContext context) : ISpeciesRepository
         CancellationToken cancellationToken = default)
     {
         var species = await context.Species
+            .Include(v => v.Breeds)
             .FirstOrDefaultAsync(v => v.Id == speciesId, cancellationToken);
 
         if (species is null)
@@ -51,7 +52,7 @@ public class SpeciesRepository(WriteDbContext context) : ISpeciesRepository
             .Include(s => s.Breeds)
             .FirstOrDefaultAsync(s => s.Name == name, cancellationToken);
         if (species is null)
-            return Errors.General.NotFound();
+            return Errors.General.NotFound("");
         return species;
     }
 }
