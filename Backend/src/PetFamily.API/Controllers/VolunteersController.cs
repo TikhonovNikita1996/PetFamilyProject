@@ -4,6 +4,8 @@ using PetFamily.API.Contracts.Pet;
 using PetFamily.API.Contracts.Volunteer;
 using PetFamily.API.Processors;
 using PetFamily.Application.Dtos;
+using PetFamily.Application.Pets.Update.MainInfo;
+using PetFamily.Application.Pets.Update.Status;
 using PetFamily.Application.Queries.GetAllVolunteers;
 using PetFamily.Application.Queries.GetVolunteerById;
 using PetFamily.Application.Volunteers.AddPet;
@@ -44,7 +46,7 @@ public class VolunteersController : BaseApiController
     public async Task<ActionResult> UpdateMainInfo(
         [FromRoute] Guid id,
         [FromServices] UpdateMainInfoHandler handler,
-        [FromBody] UpdateMainInfoDto dto, 
+        [FromBody] UpdateVolunteerMainInfoDto dto, 
         CancellationToken cancellationToken)
     {
         var command = new UpdateMainInfoCommand(id, dto);
@@ -178,6 +180,38 @@ public class VolunteersController : BaseApiController
         if(result is null)
             return BadRequest(Errors.General.NotFound(""));
         return Ok(result); 
+    }
+    
+    [HttpPut("{volunteerId:guid}/pet/{petId:guid}/pets-main-info")]
+    public async Task<ActionResult> UpdatePetsMainInfo(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromBody] UpdatePetsMainInfoDto dto,
+        [FromServices] UpdatePetsMainInfoHandler handler,
+        CancellationToken cancellationToken)
+    {
+        var command = new UpdatePetsMainInfoCommand(volunteerId, petId, dto);
+        var result = await handler.Handle(command, cancellationToken);
+        if(result.IsFailure)
+            return BadRequest(result.Error); 
+            
+        return Ok(result.Value);
+    }
+    
+    [HttpPut("{volunteerId:guid}/pet/{petId:guid}/pets-status")]
+    public async Task<ActionResult> UpdatePetsStatus(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromBody] UpdatePetsStatusRequest request,
+        [FromServices] UpdatePetsStatusHandler handler,
+        CancellationToken cancellationToken)
+    {
+        var command = new UpdatePetsStatusCommand(volunteerId, petId, request.Status);
+        var result = await handler.Handle(command, cancellationToken);
+        if(result.IsFailure)
+            return BadRequest(result.Error); 
+            
+        return Ok(result.Value);
     }
     
 }

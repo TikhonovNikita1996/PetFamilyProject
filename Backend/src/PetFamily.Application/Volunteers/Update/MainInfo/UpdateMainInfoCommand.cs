@@ -4,4 +4,4 @@ using PetFamily.Domain.Entities.Ids;
 
 namespace PetFamily.Application.Volunteers.Update.MainInfo;
 public record UpdateMainInfoCommand (Guid VolunteerId, 
-    UpdateMainInfoDto Dto ) : ICommand;
+    UpdateVolunteerMainInfoDto Dto ) : ICommand;

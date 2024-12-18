@@ -1,6 +1,6 @@
 ﻿namespace PetFamily.Application.Dtos;
 
-public record UpdateMainInfoDto(
+public record UpdateVolunteerMainInfoDto(
     string Description, 
     string PhoneNumber, 
     int WorkingExperience, 
