@@ -12,9 +12,11 @@ public class Pet : BaseEntity<PetId>, ISoftDeletable
     private bool _isDeleted = false;
     // ef core
     public Pet(PetId id) : base(id) {}
-    private Pet(PetId petId, PetsName petsName, SpecieDetails specieDetails, GenderType gender, PetsDescription petsDescription,
+    private Pet(PetId petId, PetsName petsName, SpecieDetails specieDetails,
+        GenderType gender, PetsDescription petsDescription,
         Color color, HealthInformation healthInformation, LocationAddress locationAddress,
-        double weight, double height, OwnersPhoneNumber ownersPhoneNumber, bool isSterilized, DateOnly dateOfBirth,
+        double weight, double height, OwnersPhoneNumber ownersPhoneNumber, bool isSterilized,
+        DateOnly dateOfBirth,
         bool isVaccinated, HelpStatusType currentStatus, DonationInfoList donateForHelpInfos,
         DateTime petsPageCreationDate, PhotosList photosList) : base(petId)
     {
@@ -91,11 +93,40 @@ public class Pet : BaseEntity<PetId>, ISoftDeletable
             _isDeleted = false;
     }
 
+    public void UpdateMainInfo(PetsName petsName, 
+        SpecieDetails specieDetails,
+        GenderType gender, 
+        PetsDescription petsDescription,
+        LocationAddress locationAddress,
+        double weight, double height,
+        bool isSterilized, bool isVaccinated,
+        OwnersPhoneNumber ownersPhoneNumber,
+        Color color)
+    {
+        PetsName = petsName;
+        SpecieDetails = specieDetails;
+        Gender = gender;
+        PetsDescription = petsDescription;
+        LocationAddress = locationAddress;
+        Weight = weight;
+        Height = height;
+        IsSterilized = isSterilized;
+        IsVaccinated = isVaccinated;
+        OwnersPhoneNumber = ownersPhoneNumber;
+        Color = color;
+    }
+    
     public void UpdatePhotos(PhotosList photosList)
     {
         PhotosList = photosList;
     }
         
+    public void UpdateStatus(HelpStatusType status)
+    {
+        CurrentStatus = status;
+    }
+    
+    
     public void SetPositionNumberToPet(PositionNumber positionNumber) =>
         PositionNumber = positionNumber;
     
@@ -111,5 +142,18 @@ public class Pet : BaseEntity<PetId>, ISoftDeletable
         var newPosition = PositionNumber.Value - 1;
         if (newPosition < 1) return;
         PositionNumber = PositionNumber.Create(newPosition).Value;
+    }
+
+    public void SetMainPhoto(FilePath filePath)
+    {
+        foreach (var photo in PhotosList.PetPhotos)
+        {
+            photo.IsMain = false;
+        }
+        
+        var newMainPhoto = PhotosList.PetPhotos.FirstOrDefault(p => p.FilePath == filePath.Path);
+        
+        if(newMainPhoto != null)
+            newMainPhoto.IsMain = true;
     }
 }

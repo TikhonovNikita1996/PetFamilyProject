@@ -14,7 +14,7 @@ public class UpdateMainInfoValidator : AbstractValidator<UpdateMainInfoCommand>
     }
 }
 
-public class UpdateMainInfoDtoValidator : AbstractValidator<UpdateMainInfoDto>
+public class UpdateMainInfoDtoValidator : AbstractValidator<UpdateVolunteerMainInfoDto>
 {
     public UpdateMainInfoDtoValidator()
     {

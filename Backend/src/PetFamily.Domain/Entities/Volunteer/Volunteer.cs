@@ -103,8 +103,8 @@ public class Volunteer : BaseEntity<VolunteerId>, ISoftDeletable
 
         return pet;
     }
-    
-    private Result UpdatePetsPositions(List<Pet.Pet> orderedList)
+
+    public Result UpdatePetsPositions(List<Pet.Pet> orderedList)
     {
         if (_pets.Count < 2)
             return Result.Success();
@@ -142,5 +142,14 @@ public class Volunteer : BaseEntity<VolunteerId>, ISoftDeletable
         }
 
         UpdatePetsPositions(orderedList);
+    }
+
+    public Result<Guid, CustomError> DeletePet(Pet.Pet pet)
+    {
+        if (pet == null)
+            return Errors.General.NotFound(pet.Id.ToString());
+        _pets.Remove(pet);
+        
+        return pet.Id.Value;
     }
 }

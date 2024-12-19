@@ -62,7 +62,7 @@ public class SpeciesController : BaseApiController
         return Ok(result.Value); 
     }
     
-    [HttpDelete("{specieId:guid}/breed/{breedId:guid}/delete-breed")]
+    [HttpDelete("{specieId:guid}/breed/{breedId:guid}/breed")]
     public async Task<ActionResult> DeleteBreed(
         [FromRoute] Guid specieId,
         [FromRoute] Guid breedId,
@@ -90,7 +90,7 @@ public class SpeciesController : BaseApiController
         return Ok(result); 
     }
     
-    [HttpGet("{specieId:guid}/breeds-by-specieId")]
+    [HttpGet("{specieId:guid}/breeds")]
     public async Task<ActionResult> GetBreedsBySpecieId(
         [FromRoute] Guid specieId,
         [FromServices] GetBreedsBySpecieIdHandler handler,

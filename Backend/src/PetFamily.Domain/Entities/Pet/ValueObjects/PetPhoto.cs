@@ -16,7 +16,7 @@ public record PetPhoto
         IsMain = isMain;
     }
     public string FilePath { get; }
-    public bool IsMain { get; }
+    public bool IsMain { get; set; }
     public static Result<PetPhoto, CustomError> Create(string path,
         bool isMain)
     {

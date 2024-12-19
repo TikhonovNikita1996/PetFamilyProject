@@ -2,4 +2,4 @@
 
 namespace PetFamily.API.Contracts.Volunteer;
 public record UpdateMainInfoRequest (Guid VolunteerId, 
-    UpdateMainInfoDto Dto );
+    UpdateVolunteerMainInfoDto Dto );
