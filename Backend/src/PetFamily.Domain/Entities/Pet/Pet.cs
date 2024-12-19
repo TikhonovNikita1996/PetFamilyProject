@@ -143,4 +143,17 @@ public class Pet : BaseEntity<PetId>, ISoftDeletable
         if (newPosition < 1) return;
         PositionNumber = PositionNumber.Create(newPosition).Value;
     }
+
+    public void SetMainPhoto(FilePath filePath)
+    {
+        foreach (var photo in PhotosList.PetPhotos)
+        {
+            photo.IsMain = false;
+        }
+        
+        var newMainPhoto = PhotosList.PetPhotos.FirstOrDefault(p => p.FilePath == filePath.Path);
+        
+        if(newMainPhoto != null)
+            newMainPhoto.IsMain = true;
+    }
 }

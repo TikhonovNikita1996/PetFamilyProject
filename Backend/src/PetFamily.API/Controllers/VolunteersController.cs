@@ -4,6 +4,7 @@ using PetFamily.API.Contracts.Pet;
 using PetFamily.API.Contracts.Volunteer;
 using PetFamily.API.Processors;
 using PetFamily.Application.Dtos;
+using PetFamily.Application.Pets.SetMainPhoto;
 using PetFamily.Application.Pets.SoftDelete;
 using PetFamily.Application.Pets.Update.MainInfo;
 using PetFamily.Application.Pets.Update.Status;
@@ -240,6 +241,23 @@ public class VolunteersController : BaseApiController
         CancellationToken cancellationToken)
     {
         var command = new HardPetDeleteCommand(volunteerId, petId);
+        
+        var result = await handler.Handle(command, cancellationToken);
+        if (result.IsFailure)
+            return BadRequest(result.Error);
+        
+        return Ok(result.Value); 
+    }
+    
+    [HttpPut("{volunteerId:guid}/pet/{petId:guid}/set-pet-main-photo")]
+    public async Task<ActionResult> SetPetMainPhoto(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromServices] SetPetsMainPhotoHandler handler,
+        [FromBody] SetPetsMainPhotoRequest request,
+        CancellationToken cancellationToken)
+    {
+        var command = new SetPetsMainPhotoCommand(volunteerId, petId, FilePath.Create(request.FilePath).Value);
         
         var result = await handler.Handle(command, cancellationToken);
         if (result.IsFailure)
