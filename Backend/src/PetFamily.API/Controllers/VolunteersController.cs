@@ -4,6 +4,7 @@ using PetFamily.API.Contracts.Pet;
 using PetFamily.API.Contracts.Volunteer;
 using PetFamily.API.Processors;
 using PetFamily.Application.Dtos;
+using PetFamily.Application.Pets.SoftDelete;
 using PetFamily.Application.Pets.Update.MainInfo;
 using PetFamily.Application.Pets.Update.Status;
 using PetFamily.Application.Queries.GetAllVolunteers;
@@ -13,6 +14,7 @@ using PetFamily.Application.Volunteers.AddPhotosToPet;
 using PetFamily.Application.Volunteers.ChangePetsPosition;
 using PetFamily.Application.Volunteers.Create;
 using PetFamily.Application.Volunteers.Delete;
+using PetFamily.Application.Volunteers.HardPetDelete;
 using PetFamily.Application.Volunteers.Update.DonationInfo;
 using PetFamily.Application.Volunteers.Update.MainInfo;
 using PetFamily.Application.Volunteers.Update.SocialMediaDetails;
@@ -212,6 +214,38 @@ public class VolunteersController : BaseApiController
             return BadRequest(result.Error); 
             
         return Ok(result.Value);
+    }
+    
+    [HttpDelete("{volunteerId:guid}/pet/{petId:guid}/pet-soft-delete")]
+    public async Task<ActionResult> SoftPetDelete(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromServices] PetSoftDeleteHandler handler,
+        CancellationToken cancellationToken)
+    {
+        var command = new PetSoftDeleteCommand(volunteerId, petId);
+        
+        var result = await handler.Handle(command, cancellationToken);
+        if (result.IsFailure)
+            return BadRequest(result.Error);
+        
+        return Ok(result.Value); 
+    }
+    
+    [HttpDelete("{volunteerId:guid}/pet/{petId:guid}/pet-hard-delete")]
+    public async Task<ActionResult> HardPetDelete(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromServices] HardPetDeleteHandler handler,
+        CancellationToken cancellationToken)
+    {
+        var command = new HardPetDeleteCommand(volunteerId, petId);
+        
+        var result = await handler.Handle(command, cancellationToken);
+        if (result.IsFailure)
+            return BadRequest(result.Error);
+        
+        return Ok(result.Value); 
     }
     
 }

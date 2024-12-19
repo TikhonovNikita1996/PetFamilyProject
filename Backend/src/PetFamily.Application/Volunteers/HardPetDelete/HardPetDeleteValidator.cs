@@ -1,15 +1,15 @@
 ﻿using FluentValidation;
 using PetFamily.Application.Validation;
+using PetFamily.Domain.Entities.Pet.ValueObjects;
 using PetFamily.Domain.Shared;
 
-namespace PetFamily.Application.Pets.Update.Status;
+namespace PetFamily.Application.Volunteers.HardPetDelete;
 
-public class PetSoftDeleteValidator : AbstractValidator<UpdatePetsStatusCommand>
+public class HardPetDeleteValidator : AbstractValidator<HardPetDeleteCommand>
 {
-    public PetSoftDeleteValidator()
+    public HardPetDeleteValidator()
     {
         RuleFor(r => r.PetId).NotNull().WithError(Errors.General.ValueIsRequired());
         RuleFor(r => r.VolunteerId).NotNull().WithError(Errors.General.ValueIsRequired());
-        RuleFor(r => r.NewStatus).NotNull().WithError(Errors.General.ValueIsRequired());
     }
 }

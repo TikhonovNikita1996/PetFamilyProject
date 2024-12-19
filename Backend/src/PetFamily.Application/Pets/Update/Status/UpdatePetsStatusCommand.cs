@@ -2,5 +2,5 @@
 
 namespace PetFamily.Application.Pets.Update.Status;
 
-public record UpdatePetsStatusCommand (Guid VolunteerId, Guid PetId, 
-    string NewStatus ) : ICommand;
+public record UpdatePetsStatusCommand (Guid VolunteerId, Guid PetId
+    ,string NewStatus) : ICommand;
