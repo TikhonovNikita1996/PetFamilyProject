@@ -142,7 +142,7 @@ public class VolunteersController : BaseApiController
         return Ok(result.Value);
     }
     
-    [HttpPut("{volunteerId:guid}/pet/{petId:guid}/pets-position-number")]
+    [HttpPut("{volunteerId:guid}/pet/{petId:guid}/position-number")]
     public async Task<ActionResult> ChangePetsPosition(
         [FromRoute] Guid volunteerId,
         [FromRoute] Guid petId,
@@ -185,7 +185,7 @@ public class VolunteersController : BaseApiController
         return Ok(result); 
     }
     
-    [HttpPut("{volunteerId:guid}/pet/{petId:guid}/pets-main-info")]
+    [HttpPut("{volunteerId:guid}/pet/{petId:guid}/main-info")]
     public async Task<ActionResult> UpdatePetsMainInfo(
         [FromRoute] Guid volunteerId,
         [FromRoute] Guid petId,
@@ -201,7 +201,7 @@ public class VolunteersController : BaseApiController
         return Ok(result.Value);
     }
     
-    [HttpPut("{volunteerId:guid}/pet/{petId:guid}/pets-status")]
+    [HttpPut("{volunteerId:guid}/pet/{petId:guid}/status")]
     public async Task<ActionResult> UpdatePetsStatus(
         [FromRoute] Guid volunteerId,
         [FromRoute] Guid petId,
@@ -217,7 +217,7 @@ public class VolunteersController : BaseApiController
         return Ok(result.Value);
     }
     
-    [HttpDelete("{volunteerId:guid}/pet/{petId:guid}/pet-soft-delete")]
+    [HttpDelete("{volunteerId:guid}/pet/{petId:guid}/soft")]
     public async Task<ActionResult> SoftPetDelete(
         [FromRoute] Guid volunteerId,
         [FromRoute] Guid petId,
@@ -233,7 +233,7 @@ public class VolunteersController : BaseApiController
         return Ok(result.Value); 
     }
     
-    [HttpDelete("{volunteerId:guid}/pet/{petId:guid}/pet-hard-delete")]
+    [HttpDelete("{volunteerId:guid}/pet/{petId:guid}/hard")]
     public async Task<ActionResult> HardPetDelete(
         [FromRoute] Guid volunteerId,
         [FromRoute] Guid petId,
@@ -249,7 +249,7 @@ public class VolunteersController : BaseApiController
         return Ok(result.Value); 
     }
     
-    [HttpPut("{volunteerId:guid}/pet/{petId:guid}/set-pet-main-photo")]
+    [HttpPut("{volunteerId:guid}/pet/{petId:guid}/main-photo")]
     public async Task<ActionResult> SetPetMainPhoto(
         [FromRoute] Guid volunteerId,
         [FromRoute] Guid petId,
