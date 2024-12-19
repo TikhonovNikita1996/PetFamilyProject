@@ -52,21 +52,26 @@ public class HardPetDeleteHandler : ICommandHandler<Guid,HardPetDeleteCommand>
 
         var petToDelete = volunteerResult.Value.CurrentPets.FirstOrDefault(p => p.Id == command.PetId);
         if (petToDelete == null)
-            return volunteerResult.Error.ToErrorList();
+            return Errors.General.NotFound("pet").ToErrorList();
         
         volunteerResult.Value.DeletePet(petToDelete);
 
-        await _unitOfWork.SaveChanges(cancellationToken);
-        
-        // Delete photos from minio
-        
-        var photosMetaDataToDelete = petToDelete.PhotosList.PetPhotos
-            .Select(p => new FileMetaData("photos", FilePath.Create(p.FilePath).Value));
+        var orderedPetsList = volunteerResult.Value.CurrentPets.OrderBy(p => p.PositionNumber.Value).ToList();
+        volunteerResult.Value.UpdatePetsPositions(orderedPetsList);
 
-        foreach (var photoMetaData in photosMetaDataToDelete)
+        // Delete photos from minio
+        if (petToDelete.PhotosList.PetPhotos != null)
         {
-            await _fileProvider.DeleteFileAsync(photoMetaData, cancellationToken);
+            var photosMetaDataToDelete = petToDelete.PhotosList.PetPhotos
+                .Select(p => new FileMetaData("photos", FilePath.Create(p.FilePath).Value));
+
+            foreach (var photoMetaData in photosMetaDataToDelete)
+            {
+                await _fileProvider.DeleteFileAsync(photoMetaData, cancellationToken);
+            }
         }
+        
+        await _unitOfWork.SaveChanges(cancellationToken);
         
         _logger.LogInformation("Pet with Id: {id} was deleted", command.PetId);
         

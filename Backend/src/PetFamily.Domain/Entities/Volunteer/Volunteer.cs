@@ -104,7 +104,7 @@ public class Volunteer : BaseEntity<VolunteerId>, ISoftDeletable
         return pet;
     }
 
-    private Result UpdatePetsPositions(List<Pet.Pet> orderedList)
+    public Result UpdatePetsPositions(List<Pet.Pet> orderedList)
     {
         if (_pets.Count < 2)
             return Result.Success();
