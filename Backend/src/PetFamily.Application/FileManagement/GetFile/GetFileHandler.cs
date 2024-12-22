@@ -8,11 +8,11 @@ namespace PetFamily.Application.FileManagement.GetFile;
 
 public class GetFileHandler
 {
-    private readonly IFileProvider _fileProvider;
+    private readonly IFileService _fileService;
 
-    public GetFileHandler(IFileProvider fileProvider)
+    public GetFileHandler(IFileService fileService)
     {
-        _fileProvider = fileProvider;
+        _fileService = fileService;
     }
 
     public async Task<Result<string, CustomError>> Handle(
@@ -20,7 +20,7 @@ public class GetFileHandler
         CancellationToken cancellationToken)
     {
         var fileMetaData = new FileMetaData(request.BucketName, FilePath.Create(request.ObjectName).Value);
-        var result = await _fileProvider.GetFileAsync(fileMetaData, cancellationToken);
+        var result = await _fileService.GetFileAsync(fileMetaData, cancellationToken);
 
         return result;
     }

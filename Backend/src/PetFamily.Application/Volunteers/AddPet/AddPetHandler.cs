@@ -66,7 +66,6 @@ public class AddPetHandler : ICommandHandler<Guid,AddPetCommand>
         var ownersPhoneNumber = OwnersPhoneNumber.Create(command.OwnersPhoneNumber.Value).Value;
         var isSterilized = command.IsSterilized;
         var isVaccinated = command.IsVaccinated;
-        var dateOfBirth = command.DateOfBirth;
         var helpStatus = Enum.Parse<HelpStatusType>(command.CurrentStatus);
         var pageCreationDate = command.PetsPageCreationDate;
         var locationAddress = LocationAddress.Create(command.LocationAddress.Region,
@@ -101,7 +100,7 @@ public class AddPetHandler : ICommandHandler<Guid,AddPetCommand>
         var newPet = Pet.Create(petId, petsName, specieDetails,
             gender, description, color, healthInformation,
             locationAddress, weight, height, ownersPhoneNumber,
-            isSterilized, dateOfBirth, isVaccinated, helpStatus, resultDonationInfoList, pageCreationDate).Value;
+            isSterilized, isVaccinated, helpStatus, resultDonationInfoList, pageCreationDate).Value;
         
         volunteerResult.Value.AddPet(newPet);
         

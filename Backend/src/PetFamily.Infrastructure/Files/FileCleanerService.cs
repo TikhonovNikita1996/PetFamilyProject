@@ -7,15 +7,15 @@ namespace PetFamily.Infrastructure.Files;
 
 public class FileCleanerService : IFileCleanerService
 {
-    private readonly IFileProvider _fileProvider;
+    private readonly IFileService _fileService;
     private readonly ILogger<FileCleanerService> _logger;
     private readonly IMessageQueue<IEnumerable<FileMetaData>> _messageQueue;
 
-    public FileCleanerService(IFileProvider fileProvider,
+    public FileCleanerService(IFileService fileService,
         ILogger<FileCleanerService> logger, 
         IMessageQueue<IEnumerable<FileMetaData>> messageQueue)
     {
-        _fileProvider = fileProvider;
+        _fileService = fileService;
         _logger = logger;
         _messageQueue = messageQueue;
     }
@@ -26,7 +26,7 @@ public class FileCleanerService : IFileCleanerService
 
         foreach (var fileInfo in fileInfos)
         {
-            await _fileProvider.DeleteFileAsync(fileInfo, cancellationToken);
+            await _fileService.DeleteFileAsync(fileInfo, cancellationToken);
         }
     }
 }

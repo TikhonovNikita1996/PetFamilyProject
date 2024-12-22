@@ -11,7 +11,6 @@ public record AddPetRequest(
     LocationAddressDto LocationAddress,
     double Weight, double Height,
     PhoneNumberDto OwnersPhoneNumber, bool IsSterilized,
-    DateOnly DateOfBirth,
     bool IsVaccinated, string CurrentStatus,
     List<DonationInfoDto>? DonateForHelpInfos,
     DateTime PetsPageCreationDate)
@@ -21,6 +20,6 @@ public record AddPetRequest(
         new(volunteerId, Name, SpecieName, BreedName, 
             Gender, Description, Color, HealthInformation, 
             LocationAddress, Weight, Height,OwnersPhoneNumber, 
-            IsSterilized, DateOfBirth, IsVaccinated, CurrentStatus, 
+            IsSterilized, IsVaccinated, CurrentStatus, 
             DonateForHelpInfos, PetsPageCreationDate);
 }

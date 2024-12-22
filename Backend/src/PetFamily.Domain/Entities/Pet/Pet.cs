@@ -16,7 +16,6 @@ public class Pet : BaseEntity<PetId>, ISoftDeletable
         GenderType gender, PetsDescription petsDescription,
         Color color, HealthInformation healthInformation, LocationAddress locationAddress,
         double weight, double height, OwnersPhoneNumber ownersPhoneNumber, bool isSterilized,
-        DateOnly dateOfBirth,
         bool isVaccinated, HelpStatusType currentStatus, DonationInfoList donateForHelpInfos,
         DateTime petsPageCreationDate, PhotosList photosList) : base(petId)
     {
@@ -31,7 +30,6 @@ public class Pet : BaseEntity<PetId>, ISoftDeletable
         Height = height;
         OwnersPhoneNumber = ownersPhoneNumber;
         IsSterilized = isSterilized;
-        DateOfBirth = dateOfBirth;
         IsVaccinated = isVaccinated;
         CurrentStatus = currentStatus;
         DonateForHelpInfos = donateForHelpInfos;
@@ -50,7 +48,6 @@ public class Pet : BaseEntity<PetId>, ISoftDeletable
     public double Height { get; private set; } = default!;
     public OwnersPhoneNumber OwnersPhoneNumber { get; private set;}
     public bool IsSterilized { get; private set; }
-    public DateOnly DateOfBirth { get; private set; } 
     public bool IsVaccinated { get; private set; } 
     public HelpStatusType CurrentStatus { get; private set; } 
     public DonationInfoList DonateForHelpInfos { get; private set; }
@@ -66,7 +63,6 @@ public class Pet : BaseEntity<PetId>, ISoftDeletable
                                             LocationAddress locationAddress,
                                             double weight, double height, 
                                             OwnersPhoneNumber ownersPhoneNumber, bool isSterilized, 
-                                            DateOnly dateOfBirth,
                                             bool isVaccinated, HelpStatusType currentStatus, 
                                             DonationInfoList donateForHelpInfos,
                                             DateTime petsPageCreationDate)
@@ -75,7 +71,7 @@ public class Pet : BaseEntity<PetId>, ISoftDeletable
         
         var pet = new Pet(petId, petsName,specieDetails, gender, petsDescription,
                           color, healthInformation, locationAddress, weight, 
-                          height, ownersPhoneNumber, isSterilized, dateOfBirth, 
+                          height, ownersPhoneNumber, isSterilized,
                           isVaccinated, currentStatus, donateForHelpInfos, 
                           petsPageCreationDate, photos);
         return pet;

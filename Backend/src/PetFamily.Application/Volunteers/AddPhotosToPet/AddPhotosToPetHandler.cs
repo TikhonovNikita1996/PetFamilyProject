@@ -20,7 +20,7 @@ public class AddPhotosToPetHandler : ICommandHandler<Guid,AddPhotosToPetCommand>
     private readonly ISpeciesRepository _speciesRepository;
     private readonly IValidator<AddPhotosToPetCommand> _validator;
     private readonly IMessageQueue<IEnumerable<FileMetaData>> _messageQueue;
-    private readonly IFileProvider _fileProvider;
+    private readonly IFileService _fileService;
     private const string BUCKET_NAME = "photos";
 
     public AddPhotosToPetHandler(
@@ -30,7 +30,7 @@ public class AddPhotosToPetHandler : ICommandHandler<Guid,AddPhotosToPetCommand>
         ISpeciesRepository speciesRepository,
         IValidator<AddPhotosToPetCommand> validator, 
         IMessageQueue<IEnumerable<FileMetaData>> messageQueue,
-        IFileProvider fileProvider)
+        IFileService fileService)
     {
         _logger = logger;
         _volunteerRepository = volunteerRepository;
@@ -38,7 +38,7 @@ public class AddPhotosToPetHandler : ICommandHandler<Guid,AddPhotosToPetCommand>
         _speciesRepository = speciesRepository;
         _validator = validator;
         _messageQueue = messageQueue;
-        _fileProvider = fileProvider;
+        _fileService = fileService;
     }
 
     public async Task<Result<Guid, CustomErrorsList>> Handle(
@@ -72,7 +72,7 @@ public class AddPhotosToPetHandler : ICommandHandler<Guid,AddPhotosToPetCommand>
             filesData.Add(fileContent);
         }
         
-        var filePathsResult = await _fileProvider.UploadFilesAsync(filesData, cancellationToken);
+        var filePathsResult = await _fileService.UploadFilesAsync(filesData, cancellationToken);
         if (filePathsResult.IsFailure)
         {
             await _messageQueue.WriteAsync(filesData.Select(f => f.FileMetaData),cancellationToken);

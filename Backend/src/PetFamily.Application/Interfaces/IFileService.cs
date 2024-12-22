@@ -4,7 +4,7 @@ using PetFamily.Domain.Shared;
 
 namespace PetFamily.Application.Interfaces;
 
-public interface IFileProvider
+public interface IFileService
 {
     public Task<Result<IReadOnlyList<FilePath>, CustomError>> UploadFilesAsync(
         IEnumerable<FileData> filesData,

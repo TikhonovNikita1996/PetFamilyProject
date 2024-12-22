@@ -21,7 +21,7 @@ public static class Inject
     public static IServiceCollection AddInfrastructure(this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddDbContexts()
+        services.AddDbContexts(configuration)
                 .AddRepositories()
                 .AddUnitOfWork()
                 .AddMinioCustom(configuration);
@@ -40,10 +40,14 @@ public static class Inject
         return services;
     }
     
-    private static IServiceCollection AddDbContexts(this IServiceCollection services)
+    private static IServiceCollection AddDbContexts(this IServiceCollection services,
+        IConfiguration configuration)
     {
-        services.AddScoped<WriteDbContext>();
-        services.AddScoped<IReadDbContext, ReadDbContext>();
+        services.AddScoped<WriteDbContext>(_ => 
+            new WriteDbContext(configuration.GetConnectionString("Database")!));
+        
+        services.AddScoped<IReadDbContext, ReadDbContext>(_ => 
+            new ReadDbContext(configuration.GetConnectionString("Database")!));
 
         return services;
     }
@@ -61,7 +65,7 @@ public static class Inject
         IConfiguration configuration)
     {
         services.Configure<MinioOptions>(configuration.GetSection(MinioOptions.MINIO));
-        services.AddScoped<IFileProvider, MinioProvider>();
+        services.AddScoped<IFileService, MinioService>();
         services.AddMinio(options =>
         {
             var minioOptions = configuration.GetSection(MinioOptions.MINIO).Get<MinioOptions>()

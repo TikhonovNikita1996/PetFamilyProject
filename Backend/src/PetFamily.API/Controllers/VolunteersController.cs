@@ -33,9 +33,10 @@ public class VolunteersController : BaseApiController
     {
         var createCommand = new CreateVolunteerCommand(
             request.FullName, request.Gender,
-            request.Birthday, request.WorkingExperience,
+            request.WorkingExperience,
             request.Email, request.PhoneNumber,
-            request.Description, request.SocialMediaDetails, request.DonationInfo);
+            request.Description, request.SocialMediaDetails,
+            request.DonationInfo);
         
         var result = await createVolunteerHandler.Handle(createCommand, cancellationToken);
 

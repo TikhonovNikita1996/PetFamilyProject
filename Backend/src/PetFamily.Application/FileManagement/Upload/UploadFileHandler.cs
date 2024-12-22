@@ -7,11 +7,11 @@ namespace PetFamily.Application.FileManagement.Upload;
 
 public class UploadFileHandler
 {
-    private readonly IFileProvider _fileProvider;
+    private readonly IFileService _fileService;
 
-    public UploadFileHandler(IFileProvider fileProvider)
+    public UploadFileHandler(IFileService fileService)
     {
-        _fileProvider = fileProvider;
+        _fileService = fileService;
     }
 
     public async Task<Result<string, CustomError>> Handle(
@@ -23,7 +23,7 @@ public class UploadFileHandler
             request.FileStream,
             new FileMetaData(request.BucketName, FilePath.Create(request.FilePath).Value));
         
-        var result = await _fileProvider.UploadFileAsync(fileData, cancellationToken);
+        var result = await _fileService.UploadFileAsync(fileData, cancellationToken);
 
         return result;
     }
