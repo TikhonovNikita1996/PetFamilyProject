@@ -22,20 +22,20 @@ public class HardPetDeleteHandler : ICommandHandler<Guid,HardPetDeleteCommand>
     private readonly IValidator<HardPetDeleteCommand> _validator;
     private readonly ILogger<HardPetDeleteHandler> _logger;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IFileProvider _fileProvider;
+    private readonly IFileService _fileService;
 
     public HardPetDeleteHandler(
         ILogger<HardPetDeleteHandler> logger,
         IVolunteerRepository volunteersRepository,
         IValidator<HardPetDeleteCommand> validator,
         IUnitOfWork unitOfWork,
-        IFileProvider fileProvider)
+        IFileService fileService)
     {
         _logger = logger;
         _volunteersRepository = volunteersRepository;
         _validator = validator;
         _unitOfWork = unitOfWork;
-        _fileProvider = fileProvider;
+        _fileService = fileService;
     }
 
     public async Task<Result<Guid, CustomErrorsList>> Handle(HardPetDeleteCommand command,
@@ -67,7 +67,7 @@ public class HardPetDeleteHandler : ICommandHandler<Guid,HardPetDeleteCommand>
 
             foreach (var photoMetaData in photosMetaDataToDelete)
             {
-                await _fileProvider.DeleteFileAsync(photoMetaData, cancellationToken);
+                await _fileService.DeleteFileAsync(photoMetaData, cancellationToken);
             }
         }
         

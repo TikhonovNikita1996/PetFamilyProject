@@ -19,13 +19,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
-
 builder.Services
     .AddInfrastructure(builder.Configuration)
     .AddApplication();
 
 builder.Services.AddSerilog();
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 var app = builder.Build();
 
@@ -45,3 +44,8 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+namespace PetFamily.API
+{
+    public partial class Program { }
+}

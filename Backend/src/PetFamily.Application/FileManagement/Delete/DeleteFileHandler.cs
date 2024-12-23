@@ -7,11 +7,11 @@ namespace PetFamily.Application.FileManagement.Delete;
 
 public class DeleteFileHandler
 {
-    private readonly IFileProvider _fileProvider;
+    private readonly IFileService _fileService;
 
-    public DeleteFileHandler(IFileProvider fileProvider)
+    public DeleteFileHandler(IFileService fileService)
     {
-        _fileProvider = fileProvider;
+        _fileService = fileService;
     }
 
     public async Task<UnitResult<CustomError>> Handle(
@@ -19,7 +19,7 @@ public class DeleteFileHandler
         CancellationToken cancellationToken)
     {
         var fileMetaData = new FileMetaData(request.BucketName, FilePath.Create(request.ObjectName).Value);
-        var result = await _fileProvider.DeleteFileAsync(fileMetaData, cancellationToken);
+        var result = await _fileService.DeleteFileAsync(fileMetaData, cancellationToken);
 
         return result;
     }

@@ -9,13 +9,13 @@ using PetFamily.Domain.Shared;
 
 namespace PetFamily.Infrastructure.Providers
 {
-    public class MinioProvider : IFileProvider
+    public class MinioService : IFileService
     {
         private readonly IMinioClient _minioClient;
-        private readonly ILogger<MinioProvider> _logger;
+        private readonly ILogger<MinioService> _logger;
         private const int EXPIRY = 60 * 60 * 24;
         private const int MAX_DEGREE_OF_PARALLELISM = 5;
-        public MinioProvider(IMinioClient minioClient, ILogger<MinioProvider> logger)
+        public MinioService(IMinioClient minioClient, ILogger<MinioService> logger)
         {
             _minioClient = minioClient;
             _logger = logger;

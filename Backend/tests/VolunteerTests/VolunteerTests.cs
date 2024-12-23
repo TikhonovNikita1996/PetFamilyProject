@@ -56,7 +56,6 @@ public class VolunteerTests
         double height = 10;
         var phoneNumber = OwnersPhoneNumber.Create("+7-777-777-77-77").Value;
         bool isSterilized = true;
-        DateOnly birthday = new DateOnly(1, 1, 1);
         bool isVaccinated = true;
         HelpStatusType helpStatus = HelpStatusType.SearchingForHome;
         List<DonationInfo> donationInfos = new List<DonationInfo>()
@@ -69,7 +68,7 @@ public class VolunteerTests
 
         return Pet.Create(petId, name, specieDetails, gender, desctiption, color,
             healthInformation, address, weight, height,
-            phoneNumber, isSterilized, birthday, isVaccinated, 
+            phoneNumber, isSterilized, isVaccinated, 
             helpStatus, donationInfoList, createdAt).Value;
     }
     

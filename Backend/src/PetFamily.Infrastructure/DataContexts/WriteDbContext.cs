@@ -7,14 +7,21 @@ using PetFamily.Infrastructure.Interceptors;
 
 namespace PetFamily.Infrastructure.DataContexts;
 
-public class WriteDbContext(IConfiguration configuration) : DbContext
+public class WriteDbContext : DbContext
 {
+    private readonly string _connectionString;
+
+    public WriteDbContext(string connectionString)
+    {
+        _connectionString = connectionString;
+    }
+    
     public DbSet<Volunteer> Volunteers { get; set; }
     public DbSet<Specie> Species { get; set; }
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseNpgsql(configuration.GetConnectionString("DataBase"));
+        optionsBuilder.UseNpgsql(_connectionString);
         optionsBuilder.UseSnakeCaseNamingConvention();
         optionsBuilder.UseLoggerFactory(CreateLoggerFactory());
         optionsBuilder.EnableSensitiveDataLogging();

@@ -8,7 +8,7 @@ using PetFamily.Domain.Entities.Pet.ValueObjects;
 
 namespace PetFamily.Infrastructure.DataContexts;
 
-public class ReadDbContext(IConfiguration configuration) : DbContext, IReadDbContext
+public class ReadDbContext(string ConnectionString) : DbContext, IReadDbContext
 {
     public DbSet<VolunteerDto> Volunteers => Set<VolunteerDto>();
     public DbSet<SpecieDto> Species => Set<SpecieDto>();
@@ -17,7 +17,7 @@ public class ReadDbContext(IConfiguration configuration) : DbContext, IReadDbCon
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseNpgsql(configuration.GetConnectionString("DataBase"));
+        optionsBuilder.UseNpgsql(ConnectionString);
         optionsBuilder.UseSnakeCaseNamingConvention();
         optionsBuilder.UseLoggerFactory(CreateLoggerFactory());
         optionsBuilder.EnableSensitiveDataLogging();
