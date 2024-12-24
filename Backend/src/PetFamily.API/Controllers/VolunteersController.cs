@@ -187,20 +187,6 @@ public class VolunteersController : BaseApiController
         return Ok(result); 
     }
     
-    [HttpGet("/pet-by-id")]
-    public async Task<ActionResult> GetPetById(
-        [FromServices] GetPetByIdHandler handler,
-        [FromQuery] GetPetByIdRequest request, 
-        CancellationToken cancellationToken)
-    {
-        var query = request.ToQuery();
-        var result = await handler.Handle(query, cancellationToken);
-        
-        if(result is null)
-            return BadRequest(Errors.General.NotFound(""));
-        return Ok(result); 
-    }
-    
     [HttpPut("{volunteerId:guid}/pet/{petId:guid}/main-info")]
     public async Task<ActionResult> UpdatePetsMainInfo(
         [FromRoute] Guid volunteerId,

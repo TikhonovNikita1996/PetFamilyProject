@@ -84,10 +84,6 @@ public class AddPhotosToPetHandler : ICommandHandler<Guid,AddPhotosToPetCommand>
                 : PetPhoto.Create(t.Path, false).Value)
             .ToList();
 
-        // List<PetPhoto> photos = filePathsResult.Value
-        //     .Select(f => PetPhoto.Create(f.Path, false).Value)
-        //     .ToList();
-
         petResult.Value.UpdatePhotos(photos);
         
         await _unitOfWork.SaveChanges(cancellationToken);

@@ -10,6 +10,7 @@ public class PetDto
     public int Age { get; init; }
     public string Description { get; init; } = string.Empty;
     public string CurrentStatus { get; init; } = string.Empty;
+    public string Gender { get; init; } = string.Empty;
     public string Color { get; init; } = string.Empty;
     public string HealthInformation { get; init; } = string.Empty;
     public double Weight { get; init; }
