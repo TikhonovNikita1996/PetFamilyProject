@@ -57,6 +57,7 @@ public class AddPetHandler : ICommandHandler<Guid,AddPetCommand>
         
         var petId = PetId.NewId();
         var petsName = PetsName.Create(command.Name.Name).Value;
+        var petsAge = Age.Create(command.Age).Value;
         var gender  = Enum.Parse<GenderType>(command.Gender);
         var description = PetsDescription.Create(command.Description.Value).Value;
         var color = Color.Create(command.Color).Value;
@@ -97,7 +98,7 @@ public class AddPetHandler : ICommandHandler<Guid,AddPetCommand>
         
         var specieDetails = SpecieDetails.Create(SpecieId.Create(specieId), BreedId.Create(breedId)).Value;
         
-        var newPet = Pet.Create(petId, petsName, specieDetails,
+        var newPet = Pet.Create(petId, petsName, petsAge, specieDetails,
             gender, description, color, healthInformation,
             locationAddress, weight, height, ownersPhoneNumber,
             isSterilized, isVaccinated, helpStatus, resultDonationInfoList, pageCreationDate).Value;

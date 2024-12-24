@@ -5,6 +5,7 @@ namespace PetFamily.API.Contracts.Pet;
 
 public record AddPetRequest(
     PetsNameDto Name, string SpecieName,
+    int Age,
     string BreedName, string Gender, 
     DescriptionDto Description,
     string Color, HealthInformationDto HealthInformation,
@@ -17,7 +18,7 @@ public record AddPetRequest(
 
 {
     public AddPetCommand ToCommand(Guid volunteerId) =>
-        new(volunteerId, Name, SpecieName, BreedName, 
+        new(volunteerId, Name, Age,  SpecieName, BreedName, 
             Gender, Description, Color, HealthInformation, 
             LocationAddress, Weight, Height,OwnersPhoneNumber, 
             IsSterilized, IsVaccinated, CurrentStatus, 

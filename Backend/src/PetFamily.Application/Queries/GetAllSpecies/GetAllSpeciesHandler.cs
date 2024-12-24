@@ -20,7 +20,7 @@ public class GetAllSpeciesHandler : IQueryHandler<PagedList<SpecieDto>, GetAllSp
         GetAllSpeciesQuery query,
         CancellationToken cancellationToken)
     {
-        var volunteersQuery = _readDbContext.Species.AsQueryable();
+        var volunteersQuery = _readDbContext.Species;
         
         var pagedList = await volunteersQuery.ToPagedList(
             query.Page,
