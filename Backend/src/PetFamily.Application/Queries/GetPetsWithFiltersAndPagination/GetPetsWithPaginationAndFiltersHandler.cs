@@ -1,29 +1,39 @@
 ﻿using System.Linq.Expressions;
+using CSharpFunctionalExtensions;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using PetFamily.Application.Abstractions;
 using PetFamily.Application.DataBase;
 using PetFamily.Application.Dtos;
 using PetFamily.Application.Extensions;
 using PetFamily.Application.Models;
+using PetFamily.Domain.Shared;
 
 namespace PetFamily.Application.Queries.GetPetsWithFiltersAndPagination;
 
-public class GetPetsWithPaginationAndFiltersHandler : IQueryHandler<PagedList<PetDto>,
+public class GetPetsWithPaginationAndFiltersHandler : IQueryHandler<Result<PagedList<PetDto>, CustomErrorsList>,
     GetPetsWithPaginationAndFiltersQuery>
 {
     private readonly IReadDbContext _readDbContext;
+    private readonly IValidator<GetPetsWithPaginationAndFiltersQuery> _validator;
 
     public GetPetsWithPaginationAndFiltersHandler(
-        IReadDbContext readDbContext)
+        IReadDbContext readDbContext,
+        IValidator<GetPetsWithPaginationAndFiltersQuery> validator)
     {
         _readDbContext = readDbContext;
+        _validator = validator;
     }
 
-    public async Task<PagedList<PetDto>> Handle(
+    public async Task<Result<PagedList<PetDto>, CustomErrorsList>> Handle(
         GetPetsWithPaginationAndFiltersQuery query,
         CancellationToken cancellationToken)
     {
-        var petsQuery = _readDbContext.Pets.AsNoTracking();
+        var validationResult = await _validator.ValidateAsync(query, cancellationToken);
+        if (validationResult.IsValid == false)
+            return validationResult.ToErrorList();
+        
+        var petsQuery = _readDbContext.Pets.AsQueryable();
 
         Expression<Func<PetDto, object>> keySelector = query.SortBy?.ToLower() switch
         {
