@@ -44,6 +44,7 @@ public class VolunteerTests
     {
         var petId = PetId.NewId();
         var name = PetsName.Create("Bob").Value;
+        var age = Age.Create(2).Value;
         var specieId = SpecieId.NewId();
         var breedId = BreedId.NewId();
         var specieDetails = SpecieDetails.Create(specieId, breedId).Value;
@@ -66,7 +67,7 @@ public class VolunteerTests
         var donationInfoList = new DonationInfoList(donationInfos);
         DateTime createdAt = DateTime.Now;
 
-        return Pet.Create(petId, name, specieDetails, gender, desctiption, color,
+        return Pet.Create(petId, name, age, specieDetails, gender, desctiption, color,
             healthInformation, address, weight, height,
             phoneNumber, isSterilized, isVaccinated, 
             helpStatus, donationInfoList, createdAt).Value;

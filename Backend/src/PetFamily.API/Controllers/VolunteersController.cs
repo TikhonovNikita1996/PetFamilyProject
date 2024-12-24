@@ -9,6 +9,7 @@ using PetFamily.Application.Pets.SoftDelete;
 using PetFamily.Application.Pets.Update.MainInfo;
 using PetFamily.Application.Pets.Update.Status;
 using PetFamily.Application.Queries.GetAllVolunteers;
+using PetFamily.Application.Queries.GetPetById;
 using PetFamily.Application.Queries.GetVolunteerById;
 using PetFamily.Application.Volunteers.AddPet;
 using PetFamily.Application.Volunteers.AddPhotosToPet;
@@ -181,7 +182,7 @@ public class VolunteersController : BaseApiController
         var query = request.ToQuery();
         var result = await handler.Handle(query, cancellationToken);
         
-        if(result is null)
+        if(result.IsFailure)
             return BadRequest(Errors.General.NotFound(""));
         return Ok(result); 
     }

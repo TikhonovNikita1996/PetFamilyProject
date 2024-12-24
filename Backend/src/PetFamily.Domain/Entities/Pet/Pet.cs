@@ -1,4 +1,5 @@
-﻿using CSharpFunctionalExtensions;
+﻿using System.ComponentModel;
+using CSharpFunctionalExtensions;
 using PetFamily.Domain.Entities.Ids;
 using PetFamily.Domain.Entities.Others;
 using PetFamily.Domain.Entities.Pet.ValueObjects;
@@ -10,16 +11,18 @@ namespace PetFamily.Domain.Entities.Pet;
 public class Pet : BaseEntity<PetId>, ISoftDeletable
 {
     private bool _isDeleted = false;
+    private List<PetPhoto> _photos = [];
     // ef core
     public Pet(PetId id) : base(id) {}
-    private Pet(PetId petId, PetsName petsName, SpecieDetails specieDetails,
+    private Pet(PetId petId, PetsName petsName, Age age, SpecieDetails specieDetails,
         GenderType gender, PetsDescription petsDescription,
         Color color, HealthInformation healthInformation, LocationAddress locationAddress,
         double weight, double height, OwnersPhoneNumber ownersPhoneNumber, bool isSterilized,
         bool isVaccinated, HelpStatusType currentStatus, DonationInfoList donateForHelpInfos,
-        DateTime petsPageCreationDate, PhotosList photosList) : base(petId)
+        DateTime petsPageCreationDate) : base(petId)
     {
         PetsName = petsName;
+        Age = age;
         SpecieDetails = specieDetails;
         Gender = gender;
         PetsDescription = petsDescription;
@@ -34,10 +37,10 @@ public class Pet : BaseEntity<PetId>, ISoftDeletable
         CurrentStatus = currentStatus;
         DonateForHelpInfos = donateForHelpInfos;
         PetsPageCreationDate = petsPageCreationDate;
-        PhotosList = photosList;
     }
     
     public PetsName PetsName { get; private set; }
+    public Age Age { get; private set; }
     public SpecieDetails SpecieDetails { get; private set; }
     public GenderType Gender { get; private set; }
     public PetsDescription PetsDescription { get; private set; }
@@ -51,12 +54,12 @@ public class Pet : BaseEntity<PetId>, ISoftDeletable
     public bool IsVaccinated { get; private set; } 
     public HelpStatusType CurrentStatus { get; private set; } 
     public DonationInfoList DonateForHelpInfos { get; private set; }
-    public DateTime PetsPageCreationDate { get; private set; } 
-    public PhotosList PhotosList { get; private set; }
+    public DateTime PetsPageCreationDate { get; private set; }
     
+    public IReadOnlyList<PetPhoto> Photos => _photos;
     public PositionNumber PositionNumber { get; private set; }
 
-    public static Result<Pet,CustomError> Create(PetId petId, PetsName petsName,
+    public static Result<Pet,CustomError> Create(PetId petId, PetsName petsName, Age Age,
                                             SpecieDetails specieDetails, GenderType gender, 
                                             PetsDescription petsDescription,
                                             Color color, HealthInformation healthInformation, 
@@ -67,13 +70,12 @@ public class Pet : BaseEntity<PetId>, ISoftDeletable
                                             DonationInfoList donateForHelpInfos,
                                             DateTime petsPageCreationDate)
     {
-        var photos = new PhotosList();
         
-        var pet = new Pet(petId, petsName,specieDetails, gender, petsDescription,
+        var pet = new Pet(petId, petsName, Age,specieDetails, gender, petsDescription,
                           color, healthInformation, locationAddress, weight, 
                           height, ownersPhoneNumber, isSterilized,
                           isVaccinated, currentStatus, donateForHelpInfos, 
-                          petsPageCreationDate, photos);
+                          petsPageCreationDate);
         return pet;
     }
 
@@ -112,9 +114,9 @@ public class Pet : BaseEntity<PetId>, ISoftDeletable
         Color = color;
     }
     
-    public void UpdatePhotos(PhotosList photosList)
+    public void UpdatePhotos(List<PetPhoto> photosList)
     {
-        PhotosList = photosList;
+        _photos = photosList;
     }
         
     public void UpdateStatus(HelpStatusType status)
@@ -142,12 +144,12 @@ public class Pet : BaseEntity<PetId>, ISoftDeletable
 
     public void SetMainPhoto(FilePath filePath)
     {
-        foreach (var photo in PhotosList.PetPhotos)
+        foreach (var photo in Photos)
         {
             photo.IsMain = false;
         }
         
-        var newMainPhoto = PhotosList.PetPhotos.FirstOrDefault(p => p.FilePath == filePath.Path);
+        var newMainPhoto = Photos.FirstOrDefault(p => p.FilePath == filePath.Path);
         
         if(newMainPhoto != null)
             newMainPhoto.IsMain = true;
