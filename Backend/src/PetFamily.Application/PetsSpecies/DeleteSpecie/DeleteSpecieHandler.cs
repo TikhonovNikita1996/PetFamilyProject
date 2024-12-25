@@ -45,7 +45,7 @@ public class DeleteSpecieHandler : ICommandHandler<Guid,DeleteSpecieCommand>
         if (validationResult.IsValid == false)
             return validationResult.ToErrorList();
 
-        var petsQuery = _readDbContext.Pets.AsQueryable();
+        var petsQuery = _readDbContext.Pets;
 
         var firstPetWithSpecie = await petsQuery
             .SingleOrDefaultAsync(p => p.SpecieId == command.SpecieId, cancellationToken);

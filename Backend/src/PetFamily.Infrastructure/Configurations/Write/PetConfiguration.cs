@@ -1,8 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using PetFamily.Application.Dtos;
 using PetFamily.Domain.Entities.Ids;
 using PetFamily.Domain.Entities.Pet;
+using PetFamily.Domain.Entities.Pet.ValueObjects;
 using PetFamily.Domain.Shared;
+using PetFamily.Infrastructure.Extensions;
 
 namespace PetFamily.Infrastructure.Configurations.Write;
 
@@ -64,6 +69,14 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         {
             pm.Property(p => p.Value)
                 .HasColumnName("name")
+                .HasMaxLength(ProjectConstants.MAX_LOW_TEXT_LENGTH)
+                .IsRequired();
+        });
+        
+        builder.ComplexProperty(v => v.Age, pm =>
+        {
+            pm.Property(p => p.Value)
+                .HasColumnName("age")
                 .HasMaxLength(ProjectConstants.MAX_LOW_TEXT_LENGTH)
                 .IsRequired();
         });
@@ -145,20 +158,12 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .HasColumnName("apartment");
                 
         });
-
-        builder.OwnsOne(p => p.PhotosList, ppb =>
-        {
-            ppb.ToJson();
-
-            ppb.OwnsMany(pp => pp.PetPhotos, pb =>
-            {
-                pb.Property(p => p.IsMain)
-                    .IsRequired();
-
-                pb.Property(p => p.FilePath)
-                    .IsRequired();
-            });
-        });
+        
+        builder.Property(v => v.Photos)
+            .ValueObjectsJsonConversion(
+                file => new PhotoDto {PathToStorage = file.FilePath , IsMain = file.IsMain},
+                json => new PetPhoto {IsMain = json.IsMain, FilePath = json.PathToStorage})
+            .HasColumnName("photos");
         
         builder.OwnsOne(v => v.DonateForHelpInfos, db =>
         {

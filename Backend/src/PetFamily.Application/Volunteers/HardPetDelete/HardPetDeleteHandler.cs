@@ -60,16 +60,16 @@ public class HardPetDeleteHandler : ICommandHandler<Guid,HardPetDeleteCommand>
         volunteerResult.Value.UpdatePetsPositions(orderedPetsList);
 
         // Delete photos from minio
-        if (petToDelete.PhotosList.PetPhotos != null)
-        {
-            var photosMetaDataToDelete = petToDelete.PhotosList.PetPhotos
-                .Select(p => new FileMetaData("photos", FilePath.Create(p.FilePath).Value));
-
-            foreach (var photoMetaData in photosMetaDataToDelete)
-            {
-                await _fileService.DeleteFileAsync(photoMetaData, cancellationToken);
-            }
-        }
+        // if (petToDelete.Photos != null)
+        // {
+        //     var photosMetaDataToDelete = petToDelete.Photos
+        //         .Select(p => new FileMetaData("photos", FilePath.Create(p.FilePath).Value));
+        //
+        //     foreach (var photoMetaData in photosMetaDataToDelete)
+        //     {
+        //         await _fileService.DeleteFileAsync(photoMetaData, cancellationToken);
+        //     }
+        // }
         
         await _unitOfWork.SaveChanges(cancellationToken);
         

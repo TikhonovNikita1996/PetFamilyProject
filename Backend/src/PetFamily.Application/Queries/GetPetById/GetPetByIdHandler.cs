@@ -7,35 +7,36 @@ using PetFamily.Application.Dtos;
 using PetFamily.Application.Extensions;
 using PetFamily.Domain.Shared;
 
-namespace PetFamily.Application.Queries.GetVolunteerById;
+namespace PetFamily.Application.Queries.GetPetById;
 
-public class GetVolunteerByIdHandler : IQueryHandler<Result<VolunteerDto, CustomErrorsList>,
-    GetVolunteerByIdQuery>
+public class GetPetByIdHandler : IQueryHandler<Result<PetDto, CustomErrorsList>,
+    GetPetByIdQuery>
 {
     private readonly IReadDbContext _readDbContext;
-    private readonly IValidator<GetVolunteerByIdQuery> _validator;
+    private readonly IValidator<GetPetByIdQuery> _validator;
 
-    public GetVolunteerByIdHandler(
-        IReadDbContext readDbContext,
-        IValidator<GetVolunteerByIdQuery> validator)
+
+    public GetPetByIdHandler(
+        IReadDbContext readDbContext, 
+        IValidator<GetPetByIdQuery> validator)
     {
         _readDbContext = readDbContext;
         _validator = validator;
     }
 
-    public async Task<Result<VolunteerDto, CustomErrorsList>> Handle(
-        GetVolunteerByIdQuery query,
+    public async Task<Result<PetDto, CustomErrorsList>> Handle(
+        GetPetByIdQuery query,
         CancellationToken cancellationToken)
     {
         var validationResult = await _validator.ValidateAsync(query, cancellationToken);
         if (validationResult.IsValid == false)
             return validationResult.ToErrorList();
         
-        var volunteersQuery = _readDbContext.Volunteers;
+        var speciesQuery = _readDbContext.Pets;
         
-        var volunteerDto = await volunteersQuery.SingleOrDefaultAsync(v => v.Id == query.VolunteerId
+        var petDto = await speciesQuery.SingleOrDefaultAsync(v => v.Id == query.PetId
             ,cancellationToken);
         
-        return volunteerDto;
+        return petDto;
     }
 }

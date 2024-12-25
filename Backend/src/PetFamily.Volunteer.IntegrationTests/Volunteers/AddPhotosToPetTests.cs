@@ -81,6 +81,7 @@ public class AddPhotosToPetTests : IClassFixture<IntegrationTestsWebFactory>, IA
         ).Value;
 
         var pet = Pet.Create( PetId.NewId(), PetsName.Create("Test").Value,
+            Age.Create(2).Value,
             new SpecieDetails(SpecieId.NewId(), BreedId.NewId()),
             GenderType.Female,
             PetsDescription.Create("Test description").Value,

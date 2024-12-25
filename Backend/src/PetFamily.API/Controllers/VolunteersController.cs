@@ -2,6 +2,7 @@
 using PetFamily.API.Contracts;
 using PetFamily.API.Contracts.Pet;
 using PetFamily.API.Contracts.Volunteer;
+using PetFamily.API.Extensions;
 using PetFamily.API.Processors;
 using PetFamily.Application.Dtos;
 using PetFamily.Application.Pets.SetMainPhoto;
@@ -9,6 +10,7 @@ using PetFamily.Application.Pets.SoftDelete;
 using PetFamily.Application.Pets.Update.MainInfo;
 using PetFamily.Application.Pets.Update.Status;
 using PetFamily.Application.Queries.GetAllVolunteers;
+using PetFamily.Application.Queries.GetPetById;
 using PetFamily.Application.Queries.GetVolunteerById;
 using PetFamily.Application.Volunteers.AddPet;
 using PetFamily.Application.Volunteers.AddPhotosToPet;
@@ -41,7 +43,7 @@ public class VolunteersController : BaseApiController
         var result = await createVolunteerHandler.Handle(createCommand, cancellationToken);
 
         if (result.IsFailure)
-            return BadRequest(result.Error);
+            return result.Error.ToResponse();
         
         return Ok(result.Value);
     }
@@ -56,7 +58,7 @@ public class VolunteersController : BaseApiController
         var command = new UpdateMainInfoCommand(id, dto);
         var result = await handler.Handle(command, cancellationToken);
         if (result.IsFailure)
-            return BadRequest(result.Error);
+            return result.Error.ToResponse();
         
         return Ok(result.Value); 
     }
@@ -72,7 +74,7 @@ public class VolunteersController : BaseApiController
         
         var result = await handler.Handle(command, cancellationToken);
         if (result.IsFailure)
-            return BadRequest(result.Error);
+            return result.Error.ToResponse();
         
         return Ok(result.Value); 
     }
@@ -88,7 +90,7 @@ public class VolunteersController : BaseApiController
         
         var result = await handler.Handle(command, cancellationToken);
         if (result.IsFailure)
-            return BadRequest(result.Error);
+            return result.Error.ToResponse();
         
         return Ok(result.Value); 
     }
@@ -103,7 +105,7 @@ public class VolunteersController : BaseApiController
         
         var result = await handler.Handle(command, cancellationToken);
         if (result.IsFailure)
-            return BadRequest(result.Error);
+            return result.Error.ToResponse();
         
         return Ok(result.Value); 
     }
@@ -119,10 +121,11 @@ public class VolunteersController : BaseApiController
 
         var result = await handler.Handle(command, cancellationToken);
         if (result.IsFailure)
-            return BadRequest(result.Error);
+            return result.Error.ToResponse();
 
         return Ok(result.Value);
     }
+    
     [HttpPost("{volunteerId:guid}/pet/{petId:guid}/files")]
     public async Task<ActionResult> UploadFilesToPet(
         [FromRoute] Guid volunteerId,
@@ -138,7 +141,7 @@ public class VolunteersController : BaseApiController
             
         var result = await handler.Handle(command, cancellationToken);
         if(result.IsFailure)
-            return BadRequest(result.Error); 
+            return result.Error.ToResponse(); 
             
         return Ok(result.Value);
     }
@@ -155,7 +158,7 @@ public class VolunteersController : BaseApiController
             
         var result = await handler.Handle(command, cancellationToken);
         if(result.IsFailure)
-            return BadRequest(result.Error); 
+            return result.Error.ToResponse(); 
             
         return Ok(result.Value);
     }
@@ -180,9 +183,9 @@ public class VolunteersController : BaseApiController
     {
         var query = request.ToQuery();
         var result = await handler.Handle(query, cancellationToken);
-        
-        if(result is null)
-            return BadRequest(Errors.General.NotFound(""));
+
+        if (result.IsFailure)
+            return result.Error.ToResponse();
         return Ok(result); 
     }
     
@@ -197,7 +200,7 @@ public class VolunteersController : BaseApiController
         var command = new UpdatePetsMainInfoCommand(volunteerId, petId, dto);
         var result = await handler.Handle(command, cancellationToken);
         if(result.IsFailure)
-            return BadRequest(result.Error); 
+            return result.Error.ToResponse(); 
             
         return Ok(result.Value);
     }
@@ -213,7 +216,7 @@ public class VolunteersController : BaseApiController
         var command = new UpdatePetsStatusCommand(volunteerId, petId, request.Status);
         var result = await handler.Handle(command, cancellationToken);
         if(result.IsFailure)
-            return BadRequest(result.Error); 
+            return result.Error.ToResponse(); 
             
         return Ok(result.Value);
     }
@@ -229,7 +232,7 @@ public class VolunteersController : BaseApiController
         
         var result = await handler.Handle(command, cancellationToken);
         if (result.IsFailure)
-            return BadRequest(result.Error);
+            return result.Error.ToResponse();
         
         return Ok(result.Value); 
     }
@@ -245,7 +248,7 @@ public class VolunteersController : BaseApiController
         
         var result = await handler.Handle(command, cancellationToken);
         if (result.IsFailure)
-            return BadRequest(result.Error);
+            return result.Error.ToResponse();
         
         return Ok(result.Value); 
     }
@@ -262,7 +265,7 @@ public class VolunteersController : BaseApiController
         
         var result = await handler.Handle(command, cancellationToken);
         if (result.IsFailure)
-            return BadRequest(result.Error);
+            return result.Error.ToResponse();
         
         return Ok(result.Value); 
     }

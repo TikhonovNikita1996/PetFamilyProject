@@ -78,12 +78,13 @@ public class AddPhotosToPetHandler : ICommandHandler<Guid,AddPhotosToPetCommand>
             await _messageQueue.WriteAsync(filesData.Select(f => f.FileMetaData),cancellationToken);
             return filePathsResult.Error.ToErrorList();
         }
-        
-        var petPhotos = filePathsResult.Value
-            .Select(f => PetPhoto.Create(f.Path, false).Value)
+
+        List<PetPhoto> photos = filePathsResult.Value.Select((t, i) => i == 0
+                ? PetPhoto.Create(t.Path, true).Value
+                : PetPhoto.Create(t.Path, false).Value)
             .ToList();
 
-        petResult.Value.UpdatePhotos(new PhotosList(petPhotos));
+        petResult.Value.UpdatePhotos(photos);
         
         await _unitOfWork.SaveChanges(cancellationToken);
 
