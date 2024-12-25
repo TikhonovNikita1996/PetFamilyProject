@@ -9,7 +9,42 @@ public static class ResponseExtensions
 {
     public static ActionResult ToResponse(this CustomError error)
     {
-        var statusCode = error.Type switch
+        int statusCode = GetStatusCodeForErrorType(error.Type);
+        
+        var envelope = Envelope.Failure(error.ToErrorList());
+        
+        return new ObjectResult(envelope) { StatusCode = statusCode };
+    }
+    
+    public static ActionResult ToResponse(this CustomErrorsList errors)
+    {
+        if (!errors.Any())
+        {
+            return new ObjectResult(Envelope.Failure(errors))
+            {
+                StatusCode = StatusCodes.Status500InternalServerError,
+            };
+        }
+
+        var distinctErrorTypes = errors
+            .Select(x => x.Type)
+            .Distinct()
+            .ToList();
+
+        int statusCode = distinctErrorTypes.Count > 1
+            ? StatusCodes.Status500InternalServerError
+            : GetStatusCodeForErrorType(distinctErrorTypes.First());
+
+        var envelope = Envelope.Failure(errors);
+
+        return new ObjectResult(envelope)
+        {
+            StatusCode = statusCode,
+        };
+    }
+    
+    private static int GetStatusCodeForErrorType(ErrorType errorType) =>
+        errorType switch
         {
             ErrorType.Validation => StatusCodes.Status400BadRequest,
             ErrorType.NotFound => StatusCodes.Status404NotFound,
@@ -17,28 +52,4 @@ public static class ResponseExtensions
             ErrorType.Failure => StatusCodes.Status500InternalServerError,
             _ => StatusCodes.Status500InternalServerError
         };
-
-        var responseError = new ResponseError(error.Code, error.Message, null);
-        
-        var envelope = Envelope.Failure([responseError]);
-        
-        return new ObjectResult(envelope) { StatusCode = statusCode };
-    }
-    
-    public static ActionResult ToValidationErrorResponse(this ValidationResult result)
-    {
-        if (result.IsValid)
-            throw new InvalidOperationException("Result can not be succeed");
-        
-        var validationErrors = result.Errors;
-        
-        var responseErrors = from validationError in validationErrors 
-            let errorMessage = validationError.ErrorMessage 
-            let error = CustomError.Deserialize(errorMessage) 
-            select new ResponseError(error.Code, error.Message, validationError.PropertyName);
-
-        var envelope = Envelope.Failure(responseErrors);
-        
-        return new ObjectResult(envelope) { StatusCode = StatusCodes.Status400BadRequest };
-    }
 }

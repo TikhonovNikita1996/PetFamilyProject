@@ -26,7 +26,7 @@ public class SpeciesController : BaseApiController
         var result = await handler.Handle(command, cancellationToken);
 
         if (result.IsFailure)
-            return BadRequest(result.Error);
+            return result.Error.ToResponse();
 
         return Ok(result.Value);
     }
@@ -42,7 +42,7 @@ public class SpeciesController : BaseApiController
         
         var result = await handler.Handle(command, cancellationToken);
         if (result.IsFailure)
-            return BadRequest(result.Error);
+            return result.Error.ToResponse();
 
         return Ok(result.Value);
     }
@@ -57,7 +57,7 @@ public class SpeciesController : BaseApiController
         
         var result = await handler.Handle(command, cancellationToken);
         if (result.IsFailure)
-            return BadRequest(result.Error);
+            return result.Error.ToResponse();
         
         return Ok(result.Value); 
     }
@@ -73,7 +73,7 @@ public class SpeciesController : BaseApiController
         
         var result = await handler.Handle(command, cancellationToken);
         if (result.IsFailure)
-            return BadRequest(result.Error);
+            return result.Error.ToResponse();
         
         return Ok(result.Value); 
     }

@@ -25,8 +25,8 @@ public class ExceptionMiddleware
         {
             _logger.LogError(e, e.Message);
             
-            var responseError = new ResponseError("server.internal", e.Message, null);
-            var envelope = Envelope.Failure([responseError]);
+            var responseError = CustomError.Failure("server.internal", e.Message);
+            var envelope = Envelope.Failure(responseError);
             
             httpContext.Response.ContentType = "application/json";
             httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;

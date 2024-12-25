@@ -7,18 +7,21 @@ public record ResponseError(string? ErrorCode, string? ErrorMessage, string? Inv
 public record Envelope
 {
     public object? Result { get; }
-    public IEnumerable<ResponseError> Errors { get; } = [];
+
+    public CustomErrorsList? Errors { get; }
+
     public DateTime TimeGenerated { get; }
 
-    private Envelope(object? result, IEnumerable<ResponseError> errors)
+    private Envelope(object? result, CustomErrorsList? errors)
     {
         Result = result;
-        Errors = errors.ToList();
+        Errors = errors;
         TimeGenerated = DateTime.Now;
     }
 
-    public static Envelope Success(object? result = null) =>
-        new(result, []);
-    public static Envelope Failure(IEnumerable<ResponseError>? errors) =>
+    public static Envelope Ok(object? result = null) =>
+        new(result, null);
+
+    public static Envelope Failure(CustomErrorsList errors) =>
         new(null, errors);
 }

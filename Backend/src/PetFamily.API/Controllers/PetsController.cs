@@ -2,6 +2,7 @@
 using PetFamily.API.Contracts;
 using PetFamily.API.Contracts.Pet;
 using PetFamily.API.Contracts.Volunteer;
+using PetFamily.API.Extensions;
 using PetFamily.API.Processors;
 using PetFamily.Application.Dtos;
 using PetFamily.Application.Pets.SetMainPhoto;
@@ -49,7 +50,7 @@ public class PetsController : BaseApiController
         var result = await handler.Handle(query, cancellationToken);
         
         if(result.IsFailure)
-            return BadRequest(Errors.General.NotFound(""));
+            return result.Error.ToResponse();
         
         return Ok(result); 
     }
