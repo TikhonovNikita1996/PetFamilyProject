@@ -44,6 +44,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.Species.Infrastru
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.Species.Presentation", "src\Species\PetFamily.Species.Presentation\PetFamily.Species.Presentation.csproj", "{0EB423FA-8FB5-4F80-878B-6E11B62C96AE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.Species.Contracts", "src\Species\PetFamily.Species.Contracts\PetFamily.Species.Contracts.csproj", "{37D1AA1C-B6D9-4726-A343-357E03D73209}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.Volunteers.Contracts", "src\Volunteers\PetFamily.Volunteers.Contracts\PetFamily.Volunteers.Contracts.csproj", "{3D47B571-38D9-4126-93E3-35F9C5F0EE17}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -109,6 +113,14 @@ Global
 		{0EB423FA-8FB5-4F80-878B-6E11B62C96AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0EB423FA-8FB5-4F80-878B-6E11B62C96AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0EB423FA-8FB5-4F80-878B-6E11B62C96AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37D1AA1C-B6D9-4726-A343-357E03D73209}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37D1AA1C-B6D9-4726-A343-357E03D73209}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37D1AA1C-B6D9-4726-A343-357E03D73209}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37D1AA1C-B6D9-4726-A343-357E03D73209}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D47B571-38D9-4126-93E3-35F9C5F0EE17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D47B571-38D9-4126-93E3-35F9C5F0EE17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D47B571-38D9-4126-93E3-35F9C5F0EE17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D47B571-38D9-4126-93E3-35F9C5F0EE17}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{A5CB804E-2208-4DE2-914A-CD7B9B5D83C4} = {24D81CB7-507A-41A7-841F-BF6F1F851ACA}
@@ -128,5 +140,7 @@ Global
 		{E6863B9C-0CE4-4F52-9A4A-95BE8031A680} = {805A63BC-A012-497C-8631-DC070DD7566F}
 		{B2517FFD-39FE-46E1-B308-C87B5C30A407} = {805A63BC-A012-497C-8631-DC070DD7566F}
 		{0EB423FA-8FB5-4F80-878B-6E11B62C96AE} = {805A63BC-A012-497C-8631-DC070DD7566F}
+		{37D1AA1C-B6D9-4726-A343-357E03D73209} = {805A63BC-A012-497C-8631-DC070DD7566F}
+		{3D47B571-38D9-4126-93E3-35F9C5F0EE17} = {D70F729F-0C73-4B59-9701-C46165C4278C}
 	EndGlobalSection
 EndGlobal

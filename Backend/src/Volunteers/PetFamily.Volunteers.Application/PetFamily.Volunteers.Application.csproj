@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Folder Include="VolunteersManagement\Commands\Pet\" />
+      <Folder Include="VolunteersManagement\Commands\Volunteer\" />
+      <Folder Include="VolunteersManagement\Queries\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\PetFamily.Core\PetFamily.Core.csproj" />
+      <ProjectReference Include="..\..\Species\PetFamily.Species.Contracts\PetFamily.Species.Contracts.csproj" />
+      <ProjectReference Include="..\PetFamily.Volunteers.Contracts\PetFamily.Volunteers.Contracts.csproj" />
+      <ProjectReference Include="..\PetFamily.Volunteers.Domain\PetFamily.Volunteers.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.1" />
+    </ItemGroup>
+
+</Project>

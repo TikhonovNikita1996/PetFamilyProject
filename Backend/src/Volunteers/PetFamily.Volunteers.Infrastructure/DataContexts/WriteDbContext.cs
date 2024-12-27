@@ -29,7 +29,7 @@ public class WriteDbContext : DbContext
         modelBuilder.ApplyConfigurationsFromAssembly(
             typeof(WriteDbContext).Assembly,
             x => x.FullName!.Contains("Configurations.Write"));
-        modelBuilder.HasDefaultSchema("volunteers");
+        modelBuilder.HasDefaultSchema("PetFamily_Volunteers");
     }
 
     private ILoggerFactory CreateLoggerFactory() =>

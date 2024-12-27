@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Core.Abstractions;
+using PetFamily.Volunteers.Contracts;
 
 namespace PetFamily.Volunteers.Application;
 
@@ -10,7 +11,7 @@ public static class DependencyInjection
     {
         var assembly = typeof(DependencyInjection).Assembly;
         
-        services.AddValidatorsFromAssembly(assembly);   
+        services.AddValidatorsFromAssembly(assembly);
         
         services.Scan(scan => scan.FromAssemblies(assembly)
             .AddClasses(c => c.AssignableToAny(typeof(ICommandHandler<,>), typeof(ICommandHandler<>)))

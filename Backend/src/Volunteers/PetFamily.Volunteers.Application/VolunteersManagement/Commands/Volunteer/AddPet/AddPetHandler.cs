@@ -6,6 +6,8 @@ using Pet.Family.SharedKernel;
 using Pet.Family.SharedKernel.ValueObjects.Specie;
 using PetFamily.Core.Abstractions;
 using PetFamily.Core.Extensions;
+using PetFamily.Species.Contracts;
+using PetFamily.Species.Contracts.Requests;
 using PetFamily.Volunteers.Application.Database;
 using PetFamily.Volunteers.Application.Interfaces;
 using PetFamily.Volunteers.Domain.Ids;
@@ -20,20 +22,20 @@ public class AddPetHandler : ICommandHandler<Guid,AddPetCommand>
     private readonly IValidator<AddPetCommand> _validator;
     private readonly ILogger<AddPetHandler> _logger;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IReadDbContext _readDbContext;
+    private readonly ISpeciesContract _speciesContract;
 
     public AddPetHandler(
         ILogger<AddPetHandler> logger,
         IVolunteerRepository volunteersRepository,
         IValidator<AddPetCommand> validator,
         [FromKeyedServices(ProjectConstants.Context.VolunteerManagement)] IUnitOfWork unitOfWork,
-        IReadDbContext readDbContext)
+        ISpeciesContract speciesContract)
     {
         _logger = logger;
         _volunteersRepository = volunteersRepository;
         _validator = validator;
         _unitOfWork = unitOfWork;
-        _readDbContext = readDbContext;
+        _speciesContract = speciesContract;
     }
 
     public async Task<Result<Guid, CustomErrorsList>> Handle(AddPetCommand command,
@@ -68,42 +70,39 @@ public class AddPetHandler : ICommandHandler<Guid,AddPetCommand>
             command.LocationAddress.City, command.LocationAddress.Street, command.LocationAddress.HouseNumber,
             command.LocationAddress.Floor, command.LocationAddress.Apartment).Value;
 
-        // var specieQuery = _readDbContext.Species;
-        // var specieDto = await specieQuery
-        //     .SingleOrDefaultAsync(s => s.Name == command.SpecieName, cancellationToken);
-        //
-        // if (specieDto == null)
-        //     return Errors.General.NotFound("specie").ToErrorList();
-        //
-        // var donationInfos = command.DonateForHelpInfos
-        //     .Select(s => DonationInfo.Create(s.Name, s.Description));
-        //
-        // var resultDonationInfoList = new DonationInfoList(donationInfos.Select(x=> x.Value).ToList());
-        //
-        // var specieId = specieDto.SpecieId;
-        //
-        // var breedQuery = _readDbContext.Breeds;
-        // var breedDto = await breedQuery
-        //     .SingleOrDefaultAsync(b => b.Name == command.BreedName
-        //                                && b.SpecieId == specieId, cancellationToken);
-        // if (breedDto == null)
-        //     return Errors.General.NotFound("breed").ToErrorList();
+        var donationInfos = command.DonateForHelpInfos
+            .Select(s => DonationInfo.Create(s.Name, s.Description));
+        
+        var resultDonationInfoList = new DonationInfoList(donationInfos.Select(x=> x.Value).ToList());
+        
+        var specieDto = await _speciesContract.GetSpecieByName(new GetSpecieByNameRequest(command.SpecieName),
+            cancellationToken);
+        
+        if (specieDto == null)
+            return Errors.General.NotFound("specie").ToErrorList();
 
-        // var breedId = breedDto.BreedId;
-        //
-        // var specieDetails = SpecieDetails.Create(SpecieId.Create(specieId), BreedId.Create(breedId)).Value;
-        //
-        // var newPet = Domain.Pet.Pet.Create(petId, petsName, petsAge, specieDetails,
-        //     gender, description, color, healthInformation,
-        //     locationAddress, weight, height, ownersPhoneNumber,
-        //     isSterilized, isVaccinated, helpStatus, resultDonationInfoList, pageCreationDate).Value;
-        //
-        // volunteerResult.Value.AddPet(newPet);
-        //
-        // await _unitOfWork.SaveChanges(cancellationToken);
-        //
-        // _logger.LogInformation("Pet added with id: {PetId}.", newPet.Id.Value);
-        // return newPet.Id.Value;
-        return Guid.NewGuid();
+        var specieId = specieDto.SpecieId;
+        
+        var breedDto = await _speciesContract.GetBreedByName(new GetBreedByNameRequest(specieId,command.SpecieName),
+            cancellationToken);
+        
+        if (breedDto == null)
+            return Errors.General.NotFound("breed").ToErrorList();
+
+        var breedId = breedDto.BreedId;
+        
+        var specieDetails = SpecieDetails.Create(SpecieId.Create(specieId), BreedId.Create(breedId)).Value;
+        
+        var newPet = Domain.Pet.Pet.Create(petId, petsName, petsAge, specieDetails,
+            gender, description, color, healthInformation,
+            locationAddress, weight, height, ownersPhoneNumber,
+            isSterilized, isVaccinated, helpStatus, resultDonationInfoList, pageCreationDate).Value;
+        
+        volunteerResult.Value.AddPet(newPet);
+        
+        await _unitOfWork.SaveChanges(cancellationToken);
+        
+        _logger.LogInformation("Pet added with id: {PetId}.", newPet.Id.Value);
+        return newPet.Id.Value;
     }
 }

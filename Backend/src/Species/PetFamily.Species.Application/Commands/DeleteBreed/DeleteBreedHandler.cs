@@ -8,6 +8,7 @@ using PetFamily.Core.Extensions;
 using PetFamily.Species.Application.Commands.Create;
 using PetFamily.Species.Application.Database;
 using PetFamily.Species.Application.Interfaces;
+using PetFamily.Volunteers.Contracts;
 
 namespace PetFamily.Species.Application.Commands.DeleteBreed;
 
@@ -17,20 +18,20 @@ public class DeleteBreedHandler : ICommandHandler<Guid,DeleteBreedCommand>
     private readonly ISpeciesRepository _speciesRepository;
     private readonly ILogger<CreateSpecieHandler> _logger;
     private readonly IValidator<DeleteBreedCommand> _validator;
-    private readonly IReadDbContext _readDbContext;
+    private readonly IVolunteerContracts _volunteerContracts;
 
     public DeleteBreedHandler(
         [FromKeyedServices(ProjectConstants.Context.SpeciesManagement)] IUnitOfWork unitOfWork,
         ISpeciesRepository speciesRepository,
         ILogger<CreateSpecieHandler> logger,
         IValidator<DeleteBreedCommand> validator,
-        IReadDbContext readDbContext)
+        IVolunteerContracts volunteerContracts)
     {
         _unitOfWork = unitOfWork;
         _speciesRepository = speciesRepository;
         _logger = logger;
         _validator = validator;
-        _readDbContext = readDbContext;
+        _volunteerContracts = volunteerContracts;
     }
     
     public async Task<Result<Guid, CustomErrorsList>> Handle(
@@ -43,14 +44,11 @@ public class DeleteBreedHandler : ICommandHandler<Guid,DeleteBreedCommand>
         if (validationResult.IsValid == false)
             return validationResult.ToErrorList();
 
-        // var petsQuery = _readDbContext.Pets.AsQueryable();
-        //
-        // var firstPetWithBreed = await petsQuery
-        //     .SingleOrDefaultAsync(p => p.SpecieId == command.SpecieId 
-        //                                && p.BreedId == command.BreedId, cancellationToken);
-        //
-        // if (firstPetWithBreed != null)
-        //     return Errors.General.DeleteFailure().ToErrorList();
+        bool deleteFlag = await _volunteerContracts.IsAnyPetWithNeededBreedExists(command.BreedId,
+            cancellationToken);
+
+        if (deleteFlag)
+            return Errors.General.DeleteFailure().ToErrorList();
         
         var specieResult = await _speciesRepository.GetById(command.SpecieId,cancellationToken);
         var specie = specieResult.Value;

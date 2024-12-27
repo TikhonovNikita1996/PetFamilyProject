@@ -10,7 +10,7 @@ namespace PetFamily.Species.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddSpeciesInfrastructure(this IServiceCollection services,
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services,
         IConfiguration configuration)
     {
         services.AddDbContexts(configuration)

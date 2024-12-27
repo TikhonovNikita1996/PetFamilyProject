@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="CSharpFunctionalExtensions" Version="3.1.0" />
+      <PackageReference Include="FluentValidation" Version="11.5.1" />
+      <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.10" />
+      <PackageReference Include="Scrutor" Version="5.1.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Pet.Family.SharedKernel\Pet.Family.SharedKernel.csproj" />
+    </ItemGroup>
+
+</Project>

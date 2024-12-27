@@ -7,6 +7,7 @@ using PetFamily.Core.Abstractions;
 using PetFamily.Core.Extensions;
 using PetFamily.Species.Application.Database;
 using PetFamily.Species.Application.Interfaces;
+using PetFamily.Volunteers.Contracts;
 
 namespace PetFamily.Species.Application.Commands.DeleteSpecie;
 
@@ -16,20 +17,20 @@ public class DeleteSpecieHandler : ICommandHandler<Guid,DeleteSpecieCommand>
     private readonly ISpeciesRepository _speciesRepository;
     private readonly ILogger<DeleteSpecieHandler> _logger;
     private readonly IValidator<DeleteSpecieCommand> _validator;
-    private readonly IReadDbContext _readDbContext;
+    private readonly IVolunteerContracts _volunteerContracts;
 
     public DeleteSpecieHandler(
         [FromKeyedServices(ProjectConstants.Context.SpeciesManagement)] IUnitOfWork unitOfWork,
         ISpeciesRepository speciesRepository,
         ILogger<DeleteSpecieHandler> logger,
         IValidator<DeleteSpecieCommand> validator,
-        IReadDbContext readDbContext)
+        IVolunteerContracts volunteerContracts)
     {
         _unitOfWork = unitOfWork;
         _speciesRepository = speciesRepository;
         _logger = logger;
         _validator = validator;
-        _readDbContext = readDbContext;
+        _volunteerContracts = volunteerContracts;
     }
     
     public async Task<Result<Guid, CustomErrorsList>> Handle(
@@ -41,14 +42,12 @@ public class DeleteSpecieHandler : ICommandHandler<Guid,DeleteSpecieCommand>
         
         if (validationResult.IsValid == false)
             return validationResult.ToErrorList();
+        
+        bool deleteFlag = await _volunteerContracts.IsAnyPetWithNeededSpecieExists(command.SpecieId,
+            cancellationToken);
 
-        // var petsQuery = _readDbContext.Pets;
-        //
-        // var firstPetWithSpecie = await petsQuery
-        //     .SingleOrDefaultAsync(p => p.SpecieId == command.SpecieId, cancellationToken);
-        //
-        // if (firstPetWithSpecie != null)
-        //     return Errors.General.DeleteFailure().ToErrorList();
+        if (deleteFlag)
+            return Errors.General.DeleteFailure().ToErrorList();
         
         var specieResult = await _speciesRepository.GetById(command.SpecieId,cancellationToken);   
             

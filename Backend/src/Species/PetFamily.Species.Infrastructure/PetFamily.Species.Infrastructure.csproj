@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\PetFamily.Core\PetFamily.Core.csproj" />
+      <ProjectReference Include="..\PetFamily.Species.Application\PetFamily.Species.Application.csproj" />
+      <ProjectReference Include="..\PetFamily.Species.Domain\PetFamily.Species.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="EntityFrameworkCore.NamingConventions" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.1" />
+        <PackageReference Include="Minio.AspNetCore" Version="6.0.1" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.10" />
+    </ItemGroup>
+    
+</Project>
