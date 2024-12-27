@@ -1,17 +1,14 @@
-﻿using System.IO.Compression;
-using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
+﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Abstractions;
-using PetFamily.Application.Dtos;
-using PetFamily.Application.Volunteers.AddPhotosToPet;
-using PetFamily.Domain.Entities.Ids;
-using PetFamily.Domain.Entities.Others;
-using PetFamily.Domain.Entities.Pet;
-using PetFamily.Domain.Entities.Pet.ValueObjects;
-using PetFamily.Domain.Entities.Volunteer.ValueObjects;
-using PetFamily.Domain.Shared;
-using PetFamily.Infrastructure.DataContexts;
+using Pet.Family.SharedKernel;
+using Pet.Family.SharedKernel.ValueObjects.Specie;
+using PetFamily.Core.Abstractions;
+using PetFamily.Core.Dtos;
+using PetFamily.Volunteers.Application.VolunteersManagement.Commands.Volunteer.AddPhotosToPet;
+using PetFamily.Volunteers.Domain.Ids;
+using PetFamily.Volunteers.Domain.Pet.ValueObjects;
+using PetFamily.Volunteers.Domain.Volunteer.ValueObjects;
+using PetFamily.Volunteers.Infrastructure.DataContexts;
 
 namespace PetFamily.Volunteer.IntegrationTests.Volunteers;
 
@@ -66,9 +63,9 @@ public class AddPhotosToPetTests : IClassFixture<IntegrationTestsWebFactory>, IA
         
     }
     
-    private async Task<Domain.Entities.Volunteer.Volunteer> SeedVolunteerWithPet()
+    private async Task<PetFamily.Volunteers.Domain.Volunteer.Volunteer> SeedVolunteerWithPet()
     {
-        var volunteer = Domain.Entities.Volunteer.Volunteer.Create(
+        var volunteer = PetFamily.Volunteers.Domain.Volunteer.Volunteer.Create(
             VolunteerId.NewId(),
             FullName.Create("Test", "Test", "Test").Value,
             Email.Create("Test@Test.com").Value,
@@ -80,7 +77,7 @@ public class AddPhotosToPetTests : IClassFixture<IntegrationTestsWebFactory>, IA
             new SocialMediaDetails(null)
         ).Value;
 
-        var pet = Pet.Create( PetId.NewId(), PetsName.Create("Test").Value,
+        var pet = PetFamily.Volunteers.Domain.Pet.Pet.Create( PetId.NewId(), PetsName.Create("Test").Value,
             Age.Create(2).Value,
             new SpecieDetails(SpecieId.NewId(), BreedId.NewId()),
             GenderType.Female,
@@ -98,21 +95,21 @@ public class AddPhotosToPetTests : IClassFixture<IntegrationTestsWebFactory>, IA
         return volunteer;
     }
     
-    private async Task<Guid> SeedSpecieBreed(string? specieName = null, string? breedName = null)
-    {
-        var sName =  specieName == null ? "Bad Test" : specieName;
-        var bName =  breedName == null ? "Bad Test" : breedName;
-            
-        var specie = Domain.Entities.Pet.ValueObjects.Specie.Create(SpecieId.NewId(), sName,
-            new List<Breed>
-            {
-                new Breed(BreedId.NewId(), bName),
-            });
-
-        await _writeDbContext.Species.AddAsync(specie.Value);
-        await _writeDbContext.SaveChangesAsync();
-        return specie.Value.Id;
-    }
+    // private async Task<Guid> SeedSpecieBreed(string? specieName = null, string? breedName = null)
+    // {
+    //     var sName =  specieName == null ? "Bad Test" : specieName;
+    //     var bName =  breedName == null ? "Bad Test" : breedName;
+    //         
+    //     var specie = Species.Domain.ValueObjects.Specie.Create(SpecieId.NewId(), sName,
+    //         new List<Breed>
+    //         {
+    //             new Breed(BreedId.NewId(), bName),
+    //         });
+    //
+    //     await _writeDbContext.Species.AddAsync(specie.Value);
+    //     await _writeDbContext.SaveChangesAsync();
+    //     return specie.Value.Id;
+    // }
 
     private AddPhotosToPetCommand CreateCommand(Guid volunteerId, Guid petId)
     {

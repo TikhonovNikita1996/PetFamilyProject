@@ -1,16 +1,10 @@
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Abstractions;
-using PetFamily.Application.Dtos;
-using PetFamily.Application.PetsSpecies.Create;
-using PetFamily.Application.Volunteers.AddPet;
-using PetFamily.Domain.Entities.Ids;
-using PetFamily.Domain.Entities.Others;
-using PetFamily.Domain.Entities.Pet.ValueObjects;
-using PetFamily.Domain.Entities.Volunteer.ValueObjects;
-using PetFamily.Domain.Shared;
-using PetFamily.Infrastructure.DataContexts;
+using PetFamily.Core.Abstractions;
+using PetFamily.Core.Dtos.Specie;
+using PetFamily.Species.Application.Commands.Create;
+using PetFamily.Species.Infrastructure.DataContexts;
 
 namespace PetFamily.Volunteer.IntegrationTests.Specie;
 

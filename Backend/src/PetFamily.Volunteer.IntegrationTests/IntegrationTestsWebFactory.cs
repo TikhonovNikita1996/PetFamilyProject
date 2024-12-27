@@ -8,12 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 using NSubstitute;
+using Pet.Family.SharedKernel;
 using PetFamily.API;
-using PetFamily.Application.DataBase;
-using PetFamily.Application.FileProvider;
-using PetFamily.Application.Interfaces;
-using PetFamily.Domain.Shared;
-using PetFamily.Infrastructure.DataContexts;
+using PetFamily.Core;
+using PetFamily.Core.Providers;
+using PetFamily.Volunteers.Application.Database;
+using PetFamily.Volunteers.Infrastructure.DataContexts;
 using Respawn;
 using Testcontainers.PostgreSql;
 

@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Abstractions;
+using PetFamily.Core.Abstractions;
 
 namespace PetFamily.Application;
 

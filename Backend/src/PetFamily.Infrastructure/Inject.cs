@@ -1,18 +1,24 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Minio;
+using Minio.AspNetCore;
 using PetFamily.Application.DataBase;
-using PetFamily.Application.FileProvider;
 using PetFamily.Application.Interfaces;
-using PetFamily.Application.Messaging;
+using PetFamily.Core;
+using PetFamily.Core.Abstractions;
+using PetFamily.Core.Messaging;
+using PetFamily.Core.Providers;
 using PetFamily.Infrastructure.BackgroundServices;
 using PetFamily.Infrastructure.DataContexts;
 using PetFamily.Infrastructure.Files;
 using PetFamily.Infrastructure.Interceptors;
 using PetFamily.Infrastructure.MessageQueues;
 using PetFamily.Infrastructure.Options;
-using PetFamily.Infrastructure.Providers;
-using PetFamily.Infrastructure.Repositories;
+using PetFamily.Species.Application.Database;
+using PetFamily.Species.Application.Interfaces;
+using PetFamily.Species.Infrastructure;
+using PetFamily.Species.Infrastructure.DataContexts;
+using ServiceCollectionExtensions = Minio.ServiceCollectionExtensions;
 
 namespace PetFamily.Infrastructure;
 
@@ -66,7 +72,7 @@ public static class Inject
     {
         services.Configure<MinioOptions>(configuration.GetSection(MinioOptions.MINIO));
         services.AddScoped<IFileService, MinioService>();
-        services.AddMinio(options =>
+        ServiceCollectionExtensions.AddMinio(services, options =>
         {
             var minioOptions = configuration.GetSection(MinioOptions.MINIO).Get<MinioOptions>()
                                ?? throw new ApplicationException("Missing minio configuration");

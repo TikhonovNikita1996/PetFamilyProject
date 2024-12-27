@@ -8,6 +8,8 @@
 
     <ItemGroup>
       <ProjectReference Include="..\PetFamily.Application\PetFamily.Application.csproj" />
+      <ProjectReference Include="..\Species\PetFamily.Species.Application\PetFamily.Species.Application.csproj" />
+      <ProjectReference Include="..\Species\PetFamily.Species.Infrastructure\PetFamily.Species.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -15,10 +17,6 @@
       <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.1" />
       <PackageReference Include="Minio.AspNetCore" Version="6.0.1" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.10" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Migrations\" />
     </ItemGroup>
     
 </Project>
