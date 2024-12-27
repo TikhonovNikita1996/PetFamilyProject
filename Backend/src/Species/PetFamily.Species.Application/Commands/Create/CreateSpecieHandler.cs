@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Pet.Family.SharedKernel;
 using Pet.Family.SharedKernel.ValueObjects.Specie;
@@ -18,7 +19,7 @@ public class CreateSpecieHandler : ICommandHandler<Guid,CreateSpecieCommand>
     private readonly IValidator<CreateSpecieCommand> _validator;
 
     public CreateSpecieHandler(
-        IUnitOfWork unitOfWork,
+        [FromKeyedServices(ProjectConstants.Context.SpeciesManagement)] IUnitOfWork unitOfWork,
         ISpeciesRepository speciesRepository,
         ILogger<CreateSpecieHandler> logger,
         IValidator<CreateSpecieCommand> validator)

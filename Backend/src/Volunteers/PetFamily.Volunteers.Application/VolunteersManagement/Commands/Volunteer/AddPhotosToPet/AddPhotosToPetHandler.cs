@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Pet.Family.SharedKernel;
 using PetFamily.Core;
@@ -25,7 +26,7 @@ public class AddPhotosToPetHandler : ICommandHandler<Guid,AddPhotosToPetCommand>
     public AddPhotosToPetHandler(
         ILogger<AddPhotosToPetHandler> logger,
         IVolunteerRepository volunteerRepository,
-        IUnitOfWork unitOfWork,
+        [FromKeyedServices(ProjectConstants.Context.VolunteerManagement)] IUnitOfWork unitOfWork,
         IValidator<AddPhotosToPetCommand> validator, 
         IMessageQueue<IEnumerable<FileMetaData>> messageQueue,
         IFileService fileService)

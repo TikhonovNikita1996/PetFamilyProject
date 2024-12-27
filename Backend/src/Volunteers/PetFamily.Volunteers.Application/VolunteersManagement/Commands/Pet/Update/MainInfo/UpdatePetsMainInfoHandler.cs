@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Pet.Family.SharedKernel;
 using Pet.Family.SharedKernel.ValueObjects.Specie;
@@ -22,7 +23,7 @@ public class UpdatePetsMainInfoHandler : ICommandHandler<Guid,UpdatePetsMainInfo
 
     public UpdatePetsMainInfoHandler(IVolunteerRepository volunteerRepository,
         ILogger<UpdatePetsMainInfoHandler> logger, 
-        IUnitOfWork unitOfWork,
+        [FromKeyedServices(ProjectConstants.Context.VolunteerManagement)] IUnitOfWork unitOfWork,
         IValidator<UpdatePetsMainInfoCommand> validator,
         IReadDbContext readDbContext)
     {

@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Pet.Family.SharedKernel;
 using PetFamily.Core.Abstractions;
@@ -18,8 +19,9 @@ public class UpdateSocialMediaDetailsHandler : ICommandHandler<Guid,UpdateSocial
     private readonly IValidator<UpdateSocialMediaDetailsCommand> _validator;
 
     public UpdateSocialMediaDetailsHandler(IVolunteerRepository volunteerRepository,
-        ILogger<UpdateMainInfoHandler> logger, IUnitOfWork unitOfWork
-        ,IValidator<UpdateSocialMediaDetailsCommand> validator)
+        ILogger<UpdateMainInfoHandler> logger, 
+        [FromKeyedServices(ProjectConstants.Context.VolunteerManagement)] IUnitOfWork unitOfWork,
+        IValidator<UpdateSocialMediaDetailsCommand> validator)
     {
         _volunteerRepository = volunteerRepository;
         _logger = logger;

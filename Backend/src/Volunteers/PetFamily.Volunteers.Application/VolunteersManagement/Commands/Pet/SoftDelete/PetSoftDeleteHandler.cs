@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Pet.Family.SharedKernel;
 using PetFamily.Core.Abstractions;
@@ -19,7 +20,7 @@ public class PetSoftDeleteHandler : ICommandHandler<Guid,PetSoftDeleteCommand>
 
     public PetSoftDeleteHandler(IVolunteerRepository volunteerRepository,
         ILogger<PetSoftDeleteHandler> logger, 
-        IUnitOfWork unitOfWork,
+        [FromKeyedServices(ProjectConstants.Context.VolunteerManagement)] IUnitOfWork unitOfWork,
         IValidator<PetSoftDeleteCommand> validator,
         IReadDbContext readDbContext)
     {

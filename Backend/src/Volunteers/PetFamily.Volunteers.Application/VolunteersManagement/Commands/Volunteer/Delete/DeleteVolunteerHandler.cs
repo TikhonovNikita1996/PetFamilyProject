@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Pet.Family.SharedKernel;
 using PetFamily.Core.Abstractions;
@@ -17,7 +18,8 @@ public class DeleteVolunteerHandler : ICommandHandler<Guid,DeleteVolunteerComman
 
     public DeleteVolunteerHandler(IVolunteerRepository volunteerRepository,
         ILogger<DeleteVolunteerHandler> logger,
-        IUnitOfWork unitOfWork, IValidator<DeleteVolunteerCommand> validator)
+        [FromKeyedServices(ProjectConstants.Context.VolunteerManagement)] IUnitOfWork unitOfWork,
+        IValidator<DeleteVolunteerCommand> validator)
     {
         _volunteerRepository = volunteerRepository;
         _logger = logger;

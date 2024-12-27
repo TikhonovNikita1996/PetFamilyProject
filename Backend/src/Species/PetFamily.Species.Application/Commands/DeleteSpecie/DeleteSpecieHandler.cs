@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Pet.Family.SharedKernel;
 using PetFamily.Core.Abstractions;
@@ -18,7 +19,7 @@ public class DeleteSpecieHandler : ICommandHandler<Guid,DeleteSpecieCommand>
     private readonly IReadDbContext _readDbContext;
 
     public DeleteSpecieHandler(
-        IUnitOfWork unitOfWork,
+        [FromKeyedServices(ProjectConstants.Context.SpeciesManagement)] IUnitOfWork unitOfWork,
         ISpeciesRepository speciesRepository,
         ILogger<DeleteSpecieHandler> logger,
         IValidator<DeleteSpecieCommand> validator,

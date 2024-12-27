@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Pet.Family.SharedKernel;
 using PetFamily.Core.Abstractions;
@@ -18,7 +19,7 @@ public class UpdateMainInfoHandler : ICommandHandler<Guid,UpdateMainInfoCommand>
 
     public UpdateMainInfoHandler(IVolunteerRepository volunteerRepository,
         ILogger<UpdateMainInfoHandler> logger, 
-        IUnitOfWork unitOfWork,
+        [FromKeyedServices(ProjectConstants.Context.VolunteerManagement)] IUnitOfWork unitOfWork,
         IValidator<UpdateMainInfoCommand> validator)
     {
         _volunteerRepository = volunteerRepository;

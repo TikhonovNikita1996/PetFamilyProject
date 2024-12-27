@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Pet.Family.SharedKernel;
 using Pet.Family.SharedKernel.ValueObjects.Specie;
@@ -25,7 +26,7 @@ public class AddPetHandler : ICommandHandler<Guid,AddPetCommand>
         ILogger<AddPetHandler> logger,
         IVolunteerRepository volunteersRepository,
         IValidator<AddPetCommand> validator,
-        IUnitOfWork unitOfWork,
+        [FromKeyedServices(ProjectConstants.Context.VolunteerManagement)] IUnitOfWork unitOfWork,
         IReadDbContext readDbContext)
     {
         _logger = logger;

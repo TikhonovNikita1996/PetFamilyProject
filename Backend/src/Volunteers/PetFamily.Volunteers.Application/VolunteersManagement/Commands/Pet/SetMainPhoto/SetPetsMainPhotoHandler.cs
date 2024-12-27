@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Pet.Family.SharedKernel;
 using PetFamily.Core.Abstractions;
@@ -18,9 +19,8 @@ public class SetPetsMainPhotoHandler : ICommandHandler<Guid,SetPetsMainPhotoComm
 
     public SetPetsMainPhotoHandler(IVolunteerRepository volunteerRepository,
         ILogger<SetPetsMainPhotoHandler> logger, 
-        IUnitOfWork unitOfWork,
-        IValidator<SetPetsMainPhotoCommand> validator,
-        IReadDbContext readDbContext)
+        [FromKeyedServices(ProjectConstants.Context.VolunteerManagement)] IUnitOfWork unitOfWork,
+        IValidator<SetPetsMainPhotoCommand> validator)
     {
         _volunteerRepository = volunteerRepository;
         _logger = logger;
