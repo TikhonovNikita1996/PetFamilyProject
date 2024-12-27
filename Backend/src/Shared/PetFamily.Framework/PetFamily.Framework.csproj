@@ -11,8 +11,8 @@
     </ItemGroup>
     
     <ItemGroup>
-      <ProjectReference Include="..\..\Pet.Family.SharedKernel\Pet.Family.SharedKernel.csproj" />
-      <ProjectReference Include="..\..\PetFamily.Core\PetFamily.Core.csproj" />
+      <ProjectReference Include="..\..\Shared\Pet.Family.SharedKernel\Pet.Family.SharedKernel.csproj" />
+      <ProjectReference Include="..\..\Shared\PetFamily.Core\PetFamily.Core.csproj" />
     </ItemGroup>
     
 </Project>

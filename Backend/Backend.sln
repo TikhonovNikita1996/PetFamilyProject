@@ -14,9 +14,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolunteerTests", "tests\Vol
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.Volunteer.IntegrationTests", "src\PetFamily.Volunteer.IntegrationTests\PetFamily.Volunteer.IntegrationTests.csproj", "{A5CB804E-2208-4DE2-914A-CD7B9B5D83C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.Core", "src\PetFamily.Core\PetFamily.Core.csproj", "{6DD856F9-424B-4B96-B9DE-DA5A33DC99CB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.Core", "src\Shared\PetFamily.Core\PetFamily.Core.csproj", "{6DD856F9-424B-4B96-B9DE-DA5A33DC99CB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pet.Family.SharedKernel", "src\Pet.Family.SharedKernel\Pet.Family.SharedKernel.csproj", "{0B30E16A-BE9F-4267-B545-8F903A837413}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pet.Family.SharedKernel", "src\Shared\Pet.Family.SharedKernel\Pet.Family.SharedKernel.csproj", "{0B30E16A-BE9F-4267-B545-8F903A837413}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{24D81CB7-507A-41A7-841F-BF6F1F851ACA}"
 EndProject

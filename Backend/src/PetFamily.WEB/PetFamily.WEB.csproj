@@ -24,6 +24,8 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\tests\VolunteerTests\VolunteerTests.csproj" />
+      <ProjectReference Include="..\Shared\Pet.Family.SharedKernel\Pet.Family.SharedKernel.csproj" />
+      <ProjectReference Include="..\Shared\PetFamily.Core\PetFamily.Core.csproj" />
       <ProjectReference Include="..\Shared\PetFamily.Framework\PetFamily.Framework.csproj" />
       <ProjectReference Include="..\Species\PetFamily.Species.Infrastructure\PetFamily.Species.Infrastructure.csproj" />
       <ProjectReference Include="..\Species\PetFamily.Species.Presentation\PetFamily.Species.Presentation.csproj" />
