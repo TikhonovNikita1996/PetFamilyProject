@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PetFamily.Framework;
 using PetFamily.Volunteers.Application.VolunteersManagement.Queries.GetPetById;
 using PetFamily.Volunteers.Application.VolunteersManagement.Queries.GetPetsWithFiltersAndPagination;
@@ -6,6 +7,7 @@ using PetFamily.Volunteers.Presentation.Requests.Pet;
 
 namespace PetFamily.Volunteers.Presentation.Controllers;
 
+[Authorize]
 public class PetsController : BaseApiController
 {
     [HttpGet]

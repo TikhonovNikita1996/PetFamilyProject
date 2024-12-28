@@ -1,3 +1,7 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.OpenApi.Models;
+using PetFamily.Accounts.Application;
+using PetFamily.Accounts.Infrastructure;
 using PetFamily.API.Middlewares;
 using PetFamily.Species.Application;
 using PetFamily.Species.Infrastructure;
@@ -33,9 +37,40 @@ builder.Services
     .AddVolunteersInfrastructure(builder.Configuration)
     .AddSpeciesInfrastructure(builder.Configuration)
     .AddVolunteersApplication()
-    .AddSpeciesApplication();
+    .AddSpeciesApplication()
+    .AddAuthorizationInfrastructure(builder.Configuration)
+    .AddAccountsApplication();
 
 builder.Services.AddSerilog();
+
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    {
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer"
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
+
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 var app = builder.Build();
@@ -51,6 +86,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

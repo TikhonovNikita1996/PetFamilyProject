@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Pet.Family.SharedKernel;
 using PetFamily.Core.Dtos.Pet;
@@ -25,6 +26,7 @@ using PetFamily.Volunteers.Presentation.Requests.Volunteer;
 
 namespace PetFamily.Volunteers.Presentation.Controllers;
 
+[Authorize]
 public class VolunteersController : BaseApiController
 {
     [HttpPost]
