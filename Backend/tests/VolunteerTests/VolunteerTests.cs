@@ -1,11 +1,9 @@
-using PetFamily.Domain.Entities.Ids;
-using PetFamily.Domain.Entities.Others;
-using PetFamily.Domain.Entities.Pet;
-using PetFamily.Domain.Entities.Pet.ValueObjects;
-using PetFamily.Domain.Entities.Volunteer;
-using PetFamily.Domain.Entities.Volunteer.ValueObjects;
-using PetFamily.Domain.Shared;
-using Description = PetFamily.Domain.Entities.Volunteer.ValueObjects.Description;
+using Pet.Family.SharedKernel;
+using Pet.Family.SharedKernel.ValueObjects.Specie;
+using PetFamily.Volunteers.Domain.Ids;
+using PetFamily.Volunteers.Domain.Pet.ValueObjects;
+using PetFamily.Volunteers.Domain.Volunteer;
+using PetFamily.Volunteers.Domain.Volunteer.ValueObjects;
 
 namespace VolunteerTests;
 
@@ -40,7 +38,7 @@ public class VolunteerTests
             phoneNumber, donationInfoList, socialMediaList).Value;
     }
 
-    public Pet CreateTestPet()
+    public PetFamily.Volunteers.Domain.Pet.Pet CreateTestPet()
     {
         var petId = PetId.NewId();
         var name = PetsName.Create("Bob").Value;
@@ -67,7 +65,7 @@ public class VolunteerTests
         var donationInfoList = new DonationInfoList(donationInfos);
         DateTime createdAt = DateTime.Now;
 
-        return Pet.Create(petId, name, age, specieDetails, gender, desctiption, color,
+        return PetFamily.Volunteers.Domain.Pet.Pet.Create(petId, name, age, specieDetails, gender, desctiption, color,
             healthInformation, address, weight, height,
             phoneNumber, isSterilized, isVaccinated, 
             helpStatus, donationInfoList, createdAt).Value;

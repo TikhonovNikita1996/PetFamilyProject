@@ -1,17 +1,11 @@
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Abstractions;
-using PetFamily.Application.Dtos;
-using PetFamily.Application.PetsSpecies.AddBreed;
-using PetFamily.Application.PetsSpecies.Create;
-using PetFamily.Application.Volunteers.AddPet;
-using PetFamily.Domain.Entities.Ids;
-using PetFamily.Domain.Entities.Others;
-using PetFamily.Domain.Entities.Pet.ValueObjects;
-using PetFamily.Domain.Entities.Volunteer.ValueObjects;
-using PetFamily.Domain.Shared;
-using PetFamily.Infrastructure.DataContexts;
+using Pet.Family.SharedKernel.ValueObjects;
+using Pet.Family.SharedKernel.ValueObjects.Specie;
+using PetFamily.Core.Abstractions;
+using PetFamily.Species.Application.Commands.AddBreed;
+using PetFamily.Species.Infrastructure.DataContexts;
 
 namespace PetFamily.Volunteer.IntegrationTests.Specie;
 
@@ -67,7 +61,7 @@ public class AddBreedToSpecieTest : IClassFixture<IntegrationTestsWebFactory>, I
 
     private async Task<Guid> SeedSpecie()
     {
-        var specie = Domain.Entities.Pet.ValueObjects.Specie.Create(SpecieId.NewId(), "Test specie");
+        var specie = Species.Domain.ValueObjects.Specie.Create(SpecieId.NewId(), "Test specie");
 
         await _writeDbContext.Species.AddAsync(specie.Value);
         await _writeDbContext.SaveChangesAsync();
