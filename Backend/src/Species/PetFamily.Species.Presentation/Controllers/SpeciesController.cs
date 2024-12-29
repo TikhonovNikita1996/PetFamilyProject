@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PetFamily.Framework;
 using PetFamily.Species.Application.Commands.AddBreed;
 using PetFamily.Species.Application.Commands.Create;
@@ -10,6 +12,7 @@ using PetFamily.Species.Presentation.Specie;
 
 namespace PetFamily.Species.Presentation.Controllers;
 
+[Authorize]
 public class SpeciesController : BaseApiController
 {
     [HttpPost]
@@ -27,7 +30,6 @@ public class SpeciesController : BaseApiController
 
         return Ok(result.Value);
     }
-    
     [HttpPost("{specieId:guid}/breed")]
     public async Task<ActionResult<Guid>> AddBreed(
         [FromServices] AddBreedHandler handler,

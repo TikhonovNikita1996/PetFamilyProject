@@ -46,7 +46,6 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         builder.OwnsOne(v => v.DonateForHelpInfos, db =>
         {
             db.ToJson();
-
             db.OwnsMany(s => s.DonationInfos, m =>
             {
                 m.Property(sm => sm.Name)

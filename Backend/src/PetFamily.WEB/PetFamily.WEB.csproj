@@ -24,6 +24,11 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\tests\VolunteerTests\VolunteerTests.csproj" />
+      <ProjectReference Include="..\PetFamily.Accounts.Application\PetFamily.Accounts.Application.csproj" />
+      <ProjectReference Include="..\PetFamily.Accounts.Contracts\PetFamily.Accounts.Contracts.csproj" />
+      <ProjectReference Include="..\PetFamily.Accounts.Domain\PetFamily.Accounts.Domain.csproj" />
+      <ProjectReference Include="..\PetFamily.Accounts.Infrastructure\PetFamily.Accounts.Infrastructure.csproj" />
+      <ProjectReference Include="..\PetFamily.Accounts.Presentation\PetFamily.Accounts.Presentation.csproj" />
       <ProjectReference Include="..\Shared\Pet.Family.SharedKernel\Pet.Family.SharedKernel.csproj" />
       <ProjectReference Include="..\Shared\PetFamily.Core\PetFamily.Core.csproj" />
       <ProjectReference Include="..\Shared\PetFamily.Framework\PetFamily.Framework.csproj" />

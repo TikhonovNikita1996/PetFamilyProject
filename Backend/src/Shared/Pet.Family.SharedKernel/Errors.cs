@@ -54,4 +54,12 @@ public static class Errors
             return CustomError.Validation("record.already.exist", $"volunteer already exist");
         }
     }
+
+    public static class User
+    {
+        public static CustomError InvalidCredentials()
+        {
+            return CustomError.Validation("credentials.is.invalid", "Your credentials is invalid");
+        }
+    }
 }
