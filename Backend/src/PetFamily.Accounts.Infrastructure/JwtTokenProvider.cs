@@ -22,10 +22,10 @@ public class JwtTokenProvider : ITokenProvider
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Key));
         var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
         
-        Claim[] claims = [
-            new Claim(CustomClaims.Id, user.Id.ToString()),
-            new Claim(CustomClaims.Email, user.Email),
-            new Claim(CustomClaims.Username, user.UserName)
+        Claim[] claims = 
+        [
+            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+            new Claim(JwtRegisteredClaimNames.Email, user.Email)
         ];
          
         var jwtToken = new JwtSecurityToken(
