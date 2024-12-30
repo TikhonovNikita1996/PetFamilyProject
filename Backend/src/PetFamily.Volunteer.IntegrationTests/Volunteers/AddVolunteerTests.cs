@@ -85,10 +85,7 @@ public class AddVolunteerTests : IClassFixture<IntegrationTestsWebFactory>, IAsy
             GenderType.Male,
             WorkingExperience.Create(2).Value,
             Description.Create("Test description").Value,
-            PhoneNumber.Create("+7-777-777-77-77").Value,
-            new DonationInfoList(null),
-            new SocialMediaDetails(null)
-        ).Value;
+            PhoneNumber.Create("+7-777-777-77-77").Value).Value;
 
         await _writeDbContext.Volunteers.AddAsync(volunteer);
         await _writeDbContext.SaveChangesAsync();

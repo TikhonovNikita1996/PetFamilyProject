@@ -37,10 +37,6 @@ public class CreateVolunteerHandler : ICommandHandler<Guid,CreateVolunteerComman
         
         var email = Email.Create(createVolunteerCommand.Email.Value).Value;
         
-        // var existingVolunteer = await _volunteerRepository.GetByEmail(email);
-        // if (existingVolunteer.IsSuccess)
-        //     return existingVolunteer.Error.ToErrorList();
-        
         var volunterId = VolunteerId.NewId();
         var fullName = FullName.Create(createVolunteerCommand.FullName.LastName, 
             createVolunteerCommand.FullName.Name, createVolunteerCommand.FullName.MiddleName).Value;
@@ -51,20 +47,10 @@ public class CreateVolunteerHandler : ICommandHandler<Guid,CreateVolunteerComman
         
         var phoneNumber = PhoneNumber.Create(createVolunteerCommand.PhoneNumber.Value).Value;
         
-        var socialNetworks = createVolunteerCommand.SocialMediaDetails
-            .Select(s => SocialMedia.Create(s.Name, s.Url));
-
-        var resultNetworksList = new SocialMediaDetails(socialNetworks.Select(x=> x.Value).ToList());
-        
-        var donationInfos = createVolunteerCommand.DonationInfo
-            .Select(s => DonationInfo.Create(s.Name, s.Description));
-
-        var resultDonationInfoList = new DonationInfoList(donationInfos.Select(x=> x.Value).ToList());
-        
         var gender = Enum.Parse<GenderType>(createVolunteerCommand.Gender);
         
         var volunteer = Domain.Volunteer.Volunteer.Create(volunterId, fullName, email, gender,
-            workingExperience, description, phoneNumber, resultDonationInfoList, resultNetworksList);
+            workingExperience, description, phoneNumber);
         
         if((volunteer.IsFailure))
             return volunteer.Error.ToErrorList();

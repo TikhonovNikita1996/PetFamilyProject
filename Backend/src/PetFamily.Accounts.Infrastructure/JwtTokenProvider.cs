@@ -4,8 +4,9 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using PetFamily.Accounts.Application.Interfaces;
 using PetFamily.Accounts.Domain;
-using PetFamily.Accounts.Infrastructure.Options;
 using Microsoft.Extensions.Options;
+using PetFamily.Core.Options;
+
 namespace PetFamily.Accounts.Infrastructure;
 
 public class JwtTokenProvider : ITokenProvider

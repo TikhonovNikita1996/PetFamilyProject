@@ -75,6 +75,10 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 var app = builder.Build();
 
+var accountSeeder = app.Services.GetRequiredService<AccountsSeeder>();
+
+await accountSeeder.SeedAsync();
+
 app.UseExceptionMiddleware();
 app.UseSerilogRequestLogging();
 

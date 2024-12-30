@@ -72,10 +72,7 @@ public class AddPhotosToPetTests : IClassFixture<IntegrationTestsWebFactory>, IA
             GenderType.Male,
             WorkingExperience.Create(2).Value,
             Description.Create("Test description").Value,
-            PhoneNumber.Create("+7-777-777-77-77").Value,
-            new DonationInfoList(null),
-            new SocialMediaDetails(null)
-        ).Value;
+            PhoneNumber.Create("+7-777-777-77-77").Value).Value;
 
         var pet = PetFamily.Volunteers.Domain.Pet.Pet.Create( PetId.NewId(), PetsName.Create("Test").Value,
             Age.Create(2).Value,

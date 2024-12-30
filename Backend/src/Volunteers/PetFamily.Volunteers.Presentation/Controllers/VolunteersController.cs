@@ -15,9 +15,7 @@ using PetFamily.Volunteers.Application.VolunteersManagement.Commands.Volunteer.C
 using PetFamily.Volunteers.Application.VolunteersManagement.Commands.Volunteer.Create;
 using PetFamily.Volunteers.Application.VolunteersManagement.Commands.Volunteer.Delete;
 using PetFamily.Volunteers.Application.VolunteersManagement.Commands.Volunteer.HardPetDelete;
-using PetFamily.Volunteers.Application.VolunteersManagement.Commands.Volunteer.Update.DonationInfo;
 using PetFamily.Volunteers.Application.VolunteersManagement.Commands.Volunteer.Update.MainInfo;
-using PetFamily.Volunteers.Application.VolunteersManagement.Commands.Volunteer.Update.SocialMediaDetails;
 using PetFamily.Volunteers.Application.VolunteersManagement.Queries.GetAllVolunteers;
 using PetFamily.Volunteers.Application.VolunteersManagement.Queries.GetVolunteerById;
 using PetFamily.Volunteers.Presentation.Processors;
@@ -58,38 +56,6 @@ public class VolunteersController : BaseApiController
         CancellationToken cancellationToken)
     {
         var command = new UpdateMainInfoCommand(id, dto);
-        var result = await handler.Handle(command, cancellationToken);
-        if (result.IsFailure)
-            return result.Error.ToResponse();
-        
-        return Ok(result.Value); 
-    }
-    
-    [HttpPut("{id:guid}/social-media-info")]
-    public async Task<ActionResult> UpdateSocialMedia(
-        [FromRoute] Guid id,
-        [FromServices] UpdateSocialMediaDetailsHandler handler,
-        [FromBody] UpdateSocialNetworksDto dto, 
-        CancellationToken cancellationToken)
-    {
-        var command = new UpdateSocialMediaDetailsCommand(id, dto);
-        
-        var result = await handler.Handle(command, cancellationToken);
-        if (result.IsFailure)
-            return result.Error.ToResponse();
-        
-        return Ok(result.Value); 
-    }
-    
-    [HttpPut("{id:guid}/donation-info")]
-    public async Task<ActionResult> UpdateDonationInfo(
-        [FromRoute] Guid id,
-        [FromServices] UpdateDonationInfoHandler handler,
-        [FromBody] UpdateDonationInfoDto dto, 
-        CancellationToken cancellationToken)
-    {
-        var command = new UpdateDonationInfoCommand(id, dto);
-        
         var result = await handler.Handle(command, cancellationToken);
         if (result.IsFailure)
             return result.Error.ToResponse();

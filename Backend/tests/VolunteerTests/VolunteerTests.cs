@@ -18,24 +18,11 @@ public class VolunteerTests
         var workingExp = WorkingExperience.Create(2).Value;
         var desctiption = Description.Create("Test").Value;
         var phoneNumber = PhoneNumber.Create("+7-777-777-77-77").Value;
-        List<DonationInfo> donationInfos = new List<DonationInfo>()
-        {
-            DonationInfo .Create("Test1", "Test").Value,
-            DonationInfo.Create("Test2", "Test").Value,
-        };
-        var donationInfoList = new DonationInfoList(donationInfos);
         
-        List<SocialMedia> socialMedias = new List<SocialMedia>()
-        {
-            SocialMedia.Create("Test1", "asdasdasdasdasdasd").Value,
-            SocialMedia.Create("Test2", "asdasdasdasdasdasd").Value,
-        };
-
-        var socialMediaList = new SocialMediaDetails(socialMedias);
         
         return Volunteer.Create(volunteerId, fullName, email,
             gender, workingExp, desctiption,
-            phoneNumber, donationInfoList, socialMediaList).Value;
+            phoneNumber).Value;
     }
 
     public PetFamily.Volunteers.Domain.Pet.Pet CreateTestPet()

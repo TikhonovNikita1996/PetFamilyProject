@@ -17,8 +17,7 @@ public class Volunteer : BaseEntity<VolunteerId>, ISoftDeletable
 
     public Volunteer(VolunteerId id, FullName fullname, Email email,
         GenderType gender, WorkingExperience workingExperience,
-        Description description, PhoneNumber phoneNumber,
-        DonationInfoList donationInfoList, SocialMediaDetails socialMediaDetails) : base(id)
+        Description description, PhoneNumber phoneNumber) : base(id)
     {
         Fullname = fullname;
         Email = email;
@@ -26,8 +25,6 @@ public class Volunteer : BaseEntity<VolunteerId>, ISoftDeletable
         WorkingExperience = workingExperience;
         Description = description;
         PhoneNumber = phoneNumber;
-        DonateForHelpInfos = donationInfoList;
-        SocialMediaDetails = socialMediaDetails;
     }
     public FullName Fullname { get; private set; } = default!;
     public Email Email { get; private set; } = default!;
@@ -35,8 +32,6 @@ public class Volunteer : BaseEntity<VolunteerId>, ISoftDeletable
     public WorkingExperience WorkingExperience { get; private set; } = default!;
     public Description Description { get; private set; } = default!;
     public PhoneNumber PhoneNumber { get; private set; } = default!;
-    public DonationInfoList DonateForHelpInfos { get; private set; }
-    public SocialMediaDetails SocialMediaDetails { get; private set; }
     public IReadOnlyList<Pet.Pet> CurrentPets => _pets;
     public int PetsWhoFoundHome => _pets.Count(p => p.CurrentStatus == HelpStatusType.FoundHome);
     public int PetsSearchingForHome => _pets.Count(p => p.CurrentStatus == HelpStatusType.SearchingForHome);
@@ -45,12 +40,11 @@ public class Volunteer : BaseEntity<VolunteerId>, ISoftDeletable
     public static Result<Volunteer, CustomError> Create(VolunteerId id,
                                                 FullName fullname, Email email,
                                                 GenderType gender, WorkingExperience workingExperience, Description description,
-                                                PhoneNumber phoneNumber, DonationInfoList donationInfoList,
-                                                SocialMediaDetails socialMediaDetails)
+                                                PhoneNumber phoneNumber)
     {
         
         var volunteer = new Volunteer(id, fullname, email, gender, workingExperience, description,
-            phoneNumber, donationInfoList, socialMediaDetails);
+            phoneNumber);
 
         return volunteer;
     }
@@ -66,15 +60,6 @@ public class Volunteer : BaseEntity<VolunteerId>, ISoftDeletable
         WorkingExperience = workingExperience;
     }
     
-    public void UpdateDonationInfo(DonationInfoList NewDonateForHelpInfos)
-    {
-        DonateForHelpInfos = NewDonateForHelpInfos;
-    }
-    public void UpdateSocialMediaDetails(SocialMediaDetails NewSocialMediaDetails)
-    {
-        SocialMediaDetails = NewSocialMediaDetails;
-    }
-
     public void Delete()
     {
         if (!_isDeleted)

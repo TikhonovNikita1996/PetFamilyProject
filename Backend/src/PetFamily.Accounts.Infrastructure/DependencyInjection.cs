@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using PetFamily.Accounts.Application.Interfaces;
 using PetFamily.Accounts.Domain;
-using PetFamily.Accounts.Infrastructure.Options;
+using PetFamily.Core.Options;
 
 namespace PetFamily.Accounts.Infrastructure;
 
@@ -25,10 +25,10 @@ public static class DependencyInjection
             {
                 options.User.RequireUniqueEmail = true;
             })
-            .AddEntityFrameworkStores<AuthorizationDbContext>();
+            .AddEntityFrameworkStores<AccountsDbContext>();
         
-        services.AddScoped<AuthorizationDbContext>(_ => 
-            new AuthorizationDbContext(configuration.GetConnectionString("Database")!));
+        services.AddScoped<AccountsDbContext>(_ => 
+            new AccountsDbContext(configuration.GetConnectionString("Database")!));
         
         services.AddAuthentication(options =>
             {
@@ -53,6 +53,11 @@ public static class DependencyInjection
                     ValidateLifetime = true
                 };
             });
+
+        services.AddSingleton<AccountsSeeder>();
+        services.AddScoped<PermissionManager>();
+        services.AddScoped<RolePermissionManager>();
+        
         return services;
     }
 }

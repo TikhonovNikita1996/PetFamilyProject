@@ -6,18 +6,21 @@ using PetFamily.Accounts.Domain;
 
 namespace PetFamily.Accounts.Infrastructure;
 
-public class AuthorizationDbContext 
+public class AccountsDbContext 
     : IdentityDbContext<User, Role, Guid>
 {
     private readonly string _connectionString;
 
-    public AuthorizationDbContext(string connectionString)
+    public AccountsDbContext(string connectionString)
     {
         _connectionString = connectionString;
     }
     
     public DbSet<User> Users => Set<User>();
     public DbSet<Role> Roles => Set<Role>();
+    
+    public DbSet<Permission> Permissions => Set<Permission>();
+    public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -30,6 +33,35 @@ public class AuthorizationDbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        
+        modelBuilder.Entity<User>()
+            .ToTable("users");
+        
+        modelBuilder.Entity<Role>()
+            .ToTable("roles");
+        
+        modelBuilder.Entity<RolePermission>()
+            .HasOne(rp => rp.Role)
+            .WithMany(r => r.RolePermissions)
+            .HasForeignKey(rp => rp.RoleId);
+
+        modelBuilder.Entity<RolePermission>()
+            .HasOne(rp => rp.Permission)
+            .WithMany()
+            .HasForeignKey(rp => rp.PermissionId);
+        
+        modelBuilder.Entity<RolePermission>()
+            .HasKey(rp => new { rp.RoleId, rp.PermissionId });
+        
+        modelBuilder.Entity<Permission>()
+            .HasIndex(p => p.Code)
+            .IsUnique();
+        
+        modelBuilder.Entity<Permission>()
+            .ToTable("permissions");
+        
+        modelBuilder.Entity<RolePermission>()
+            .ToTable("role_permissions");
         
         modelBuilder.Entity<IdentityUserClaim<Guid>>()
             .ToTable("user_claims");
@@ -45,6 +77,8 @@ public class AuthorizationDbContext
         
         modelBuilder.Entity<IdentityUserRole<Guid>>()
             .ToTable("user_roles");
+
+        modelBuilder.HasDefaultSchema("accounts");
     }
 
     private ILoggerFactory CreateLoggerFactory() =>

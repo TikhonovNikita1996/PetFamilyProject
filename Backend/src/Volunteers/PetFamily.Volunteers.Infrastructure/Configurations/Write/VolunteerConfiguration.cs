@@ -29,32 +29,32 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
             .HasColumnName("gender")
             .IsRequired();
         
-        builder.OwnsOne(v => v.SocialMediaDetails, sb =>
-        {
-            sb.ToJson();
-
-            sb.OwnsMany(s => s.SocialMedias, m =>
-            {
-                m.Property(sm => sm.Name)
-                    .IsRequired();
-
-                m.Property(sm => sm.Url)
-                    .IsRequired();
-            });
-        });
-
-        builder.OwnsOne(v => v.DonateForHelpInfos, db =>
-        {
-            db.ToJson();
-            db.OwnsMany(s => s.DonationInfos, m =>
-            {
-                m.Property(sm => sm.Name)
-                    .IsRequired();
-
-                m.Property(sm => sm.Description)
-                    .IsRequired();
-            });
-        });
+        // builder.OwnsOne(v => v.SocialMediaDetails, sb =>
+        // {
+        //     sb.ToJson();
+        //
+        //     sb.OwnsMany(s => s.SocialMedias, m =>
+        //     {
+        //         m.Property(sm => sm.Name)
+        //             .IsRequired();
+        //
+        //         m.Property(sm => sm.Url)
+        //             .IsRequired();
+        //     });
+        // });
+        //
+        // builder.OwnsOne(v => v.DonateForHelpInfos, db =>
+        // {
+        //     db.ToJson();
+        //     db.OwnsMany(s => s.DonationInfos, m =>
+        //     {
+        //         m.Property(sm => sm.Name)
+        //             .IsRequired();
+        //
+        //         m.Property(sm => sm.Description)
+        //             .IsRequired();
+        //     });
+        // });
 
         builder.ComplexProperty(v => v.Fullname, fn =>
         {

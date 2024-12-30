@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Accounts.Domain;
 
-namespace PetFamily.Framework.Authorization;
+namespace PetFamily.API.Authorization;
 
 public class PermissionRequirementHandler : AuthorizationHandler<PermissionAttribute>
 {
@@ -29,7 +28,6 @@ public class PermissionRequirementHandler : AuthorizationHandler<PermissionAttri
             context.Succeed(permission);
             return;
         }
-
         context.Fail();
     }
 }

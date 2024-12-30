@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace PetFamily.Framework.Authorization;
+namespace PetFamily.API.Authorization;
 
 public class PermissionPolicyProvider : IAuthorizationPolicyProvider
 {
