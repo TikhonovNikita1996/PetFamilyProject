@@ -5,6 +5,7 @@ using Pet.Family.SharedKernel;
 using PetFamily.Core.Dtos.Pet;
 using PetFamily.Core.Dtos.Volunteer;
 using PetFamily.Framework;
+using PetFamily.Framework.Authorization;
 using PetFamily.Volunteers.Application.VolunteersManagement.Commands.Pet.SetMainPhoto;
 using PetFamily.Volunteers.Application.VolunteersManagement.Commands.Pet.SoftDelete;
 using PetFamily.Volunteers.Application.VolunteersManagement.Commands.Pet.Update.MainInfo;
@@ -27,6 +28,7 @@ namespace PetFamily.Volunteers.Presentation.Controllers;
 [Authorize]
 public class VolunteersController : BaseApiController
 {
+    [Permission(Permissions.Volunteers.Create)]
     [HttpPost]
     public async Task<ActionResult> Create(
         [FromServices] CreateVolunteerHandler createVolunteerHandler,
@@ -48,6 +50,7 @@ public class VolunteersController : BaseApiController
         return Ok(result.Value);
     }
     
+    [Permission(Permissions.Volunteers.Update)]
     [HttpPut("{id:guid}/main-info")]
     public async Task<ActionResult> UpdateMainInfo(
         [FromRoute] Guid id,
@@ -63,6 +66,7 @@ public class VolunteersController : BaseApiController
         return Ok(result.Value); 
     }
     
+    [Permission(Permissions.Volunteers.Delete)]
     [HttpDelete("{id:guid}")]
     public async Task<ActionResult> Delete(
         [FromRoute] Guid id,
@@ -78,6 +82,7 @@ public class VolunteersController : BaseApiController
         return Ok(result.Value); 
     }
     
+    [Permission(Permissions.Volunteers.Update)]
     [HttpPost("{id:guid}/pet")]
     public async Task<ActionResult<Guid>> AddPet(
         [FromRoute] Guid id,
@@ -94,6 +99,7 @@ public class VolunteersController : BaseApiController
         return Ok(result.Value);
     }
     
+    [Permission(Permissions.Volunteers.Update)]
     [HttpPost("{volunteerId:guid}/pet/{petId:guid}/files")]
     public async Task<ActionResult> UploadFilesToPet(
         [FromRoute] Guid volunteerId,
@@ -114,6 +120,7 @@ public class VolunteersController : BaseApiController
         return Ok(result.Value);
     }
     
+    [Permission(Permissions.Volunteers.Update)]
     [HttpPut("{volunteerId:guid}/pet/{petId:guid}/position-number")]
     public async Task<ActionResult> ChangePetsPosition(
         [FromRoute] Guid volunteerId,
@@ -131,6 +138,7 @@ public class VolunteersController : BaseApiController
         return Ok(result.Value);
     }
     
+    [Permission(Permissions.Volunteers.Read)]
     [HttpGet]
     public async Task<ActionResult> GetAllVolunteers(
         [FromServices] GetAllVolunteersHandler handler,
@@ -143,6 +151,7 @@ public class VolunteersController : BaseApiController
         return Ok(result); 
     }
     
+    [Permission(Permissions.Volunteers.Read)]
     [HttpGet("/volunteer-by-id")]
     public async Task<ActionResult> GetVolunteerById(
         [FromServices] GetVolunteerByIdHandler handler,
@@ -157,6 +166,7 @@ public class VolunteersController : BaseApiController
         return Ok(result); 
     }
     
+    [Permission(Permissions.Volunteers.Update)]
     [HttpPut("{volunteerId:guid}/pet/{petId:guid}/main-info")]
     public async Task<ActionResult> UpdatePetsMainInfo(
         [FromRoute] Guid volunteerId,
@@ -173,6 +183,7 @@ public class VolunteersController : BaseApiController
         return Ok(result.Value);
     }
     
+    [Permission(Permissions.Volunteers.Update)]
     [HttpPut("{volunteerId:guid}/pet/{petId:guid}/status")]
     public async Task<ActionResult> UpdatePetsStatus(
         [FromRoute] Guid volunteerId,
@@ -189,6 +200,7 @@ public class VolunteersController : BaseApiController
         return Ok(result.Value);
     }
     
+    [Permission(Permissions.Volunteers.Delete)]
     [HttpDelete("{volunteerId:guid}/pet/{petId:guid}/soft")]
     public async Task<ActionResult> SoftPetDelete(
         [FromRoute] Guid volunteerId,
@@ -205,6 +217,7 @@ public class VolunteersController : BaseApiController
         return Ok(result.Value); 
     }
     
+    [Permission(Permissions.Volunteers.Delete)]
     [HttpDelete("{volunteerId:guid}/pet/{petId:guid}/hard")]
     public async Task<ActionResult> HardPetDelete(
         [FromRoute] Guid volunteerId,
@@ -221,6 +234,7 @@ public class VolunteersController : BaseApiController
         return Ok(result.Value); 
     }
     
+    [Permission(Permissions.Volunteers.Update)]
     [HttpPut("{volunteerId:guid}/pet/{petId:guid}/main-photo")]
     public async Task<ActionResult> SetPetMainPhoto(
         [FromRoute] Guid volunteerId,
