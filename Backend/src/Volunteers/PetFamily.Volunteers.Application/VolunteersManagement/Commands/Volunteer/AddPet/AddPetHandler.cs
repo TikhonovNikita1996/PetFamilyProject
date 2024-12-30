@@ -3,16 +3,15 @@ using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Pet.Family.SharedKernel;
+using Pet.Family.SharedKernel.ValueObjects.Pet;
 using Pet.Family.SharedKernel.ValueObjects.Specie;
+using Pet.Family.SharedKernel.ValueObjects.Volunteer;
 using PetFamily.Core.Abstractions;
 using PetFamily.Core.Extensions;
 using PetFamily.Species.Contracts;
 using PetFamily.Species.Contracts.Requests;
-using PetFamily.Volunteers.Application.Database;
 using PetFamily.Volunteers.Application.Interfaces;
 using PetFamily.Volunteers.Domain.Ids;
-using PetFamily.Volunteers.Domain.Pet.ValueObjects;
-using PetFamily.Volunteers.Domain.Volunteer.ValueObjects;
 
 namespace PetFamily.Volunteers.Application.VolunteersManagement.Commands.Volunteer.AddPet;
 

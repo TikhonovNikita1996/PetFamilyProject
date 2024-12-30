@@ -6,11 +6,5 @@ namespace PetFamily.Volunteers.Application.VolunteersManagement.Commands.Volunte
 
 
 public record CreateVolunteerCommand(
-    FullNameDto FullName,
-    string Gender,
-    WorkingExperienceDto WorkingExperience,
-    EmailDto Email,
     PhoneNumberDto PhoneNumber,
-    DescriptionDto Description,
-    List<SocialMediaDetailsDto>? SocialMediaDetails,
-    List<DonationInfoDto>? DonationInfo) : ICommand;
+    DescriptionDto Description) : ICommand;

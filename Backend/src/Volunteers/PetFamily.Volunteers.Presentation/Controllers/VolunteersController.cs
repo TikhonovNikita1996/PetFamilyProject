@@ -36,11 +36,8 @@ public class VolunteersController : BaseApiController
         CancellationToken cancellationToken = default)
     {
         var createCommand = new CreateVolunteerCommand(
-            request.FullName, request.Gender,
-            request.WorkingExperience,
-            request.Email, request.PhoneNumber,
-            request.Description, request.SocialMediaDetails,
-            request.DonationInfo);
+            request.PhoneNumber,
+            request.Description);
         
         var result = await createVolunteerHandler.Handle(createCommand, cancellationToken);
 

@@ -25,10 +25,10 @@ public static class DependencyInjection
             {
                 options.User.RequireUniqueEmail = true;
             })
-            .AddEntityFrameworkStores<AccountsDbContext>();
+            .AddEntityFrameworkStores<WriteAccountsDbContext>();
         
-        services.AddScoped<AccountsDbContext>(_ => 
-            new AccountsDbContext(configuration.GetConnectionString("Database")!));
+        services.AddScoped<WriteAccountsDbContext>(_ => 
+            new WriteAccountsDbContext(configuration.GetConnectionString("Database")!));
 
         services.AddSingleton<AccountsSeeder>();
         services.AddScoped<PermissionManager>();

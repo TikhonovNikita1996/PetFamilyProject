@@ -1,13 +1,13 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Pet.Family.SharedKernel;
+using Pet.Family.SharedKernel.ValueObjects.Pet;
 using Pet.Family.SharedKernel.ValueObjects.Specie;
+using Pet.Family.SharedKernel.ValueObjects.Volunteer;
 using PetFamily.Core.Abstractions;
 using PetFamily.Core.Dtos;
 using PetFamily.Volunteers.Application.VolunteersManagement.Commands.Volunteer.AddPhotosToPet;
 using PetFamily.Volunteers.Domain.Ids;
-using PetFamily.Volunteers.Domain.Pet.ValueObjects;
-using PetFamily.Volunteers.Domain.Volunteer.ValueObjects;
 using PetFamily.Volunteers.Infrastructure.DataContexts;
 
 namespace PetFamily.Volunteer.IntegrationTests.Volunteers;
@@ -67,10 +67,6 @@ public class AddPhotosToPetTests : IClassFixture<IntegrationTestsWebFactory>, IA
     {
         var volunteer = PetFamily.Volunteers.Domain.Volunteer.Volunteer.Create(
             VolunteerId.NewId(),
-            FullName.Create("Test", "Test", "Test").Value,
-            Email.Create("Test@Test.com").Value,
-            GenderType.Male,
-            WorkingExperience.Create(2).Value,
             Description.Create("Test description").Value,
             PhoneNumber.Create("+7-777-777-77-77").Value).Value;
 

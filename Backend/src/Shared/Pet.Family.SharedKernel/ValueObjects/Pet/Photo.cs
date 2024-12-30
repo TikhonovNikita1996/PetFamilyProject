@@ -1,29 +1,28 @@
 ﻿using CSharpFunctionalExtensions;
-using Pet.Family.SharedKernel;
 
-namespace PetFamily.Volunteers.Domain.Pet.ValueObjects;
+namespace Pet.Family.SharedKernel.ValueObjects.Pet;
 
-public record PetPhoto
+public record Photo
 {
     // ef core
-    public PetPhoto()
+    public Photo()
     {
         
     }
-    private PetPhoto(string filepath, bool isMain)
+    private Photo(string filepath, bool isMain)
     {
         FilePath = filepath;
         IsMain = isMain;
     }
     public string FilePath { get; set; }
     public bool IsMain { get; set; }
-    public static Result<PetPhoto, CustomError> Create(string path,
+    public static Result<Photo, CustomError> Create(string path,
         bool isMain)
     {
         if (string.IsNullOrWhiteSpace(path))
             return Errors.General.ValueIsInvalid(nameof(Path));
 
-        var newPhoto = new PetPhoto(path, isMain);
+        var newPhoto = new Photo(path, isMain);
 
         return newPhoto;
     }

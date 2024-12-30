@@ -1,7 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
-using Pet.Family.SharedKernel;
 
-namespace PetFamily.Volunteers.Domain.Volunteer.ValueObjects;
+namespace Pet.Family.SharedKernel.ValueObjects.Volunteer;
 public record WorkingExperience
 {
     private WorkingExperience(int value)

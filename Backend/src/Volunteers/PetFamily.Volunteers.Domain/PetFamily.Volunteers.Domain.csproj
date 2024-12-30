@@ -8,6 +8,11 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Shared\PetFamily.Core\PetFamily.Core.csproj" />
+      <ProjectReference Include="..\..\Shared\PetFamily.Framework\PetFamily.Framework.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Pet\ValueObjects\" />
     </ItemGroup>
 
 </Project>

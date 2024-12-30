@@ -1,9 +1,9 @@
 using Pet.Family.SharedKernel;
+using Pet.Family.SharedKernel.ValueObjects.Pet;
 using Pet.Family.SharedKernel.ValueObjects.Specie;
+using Pet.Family.SharedKernel.ValueObjects.Volunteer;
 using PetFamily.Volunteers.Domain.Ids;
-using PetFamily.Volunteers.Domain.Pet.ValueObjects;
 using PetFamily.Volunteers.Domain.Volunteer;
-using PetFamily.Volunteers.Domain.Volunteer.ValueObjects;
 
 namespace VolunteerTests;
 
@@ -12,16 +12,10 @@ public class VolunteerTests
     public Volunteer CreateTestVolunteer()
     {
         var volunteerId = VolunteerId.NewId();
-        var fullName = FullName.Create("Test", "Test", "Test").Value;
-        var email = Email.Create("aaaa@bbb.com").Value;
-        var gender = GenderType.Male;
-        var workingExp = WorkingExperience.Create(2).Value;
         var desctiption = Description.Create("Test").Value;
         var phoneNumber = PhoneNumber.Create("+7-777-777-77-77").Value;
         
-        
-        return Volunteer.Create(volunteerId, fullName, email,
-            gender, workingExp, desctiption,
+        return Volunteer.Create(volunteerId, desctiption,
             phoneNumber).Value;
     }
 

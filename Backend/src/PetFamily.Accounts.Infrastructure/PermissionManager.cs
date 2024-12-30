@@ -3,12 +3,12 @@ using PetFamily.Accounts.Domain;
 
 namespace PetFamily.Accounts.Infrastructure;
 
-public class PermissionManager(AccountsDbContext accountsDbContext)
+public class PermissionManager(WriteAccountsDbContext writeAccountsDbContext)
 {
         
     public async Task<Permission?> FindByCode(string permissionCode, CancellationToken stoppingToken = default)
     {
-        var permission = await accountsDbContext.Permissions
+        var permission = await writeAccountsDbContext.Permissions
             .FirstOrDefaultAsync(permission => permission.Code == permissionCode, stoppingToken);
         
         return permission;
@@ -18,14 +18,14 @@ public class PermissionManager(AccountsDbContext accountsDbContext)
     {
         foreach (var permissionCode in permissionCodes)
         {
-            var isPermissionExist = await accountsDbContext.Permissions
+            var isPermissionExist = await writeAccountsDbContext.Permissions
                 .AnyAsync(p => p.Code == permissionCode);
             
             if(isPermissionExist)
                 return;
             
-            await accountsDbContext.Permissions.AddAsync(new Permission {Code = permissionCode});
+            await writeAccountsDbContext.Permissions.AddAsync(new Permission {Code = permissionCode});
         }
-        await accountsDbContext.SaveChangesAsync();
+        await writeAccountsDbContext.SaveChangesAsync();
     }
 }

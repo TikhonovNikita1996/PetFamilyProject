@@ -6,12 +6,12 @@ using PetFamily.Accounts.Domain;
 
 namespace PetFamily.Accounts.Infrastructure;
 
-public class AccountsDbContext 
+public class WriteAccountsDbContext 
     : IdentityDbContext<User, Role, Guid>
 {
     private readonly string _connectionString;
 
-    public AccountsDbContext(string connectionString)
+    public WriteAccountsDbContext(string connectionString)
     {
         _connectionString = connectionString;
     }
@@ -33,9 +33,6 @@ public class AccountsDbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        
-        modelBuilder.Entity<User>()
-            .ToTable("users");
         
         modelBuilder.Entity<Role>()
             .ToTable("roles");
@@ -78,7 +75,10 @@ public class AccountsDbContext
         modelBuilder.Entity<IdentityUserRole<Guid>>()
             .ToTable("user_roles");
 
-        modelBuilder.HasDefaultSchema("accounts");
+        modelBuilder.ApplyConfigurationsFromAssembly(
+            typeof(WriteAccountsDbContext).Assembly,
+            x => x.FullName!.Contains("Configurations.Write"));
+        modelBuilder.HasDefaultSchema("PetFamily_Accounts");
     }
 
     private ILoggerFactory CreateLoggerFactory() =>

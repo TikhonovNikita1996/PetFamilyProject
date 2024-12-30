@@ -1,9 +1,8 @@
 ﻿using System.Text.RegularExpressions;
 using CSharpFunctionalExtensions;
-using Pet.Family.SharedKernel;
-using PetFamily.Volunteers.Domain.Volunteer.ValueObjects;
+using Pet.Family.SharedKernel.ValueObjects.Volunteer;
 
-namespace PetFamily.Volunteers.Domain.Pet.ValueObjects;
+namespace Pet.Family.SharedKernel.ValueObjects.Pet;
 
 public class OwnersPhoneNumber
 {

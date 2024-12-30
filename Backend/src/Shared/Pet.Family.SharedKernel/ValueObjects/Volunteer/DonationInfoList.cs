@@ -1,4 +1,4 @@
-﻿namespace PetFamily.Volunteers.Domain.Volunteer.ValueObjects;
+﻿namespace Pet.Family.SharedKernel.ValueObjects.Volunteer;
 
 public record DonationInfoList
 {

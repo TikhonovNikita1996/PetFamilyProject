@@ -1,10 +1,10 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 using Pet.Family.SharedKernel;
+using Pet.Family.SharedKernel.ValueObjects.Volunteer;
 using PetFamily.Volunteers.Application.Interfaces;
 using PetFamily.Volunteers.Domain.Ids;
 using PetFamily.Volunteers.Domain.Volunteer;
-using PetFamily.Volunteers.Domain.Volunteer.ValueObjects;
 using PetFamily.Volunteers.Infrastructure.DataContexts;
 
 namespace PetFamily.Volunteers.Infrastructure.Repositories;
@@ -52,27 +52,6 @@ public class VolunteerRepository : IVolunteerRepository
         if (volunteer is null)
             return Errors.General.NotFound("");
 
-        return volunteer;
-    }
-    
-    public async Task<Result<Volunteer, CustomError>> GetByFullname(FullName fullname,
-        CancellationToken cancellationToken = default)
-    {
-        var volunteer = await _dbContext.Volunteers
-            .Include(x => x.CurrentPets)
-            .FirstOrDefaultAsync(v => v.Fullname == fullname, cancellationToken);
-        if (volunteer is null)
-            return Errors.General.NotFound("");
-        return volunteer;
-    }
-
-    public async Task<Result<Volunteer, CustomError>> GetByEmail(Email email,
-        CancellationToken cancellationToken = default)
-    {
-        var volunteer = await _dbContext.Volunteers
-            .Where(x => x.Email == email).FirstOrDefaultAsync(cancellationToken);
-        if (volunteer is null)
-            return Errors.General.NotFound("");
         return volunteer;
     }
 }

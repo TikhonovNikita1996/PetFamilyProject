@@ -1,9 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
 using Pet.Family.SharedKernel;
+using Pet.Family.SharedKernel.ValueObjects.Pet;
+using Pet.Family.SharedKernel.ValueObjects.Volunteer;
 using PetFamily.Volunteers.Domain.Ids;
-using PetFamily.Volunteers.Domain.Pet.ValueObjects;
-using PetFamily.Volunteers.Domain.Volunteer.ValueObjects;
-using Description = PetFamily.Volunteers.Domain.Volunteer.ValueObjects.Description;
 
 namespace PetFamily.Volunteers.Domain.Volunteer;
 
@@ -15,21 +14,13 @@ public class Volunteer : BaseEntity<VolunteerId>, ISoftDeletable
     // ef core
     public Volunteer(VolunteerId id) : base(id) {}
 
-    public Volunteer(VolunteerId id, FullName fullname, Email email,
-        GenderType gender, WorkingExperience workingExperience,
-        Description description, PhoneNumber phoneNumber) : base(id)
+    public Volunteer(VolunteerId id,
+        Description description,
+        PhoneNumber phoneNumber) : base(id)
     {
-        Fullname = fullname;
-        Email = email;
-        Gender = gender;
-        WorkingExperience = workingExperience;
         Description = description;
         PhoneNumber = phoneNumber;
     }
-    public FullName Fullname { get; private set; } = default!;
-    public Email Email { get; private set; } = default!;
-    public GenderType Gender { get; private set; } = GenderType.Male;
-    public WorkingExperience WorkingExperience { get; private set; } = default!;
     public Description Description { get; private set; } = default!;
     public PhoneNumber PhoneNumber { get; private set; } = default!;
     public IReadOnlyList<Pet.Pet> CurrentPets => _pets;
@@ -38,13 +29,10 @@ public class Volunteer : BaseEntity<VolunteerId>, ISoftDeletable
     public int PetsOnTreatment => _pets.Count(p => p.CurrentStatus == HelpStatusType.OnTreatment);
     
     public static Result<Volunteer, CustomError> Create(VolunteerId id,
-                                                FullName fullname, Email email,
-                                                GenderType gender, WorkingExperience workingExperience, Description description,
-                                                PhoneNumber phoneNumber)
+        Description description, PhoneNumber phoneNumber)
     {
         
-        var volunteer = new Volunteer(id, fullname, email, gender, workingExperience, description,
-            phoneNumber);
+        var volunteer = new Volunteer(id, description, phoneNumber);
 
         return volunteer;
     }
@@ -54,10 +42,8 @@ public class Volunteer : BaseEntity<VolunteerId>, ISoftDeletable
         PhoneNumber phoneNumber, 
         WorkingExperience workingExperience)
     {
-        Fullname = fullName;
         Description = description;
         PhoneNumber = phoneNumber;
-        WorkingExperience = workingExperience;
     }
     
     public void Delete()

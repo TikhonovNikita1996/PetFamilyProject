@@ -1,7 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
-using Pet.Family.SharedKernel;
 
-namespace PetFamily.Volunteers.Domain.Pet.ValueObjects;
+namespace Pet.Family.SharedKernel.ValueObjects.Pet;
 
 public class HealthInformation
 {
