@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 using PetFamily.Accounts.Application;
 using PetFamily.Accounts.Infrastructure;
+using PetFamily.API;
 using PetFamily.API.Middlewares;
 using PetFamily.Species.Application;
 using PetFamily.Species.Infrastructure;
@@ -39,7 +40,8 @@ builder.Services
     .AddVolunteersApplication()
     .AddSpeciesApplication()
     .AddAuthorizationInfrastructure(builder.Configuration)
-    .AddAccountsApplication();
+    .AddAccountsApplication()
+    .AddAuthorizationServices(builder.Configuration);
 
 builder.Services.AddSerilog();
 
@@ -74,6 +76,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 var app = builder.Build();
+
+var accountSeeder = app.Services.GetRequiredService<AccountsSeeder>();
+
+await accountSeeder.SeedAsync();
 
 app.UseExceptionMiddleware();
 app.UseSerilogRequestLogging();

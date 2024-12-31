@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using PetFamily.Accounts.Application.Interfaces;
 using PetFamily.Accounts.Domain;
-using PetFamily.Accounts.Infrastructure.Options;
+using PetFamily.Core.Options;
 
 namespace PetFamily.Accounts.Infrastructure;
 
@@ -25,34 +25,15 @@ public static class DependencyInjection
             {
                 options.User.RequireUniqueEmail = true;
             })
-            .AddEntityFrameworkStores<AuthorizationDbContext>();
+            .AddEntityFrameworkStores<WriteAccountsDbContext>();
         
-        services.AddScoped<AuthorizationDbContext>(_ => 
-            new AuthorizationDbContext(configuration.GetConnectionString("Database")!));
+        services.AddScoped<WriteAccountsDbContext>(_ => 
+            new WriteAccountsDbContext(configuration.GetConnectionString("Database")!));
+
+        services.AddSingleton<AccountsSeeder>();
+        services.AddScoped<PermissionManager>();
+        services.AddScoped<RolePermissionManager>();
         
-        services.AddAuthentication(options =>
-                {
-                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
-                .AddJwtBearer( options =>
-                {
-                    var jwtOptions = configuration.GetSection(JwtOptions.JWT).Get<JwtOptions>()
-                        ?? throw new ApplicationException("Missing JWT configuration");
-                    
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidIssuer = jwtOptions.Issuer,
-                        ValidAudience = jwtOptions.Audience,
-                        IssuerSigningKey = 
-                            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Key)),
-                        ValidateIssuerSigningKey = true,
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = true
-                    };
-                });
         return services;
     }
 }

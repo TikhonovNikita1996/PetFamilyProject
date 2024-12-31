@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Pet.Family.SharedKernel;
+using Pet.Family.SharedKernel.ValueObjects.Pet;
 using Pet.Family.SharedKernel.ValueObjects.Specie;
 using PetFamily.Core.Dtos.Pet;
 using PetFamily.Core.Extensions;
 using PetFamily.Volunteers.Domain.Ids;
-using PetFamily.Volunteers.Domain.Pet.ValueObjects;
 
 namespace PetFamily.Volunteers.Infrastructure.Configurations.Write;
 
@@ -158,9 +158,9 @@ public class PetConfiguration : IEntityTypeConfiguration<Domain.Pet.Pet>
         });
         
         builder.Property(v => v.Photos)
-            .ValueObjectsJsonConversion<PetPhoto, PhotoDto>(
+            .ValueObjectsJsonConversion<Photo, PhotoDto>(
                 file => new PhotoDto {PathToStorage = file.FilePath , IsMain = file.IsMain},
-                json => new PetPhoto {IsMain = json.IsMain, FilePath = json.PathToStorage})
+                json => new Photo {IsMain = json.IsMain, FilePath = json.PathToStorage})
             .HasColumnName("photos");
         
         builder.OwnsOne(v => v.DonateForHelpInfos, db =>

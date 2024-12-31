@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PetFamily.Framework;
+using PetFamily.Framework.Authorization;
 using PetFamily.Species.Application.Commands.AddBreed;
 using PetFamily.Species.Application.Commands.Create;
 using PetFamily.Species.Application.Commands.DeleteBreed;
@@ -15,6 +15,7 @@ namespace PetFamily.Species.Presentation.Controllers;
 [Authorize]
 public class SpeciesController : BaseApiController
 {
+    [Permission(Permissions.Species.Create)]
     [HttpPost]
     public async Task<ActionResult<Guid>> Create(
         [FromServices] CreateSpecieHandler handler,
@@ -30,6 +31,8 @@ public class SpeciesController : BaseApiController
 
         return Ok(result.Value);
     }
+    
+    [Permission(Permissions.Breeds.Create)]
     [HttpPost("{specieId:guid}/breed")]
     public async Task<ActionResult<Guid>> AddBreed(
         [FromServices] AddBreedHandler handler,
@@ -46,6 +49,7 @@ public class SpeciesController : BaseApiController
         return Ok(result.Value);
     }
     
+    [Permission(Permissions.Species.Delete)]
     [HttpDelete("{id:guid}")]
     public async Task<ActionResult> DeleteSpecie(
         [FromRoute] Guid id,
@@ -61,6 +65,7 @@ public class SpeciesController : BaseApiController
         return Ok(result.Value); 
     }
     
+    [Permission(Permissions.Breeds.Create)]
     [HttpDelete("{specieId:guid}/breed/{breedId:guid}")]
     public async Task<ActionResult> DeleteBreed(
         [FromRoute] Guid specieId,
@@ -77,6 +82,7 @@ public class SpeciesController : BaseApiController
         return Ok(result.Value); 
     }
     
+    [Permission(Permissions.Species.Read)]
     [HttpGet]
     public async Task<ActionResult> GetAllSpecies(
         [FromServices] GetAllSpeciesHandler handler,
@@ -89,6 +95,7 @@ public class SpeciesController : BaseApiController
         return Ok(result); 
     }
     
+    [Permission(Permissions.Breeds.Read)]
     [HttpGet("{specieId:guid}/breeds")]
     public async Task<ActionResult> GetBreedsBySpecieId(
         [FromRoute] Guid specieId,

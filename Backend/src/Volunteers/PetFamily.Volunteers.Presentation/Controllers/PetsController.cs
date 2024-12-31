@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PetFamily.Framework;
+using PetFamily.Framework.Authorization;
 using PetFamily.Volunteers.Application.VolunteersManagement.Queries.GetPetById;
 using PetFamily.Volunteers.Application.VolunteersManagement.Queries.GetPetsWithFiltersAndPagination;
 using PetFamily.Volunteers.Presentation.Requests.Pet;
@@ -11,6 +12,7 @@ namespace PetFamily.Volunteers.Presentation.Controllers;
 public class PetsController : BaseApiController
 {
     [HttpGet]
+    [Permission(Permissions.Pets.Read)]
     public async Task<ActionResult> GetAllPets(
         [FromServices] GetPetsWithPaginationAndFiltersHandler handler,
         [FromQuery] GetPetsWithPaginationAndFiltersRequest request, 
@@ -22,6 +24,7 @@ public class PetsController : BaseApiController
         return Ok(result); 
     }
     
+    [Permission(Permissions.Pets.Read)]
     [HttpGet("/pet-by-id")]
     public async Task<ActionResult> GetPetById(
         [FromServices] GetPetByIdHandler handler,

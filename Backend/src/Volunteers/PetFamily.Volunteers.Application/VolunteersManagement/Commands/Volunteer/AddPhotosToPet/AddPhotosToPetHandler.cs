@@ -3,13 +3,13 @@ using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Pet.Family.SharedKernel;
+using Pet.Family.SharedKernel.ValueObjects.Pet;
 using PetFamily.Core;
 using PetFamily.Core.Abstractions;
 using PetFamily.Core.Extensions;
 using PetFamily.Core.Messaging;
 using PetFamily.Core.Providers;
 using PetFamily.Volunteers.Application.Interfaces;
-using PetFamily.Volunteers.Domain.Pet.ValueObjects;
 
 namespace PetFamily.Volunteers.Application.VolunteersManagement.Commands.Volunteer.AddPhotosToPet;
 
@@ -77,9 +77,9 @@ public class AddPhotosToPetHandler : ICommandHandler<Guid,AddPhotosToPetCommand>
             return filePathsResult.Error.ToErrorList();
         }
 
-        List<PetPhoto> photos = filePathsResult.Value.Select((t, i) => i == 0
-                ? PetPhoto.Create(t.Path, true).Value
-                : PetPhoto.Create(t.Path, false).Value)
+        List<Photo> photos = filePathsResult.Value.Select((t, i) => i == 0
+                ? Photo.Create(t.Path, true).Value
+                : Photo.Create(t.Path, false).Value)
             .ToList();
 
         petResult.Value.UpdatePhotos(photos);

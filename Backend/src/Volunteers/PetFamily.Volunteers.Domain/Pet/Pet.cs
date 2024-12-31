@@ -1,16 +1,16 @@
 ﻿using CSharpFunctionalExtensions;
 using Pet.Family.SharedKernel;
+using Pet.Family.SharedKernel.ValueObjects.Pet;
 using Pet.Family.SharedKernel.ValueObjects.Specie;
+using Pet.Family.SharedKernel.ValueObjects.Volunteer;
 using PetFamily.Volunteers.Domain.Ids;
-using PetFamily.Volunteers.Domain.Pet.ValueObjects;
-using PetFamily.Volunteers.Domain.Volunteer.ValueObjects;
 
 namespace PetFamily.Volunteers.Domain.Pet;
 
 public class Pet : BaseEntity<PetId>, ISoftDeletable
 {
     private bool _isDeleted = false;
-    private List<PetPhoto> _photos = [];
+    private List<Photo> _photos = [];
     // ef core
     public Pet(PetId id) : base(id) {}
     private Pet(PetId petId, PetsName petsName, Age age, SpecieDetails specieDetails,
@@ -55,7 +55,7 @@ public class Pet : BaseEntity<PetId>, ISoftDeletable
     public DonationInfoList DonateForHelpInfos { get; private set; }
     public DateTime PetsPageCreationDate { get; private set; }
     
-    public IReadOnlyList<PetPhoto> Photos => _photos;
+    public IReadOnlyList<Photo> Photos => _photos;
     public PositionNumber PositionNumber { get; private set; }
 
     public static Result<Pet,CustomError> Create(PetId petId, PetsName petsName, Age Age,
@@ -113,7 +113,7 @@ public class Pet : BaseEntity<PetId>, ISoftDeletable
         Color = color;
     }
     
-    public void UpdatePhotos(List<PetPhoto> photosList)
+    public void UpdatePhotos(List<Photo> photosList)
     {
         _photos = photosList;
     }

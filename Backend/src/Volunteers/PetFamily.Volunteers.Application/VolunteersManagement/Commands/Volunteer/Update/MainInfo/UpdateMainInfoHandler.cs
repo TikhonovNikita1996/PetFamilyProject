@@ -3,10 +3,10 @@ using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Pet.Family.SharedKernel;
+using Pet.Family.SharedKernel.ValueObjects.Volunteer;
 using PetFamily.Core.Abstractions;
 using PetFamily.Core.Extensions;
 using PetFamily.Volunteers.Application.Interfaces;
-using PetFamily.Volunteers.Domain.Volunteer.ValueObjects;
 
 namespace PetFamily.Volunteers.Application.VolunteersManagement.Commands.Volunteer.Update.MainInfo;
 
