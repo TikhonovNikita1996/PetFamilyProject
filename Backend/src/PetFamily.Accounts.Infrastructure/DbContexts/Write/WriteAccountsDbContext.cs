@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PetFamily.Accounts.Domain;
+using PetFamily.Accounts.Domain.AccountModels;
 
-namespace PetFamily.Accounts.Infrastructure;
+namespace PetFamily.Accounts.Infrastructure.DbContexts.Write;
 
 public class WriteAccountsDbContext 
     : IdentityDbContext<User, Role, Guid>
@@ -18,6 +19,9 @@ public class WriteAccountsDbContext
     
     public DbSet<User> Users => Set<User>();
     public DbSet<Role> Roles => Set<Role>();
+    public DbSet<AdminAccount> AdminAccounts => Set<AdminAccount>();
+    public DbSet<ParticipantAccount> ParticipantAccounts => Set<ParticipantAccount>();
+    public DbSet<VolunteerAccount> VolunteerAccounts => Set<VolunteerAccount>();
     
     public DbSet<Permission> Permissions => Set<Permission>();
     public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
@@ -78,6 +82,7 @@ public class WriteAccountsDbContext
         modelBuilder.ApplyConfigurationsFromAssembly(
             typeof(WriteAccountsDbContext).Assembly,
             x => x.FullName!.Contains("Configurations.Write"));
+        
         modelBuilder.HasDefaultSchema("PetFamily_Accounts");
     }
 

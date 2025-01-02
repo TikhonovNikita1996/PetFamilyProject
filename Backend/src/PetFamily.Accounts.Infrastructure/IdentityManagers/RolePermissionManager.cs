@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PetFamily.Accounts.Domain;
+using PetFamily.Accounts.Infrastructure.DbContexts.Write;
 
-namespace PetFamily.Accounts.Infrastructure;
+namespace PetFamily.Accounts.Infrastructure.IdentityManagers;
 
 public class RolePermissionManager(WriteAccountsDbContext writeAccountsDbContext)
 {
@@ -11,11 +12,13 @@ public class RolePermissionManager(WriteAccountsDbContext writeAccountsDbContext
         {
             var permission = await writeAccountsDbContext.Permissions
                 .FirstOrDefaultAsync(permission => permission.Code == permissionCode);
+            if(permission == null)
+                throw new ApplicationException($"Permission code {permissionCode} not found");
             
-            var rolePermissionxist = await writeAccountsDbContext.RolePermissions
+            var rolePermissionExist = await writeAccountsDbContext.RolePermissions
                 .AnyAsync(rp => rp.RoleId == roleId && rp.PermissionId == permission!.Id);
             
-            if(rolePermissionxist)
+            if(rolePermissionExist)
                 continue;
 
             writeAccountsDbContext.RolePermissions.Add(new RolePermission

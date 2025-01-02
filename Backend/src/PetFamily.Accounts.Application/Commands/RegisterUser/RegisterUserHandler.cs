@@ -26,19 +26,19 @@ public class RegisterUserHandler : ICommandHandler<RegisterUserCommand>
         if(existingUser != null)
             return Errors.General.AlreadyExists().ToErrorList();
 
-        var user = new User
-        {
-            Email = command.Email,
-            UserName = command.UserName
-        };
-        
-        var result = await _userManager.CreateAsync(user, command.Password);
-        if (!result.Succeeded)
-        {
-            var errors = result.Errors.Select(e => CustomError.Failure(e.Code, e.Description)).ToList();
-            return new CustomErrorsList(errors);
-        }
-        _logger.LogInformation("User created: {userName} a new account with password.", user.UserName);
+        // var user = new User
+        // {
+        //     Email = command.Email,
+        //     UserName = command.UserName
+        // };
+        //
+        // var result = await _userManager.CreateAsync(user, command.Password);
+        // if (!result.Succeeded)
+        // {
+        //     var errors = result.Errors.Select(e => CustomError.Failure(e.Code, e.Description)).ToList();
+        //     return new CustomErrorsList(errors);
+        // }
+        // _logger.LogInformation("User created: {userName} a new account with password.", user.UserName);
         return UnitResult.Success<CustomErrorsList>();
     }
 }
