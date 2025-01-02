@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 using PetFamily.Accounts.Application;
 using PetFamily.Accounts.Infrastructure;
+using PetFamily.Accounts.Presentation;
 using PetFamily.API;
 using PetFamily.API.Middlewares;
 using PetFamily.Species.Application;
@@ -42,7 +43,8 @@ builder.Services
     .AddSpeciesApplication()
     .AddAccountsInfrastructure(builder.Configuration)
     .AddAccountsApplication()
-    .AddAuthorizationServices(builder.Configuration);
+    .AddAuthorizationServices(builder.Configuration)
+    .AddAccountsPresentation();
 
 builder.Services.AddSerilog();
 

@@ -10,7 +10,6 @@ public class AdminAccount
         User = user;
         UserId = user.Id;
     }
-    
     public Guid Id { get; set; }
     public Guid UserId { get; set; }
     public User User { get; set; }

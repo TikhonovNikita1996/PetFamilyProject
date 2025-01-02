@@ -32,23 +32,25 @@ public class User : IdentityUser<Guid>
         };
     }
     
-    public static User CreateParticipant(string email, string userName, Role role)
+    public static User CreateParticipant(string email, string userName, FullName fullName, Role role)
     {
         return new User
         {
             Email = email,
             UserName = userName,
-            _roles = [role]
+            _roles = [role],
+            FullName = fullName
         };
     }
     
-    public static User CreateVolunteer(string email, string userName, Role role)
+    public static User CreateVolunteer(string email, string userName, FullName fullName, Role role)
     {
         return new User
         {
             Email = email,
             UserName = userName,
-            _roles = [role]
+            _roles = [role],
+            FullName = fullName
         };
     }
 }

@@ -14,7 +14,8 @@ public class AccountsController : BaseApiController
         [FromServices] RegisterUserHandler handler,
         CancellationToken cancellationToken) 
     {
-        var command = new RegisterUserCommand(request.Email, request.UserName, request.Password);
+        var command = new RegisterUserCommand(request.FullNameDto,request.Email,
+            request.UserName, request.Password);
         var result = await handler.Handle(command, cancellationToken);
         if(result.IsFailure)
             return result.Error.ToResponse();

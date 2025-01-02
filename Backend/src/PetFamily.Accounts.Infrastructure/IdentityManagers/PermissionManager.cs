@@ -29,4 +29,20 @@ public class PermissionManager(WriteAccountsDbContext writeAccountsDbContext)
         }
         await writeAccountsDbContext.SaveChangesAsync();
     }
+    
+    public async Task<HashSet<string>> GetUserPermissionsCode(
+        Guid userId,
+        CancellationToken cancellationToken = default)
+    {
+        var permissions = await writeAccountsDbContext.Users
+            .Include(u => u.Roles)
+            .Where(u => u.Id == userId)
+            .SelectMany(u => u.Roles)
+            .SelectMany(r => r.RolePermissions)
+            .Select(rp => rp.Permission.Code)
+            .ToListAsync(cancellationToken);
+        
+        return permissions.ToHashSet();
+    }
+    
 }

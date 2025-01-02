@@ -9,6 +9,7 @@ public class ProjectConstants
     public enum Context
     {
         VolunteerManagement,
-        SpeciesManagement
+        SpeciesManagement,
+        AccountManagement
     }
 }
