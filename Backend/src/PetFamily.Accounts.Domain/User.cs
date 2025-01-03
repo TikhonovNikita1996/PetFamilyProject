@@ -8,9 +8,7 @@ namespace PetFamily.Accounts.Domain;
 public class User : IdentityUser<Guid>
 {
     private User() {}
-        
     private List<Role> _roles = [];
-    
     private List<SocialMedia> _socialNetworks = [];
     private List<Photo> _photos = [];
     public FullName FullName { get; set; } = null!;
@@ -52,5 +50,10 @@ public class User : IdentityUser<Guid>
             _roles = [role],
             FullName = fullName
         };
+    }
+
+    public void UpdateSocialMediaDetails(List<SocialMedia> socialMedia)
+    {
+        _socialNetworks = socialMedia;
     }
 }

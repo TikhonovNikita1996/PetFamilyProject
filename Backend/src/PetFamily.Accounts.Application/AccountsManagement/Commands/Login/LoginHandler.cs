@@ -6,7 +6,7 @@ using PetFamily.Accounts.Application.Interfaces;
 using PetFamily.Accounts.Domain;
 using PetFamily.Core.Abstractions;
 
-namespace PetFamily.Accounts.Application.Commands.Login;
+namespace PetFamily.Accounts.Application.AccountsManagement.Commands.Login;
 
 public class LoginHandler : ICommandHandler<string, LoginCommand>
 {

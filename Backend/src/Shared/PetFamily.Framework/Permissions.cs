@@ -41,7 +41,7 @@ public class Permissions
     public static class Accounts
     {
         public const string Read = "accounts.read";
-        public const string Enroll = "accounts.enroll";
+        public const string Update = "accounts.update";
     }
     
     public static class VolunteeringApplications

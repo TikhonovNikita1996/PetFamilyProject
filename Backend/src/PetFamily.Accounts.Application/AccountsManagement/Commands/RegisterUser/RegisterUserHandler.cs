@@ -9,7 +9,7 @@ using PetFamily.Accounts.Domain;
 using PetFamily.Accounts.Domain.AccountModels;
 using PetFamily.Core.Abstractions;
 
-namespace PetFamily.Accounts.Application.Commands.RegisterUser;
+namespace PetFamily.Accounts.Application.AccountsManagement.Commands.RegisterUser;
 
 public class RegisterUserHandler : ICommandHandler<RegisterUserCommand>
 {
