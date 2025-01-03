@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Pet.Family.SharedKernel;
 using Pet.Family.SharedKernel.ValueObjects.Pet;
@@ -34,14 +35,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                 .HasColumnName("middle_name");
         });
         
-        builder.ComplexProperty(v => v.Photo, pm =>
-        {
-            pm.Property(p => p.FilePath)
-                .HasColumnName("email")
-                .HasMaxLength(ProjectConstants.MAX_LOW_TEXT_LENGTH)
-                .IsRequired();
-        });
-        
         builder
             .Property(u => u.SocialNetworks)
             .ValueObjectsJsonConversion(
@@ -54,6 +47,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                 file => new PhotoDto {PathToStorage = file.FilePath , IsMain = file.IsMain},
                 json => new Photo {IsMain = json.IsMain, FilePath = json.PathToStorage})
             .HasColumnName("photos");
-        
+
+        builder.HasMany(u => u.Roles)
+            .WithMany();
     }
 }

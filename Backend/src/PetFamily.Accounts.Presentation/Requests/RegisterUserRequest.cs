@@ -1,3 +1,6 @@
-﻿namespace PetFamily.Accounts.Presentation.Requests;
+﻿using PetFamily.Core.Dtos.Volunteer;
 
-public record RegisterUserRequest(string Email, string UserName ,string Password);
+namespace PetFamily.Accounts.Presentation.Requests;
+
+public record RegisterUserRequest(FullNameDto FullNameDto, 
+    string Email, string UserName ,string Password);

@@ -12,7 +12,9 @@
       "volunteers.create",
       "volunteers.read",
       "volunteers.update",
-      "volunteers.delete"
+      "volunteers.delete",
+      "accounts.read",
+      "accounts.update"
     ],
     "Volunteer": [
       "volunteers.read",
@@ -64,7 +66,8 @@
       "files.upload"
     ],
     "Accounts": [
-      "accounts.read"
+      "accounts.read",
+      "accounts.update"
     ]
   }
 }

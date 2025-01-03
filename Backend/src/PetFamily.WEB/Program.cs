@@ -2,10 +2,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 using PetFamily.Accounts.Application;
 using PetFamily.Accounts.Infrastructure;
+using PetFamily.Accounts.Presentation;
 using PetFamily.API;
 using PetFamily.API.Middlewares;
 using PetFamily.Species.Application;
-using PetFamily.Species.Infrastructure;
 using PetFamily.Species.Presentation;
 using PetFamily.Species.Presentation.Controllers;
 using PetFamily.Volunteers.Application;
@@ -13,6 +13,8 @@ using PetFamily.Volunteers.Presentation;
 using PetFamily.Volunteers.Presentation.Controllers;
 using Serilog;
 using Serilog.Events;
+
+DotNetEnv.Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,9 +41,10 @@ builder.Services
     .AddSpeciesInfrastructure(builder.Configuration)
     .AddVolunteersApplication()
     .AddSpeciesApplication()
-    .AddAuthorizationInfrastructure(builder.Configuration)
+    .AddAccountsInfrastructure(builder.Configuration)
     .AddAccountsApplication()
-    .AddAuthorizationServices(builder.Configuration);
+    .AddAuthorizationServices(builder.Configuration)
+    .AddAccountsPresentation();
 
 builder.Services.AddSerilog();
 

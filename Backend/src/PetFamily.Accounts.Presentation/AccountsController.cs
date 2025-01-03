@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PetFamily.Accounts.Application.Commands.Login;
-using PetFamily.Accounts.Application.Commands.RegisterUser;
+using PetFamily.Accounts.Application.AccountsManagement.Commands.Login;
+using PetFamily.Accounts.Application.AccountsManagement.Commands.RegisterUser;
+using PetFamily.Accounts.Application.AccountsManagement.Commands.UpdateSocialNetworks;
 using PetFamily.Accounts.Presentation.Requests;
 using PetFamily.Framework;
+using PetFamily.Framework.Authorization;
 
 namespace PetFamily.Accounts.Presentation;
 
@@ -14,7 +16,8 @@ public class AccountsController : BaseApiController
         [FromServices] RegisterUserHandler handler,
         CancellationToken cancellationToken) 
     {
-        var command = new RegisterUserCommand(request.Email, request.UserName, request.Password);
+        var command = new RegisterUserCommand(request.FullNameDto,request.Email,
+            request.UserName, request.Password);
         var result = await handler.Handle(command, cancellationToken);
         if(result.IsFailure)
             return result.Error.ToResponse();
@@ -31,6 +34,23 @@ public class AccountsController : BaseApiController
         var result = await handler.Handle(command, cancellationToken);
         if(result.IsFailure)
             return result.Error.ToResponse();
+        return Ok(result.Value);
+    }
+    
+    [Permission(Permissions.Accounts.Update)]
+    [HttpPut("{userId:guid}/social-networks")]
+    public async Task<ActionResult> ChangePetsPosition(
+        [FromRoute] Guid userId,
+        [FromBody] UpdateSocialNetworksRequest request,
+        [FromServices] UpdateSocialNetworksHandler handler,
+        CancellationToken cancellationToken)
+    {
+        var command = new UpdateSocialNetworksCommand(userId, request.SocialMediaDetails);
+            
+        var result = await handler.Handle(command, cancellationToken);
+        if(result.IsFailure)
+            return result.Error.ToResponse(); 
+            
         return Ok(result.Value);
     }
 }
