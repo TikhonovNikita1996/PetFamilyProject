@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PetFamily.Accounts.Application.AccountsManagement.Commands.Login;
+using PetFamily.Accounts.Application.AccountsManagement.Commands.RefreshTokens;
 using PetFamily.Accounts.Application.AccountsManagement.Commands.RegisterUser;
 using PetFamily.Accounts.Application.AccountsManagement.Commands.UpdateSocialNetworks;
 using PetFamily.Accounts.Presentation.Requests;
@@ -31,6 +32,19 @@ public class AccountsController : BaseApiController
         CancellationToken cancellationToken) 
     {
         var command = new LoginCommand(request.Email, request.Password);
+        var result = await handler.Handle(command, cancellationToken);
+        if(result.IsFailure)
+            return result.Error.ToResponse();
+        return Ok(result.Value);
+    }
+    
+    [HttpPost("refresh")]
+    public async Task<IActionResult> RefreshTokens(
+        [FromBody] RefreshTokenRequest request,
+        [FromServices] RefreshTokensHandler handler,
+        CancellationToken cancellationToken) 
+    {
+        var command = new RefreshTokensCommand(request.AccessToken, request.RefreshToken);
         var result = await handler.Handle(command, cancellationToken);
         if(result.IsFailure)
             return result.Error.ToResponse();
