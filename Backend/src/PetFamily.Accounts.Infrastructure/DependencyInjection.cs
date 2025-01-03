@@ -43,6 +43,7 @@ public static class DependencyInjection
         services.AddScoped<PermissionManager>();
         services.AddScoped<RolePermissionManager>();
         services.AddScoped<IAccountManager, AccountManager>();
+        services.AddScoped<IRefreshSessionManager, RefreshSessionManager>();
         services.AddUnitOfWork();
         
         return services;
