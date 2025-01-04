@@ -6,10 +6,9 @@ using PetFamily.Volunteers.Domain.Ids;
 
 namespace PetFamily.Volunteers.Domain.Volunteer;
 
-public class Volunteer : BaseEntity<VolunteerId>, ISoftDeletable
+public class Volunteer : SoftDeletableEntity<VolunteerId>
 {
     private readonly List<Pet.Pet> _pets = [];
-    private bool _isDeleted = false;
     
     // ef core
     public Volunteer(VolunteerId id) : base(id) {}
@@ -46,16 +45,17 @@ public class Volunteer : BaseEntity<VolunteerId>, ISoftDeletable
         PhoneNumber = phoneNumber;
     }
     
-    public void Delete()
+    public override void Delete()
     {
-        if (!_isDeleted)
-            _isDeleted = true;
+        base.Delete();
+        
+        foreach (var pet in _pets) {pet.Delete();}
     }
     
-    public void Restore()
+    public override void Restore()
     {
-        if (_isDeleted)
-            _isDeleted = false;
+        base.Restore();
+        foreach (var pet in _pets) {pet.Restore();}
     }
 
     public void AddPet(Pet.Pet pet)

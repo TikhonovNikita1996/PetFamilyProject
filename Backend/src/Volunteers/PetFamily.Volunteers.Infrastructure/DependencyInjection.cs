@@ -5,6 +5,7 @@ using Minio.AspNetCore;
 using Pet.Family.SharedKernel;
 using PetFamily.Core;
 using PetFamily.Core.Abstractions;
+using PetFamily.Core.Database;
 using PetFamily.Core.Messaging;
 using PetFamily.Core.Providers;
 using PetFamily.Volunteers.Application.Database;
@@ -14,6 +15,7 @@ using PetFamily.Volunteers.Infrastructure.DataContexts;
 using PetFamily.Volunteers.Infrastructure.Files;
 using PetFamily.Volunteers.Infrastructure.MessageQueues;
 using PetFamily.Volunteers.Infrastructure.Repositories;
+using PetFamily.Volunteers.Infrastructure.Services;
 using ServiceCollectionExtensions = Minio.ServiceCollectionExtensions;
 
 namespace PetFamily.Volunteers.Infrastructure;
@@ -24,12 +26,14 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         services.AddDbContexts(configuration)
-                .AddRepositories()
-                .AddUnitOfWork()
-                .AddMinioCustom(configuration);
+            .AddRepositories()
+            .AddUnitOfWork()
+            .AddMinioCustom(configuration)
+            .AddSoftDelete();
 
         services.AddHostedService<FilesCleanerBackgroundService>();
         services.AddScoped<IFileCleanerService, FileCleanerService>();
+        services.AddScoped<ISqlConnectionFactory, SqlConnectionFactory>();
 
         services.AddSingleton<IMessageQueue<IEnumerable<FileMetaData>>
             ,InMemoryMessageQueue<IEnumerable<FileMetaData>>>();
@@ -58,6 +62,16 @@ public static class DependencyInjection
         this IServiceCollection services)
     {
         services.AddScoped<IVolunteerRepository, VolunteerRepository> ();
+        return services;
+    }
+    
+    private static IServiceCollection AddSoftDelete(
+        this IServiceCollection services)
+    {
+        services.AddHostedService<CleanSoftDeletedEntitiesBackGroundService>();
+        services.AddScoped<DeleteExpiredPetsService>();
+        services.AddScoped<DeleteExpiredVolunteersService>();
+        
         return services;
     }
     

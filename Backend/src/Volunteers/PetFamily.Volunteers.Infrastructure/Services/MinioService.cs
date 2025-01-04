@@ -6,7 +6,7 @@ using Pet.Family.SharedKernel;
 using PetFamily.Core;
 using PetFamily.Core.Providers;
 
-namespace PetFamily.Volunteers.Infrastructure
+namespace PetFamily.Volunteers.Infrastructure.Services
 {
     public class MinioService : IFileService
     {
