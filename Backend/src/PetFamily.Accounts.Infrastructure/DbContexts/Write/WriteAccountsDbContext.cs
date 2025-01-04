@@ -23,6 +23,8 @@ public class WriteAccountsDbContext
     public DbSet<ParticipantAccount> ParticipantAccounts => Set<ParticipantAccount>();
     public DbSet<VolunteerAccount> VolunteerAccounts => Set<VolunteerAccount>();
     
+    public DbSet<RefreshSession> RefreshSessions => Set<RefreshSession>();
+    
     public DbSet<Permission> Permissions => Set<Permission>();
     public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
     
@@ -57,6 +59,14 @@ public class WriteAccountsDbContext
         modelBuilder.Entity<Permission>()
             .HasIndex(p => p.Code)
             .IsUnique();
+        
+        modelBuilder.Entity<RefreshSession>()
+            .ToTable("refresh_sessions");
+
+        modelBuilder.Entity<RefreshSession>()
+            .HasOne(rs => rs.User)
+            .WithMany()
+            .HasForeignKey(rs => rs.UserId);
         
         modelBuilder.Entity<Permission>()
             .ToTable("permissions");

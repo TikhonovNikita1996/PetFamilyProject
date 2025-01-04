@@ -45,6 +45,11 @@ public static class Errors
             return CustomError.Validation("can not.delete.record", $"can not delete record: " +
                                                                    $"{label}. It used in another record");
         }
+        
+        public static CustomError Failure()
+        {
+            return CustomError.Validation("failure", "Failure");
+        }
     }
 
     public static class VolunteerValidation
@@ -60,6 +65,19 @@ public static class Errors
         public static CustomError InvalidCredentials()
         {
             return CustomError.Validation("credentials.is.invalid", "Your credentials is invalid");
+        }
+    }
+    
+    public static class Tokens
+    {
+        public static CustomError ExpiredToken()
+        {
+            return CustomError.Validation("token.is.expired", "Token is expired");
+        }
+        
+        public static CustomError InvalidToken()
+        {
+            return CustomError.Validation("token.is.invalid", "Token is invalid");
         }
     }
 }
