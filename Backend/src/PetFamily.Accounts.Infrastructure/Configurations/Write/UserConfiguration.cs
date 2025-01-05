@@ -49,7 +49,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasColumnName("photos");
 
         builder.HasMany(u => u.Roles)
-            .WithMany();
+            .WithMany()
+            .UsingEntity<IdentityUserRole<Guid>>();
         
     }
 }
