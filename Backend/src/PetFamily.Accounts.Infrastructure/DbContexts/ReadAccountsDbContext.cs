@@ -11,7 +11,6 @@ public class ReadAccountsDbContext(string ConnectionString) : DbContext, IReadDb
     public IQueryable<AdminAccountDto> AdminAccounts => Set<AdminAccountDto>();
     public IQueryable<VolunteerAccountDto> VolunteerAccounts => Set<VolunteerAccountDto>();
     public IQueryable<ParticipantAccountDto> ParticipantAccounts => Set<ParticipantAccountDto>();
-    public IQueryable<RoleDto> Roles => Set<RoleDto>();
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -27,7 +26,7 @@ public class ReadAccountsDbContext(string ConnectionString) : DbContext, IReadDb
         modelBuilder.ApplyConfigurationsFromAssembly(
             typeof(ReadAccountsDbContext).Assembly,
             x => x.FullName!.Contains("Configurations.Read"));
-        modelBuilder.HasDefaultSchema("PetFamily_Species");
+        modelBuilder.HasDefaultSchema("PetFamily_Accounts");
     }
 
     private ILoggerFactory CreateLoggerFactory() =>

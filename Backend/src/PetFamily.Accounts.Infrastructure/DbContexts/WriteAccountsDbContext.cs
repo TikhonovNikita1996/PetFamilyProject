@@ -41,36 +41,12 @@ public class WriteAccountsDbContext
         modelBuilder.Entity<Role>()
             .ToTable("roles");
         
-        modelBuilder.Entity<RolePermission>()
-            .HasOne(rp => rp.Role)
-            .WithMany(r => r.RolePermissions)
-            .HasForeignKey(rp => rp.RoleId);
-
-        modelBuilder.Entity<RolePermission>()
-            .HasOne(rp => rp.Permission)
-            .WithMany()
-            .HasForeignKey(rp => rp.PermissionId);
-        
-        modelBuilder.Entity<RolePermission>()
-            .HasKey(rp => new { rp.RoleId, rp.PermissionId });
-        
         modelBuilder.Entity<Permission>()
             .HasIndex(p => p.Code)
             .IsUnique();
         
-        modelBuilder.Entity<RefreshSession>()
-            .ToTable("refresh_sessions");
-
-        modelBuilder.Entity<RefreshSession>()
-            .HasOne(rs => rs.User)
-            .WithMany()
-            .HasForeignKey(rs => rs.UserId);
-        
         modelBuilder.Entity<Permission>()
             .ToTable("permissions");
-        
-        modelBuilder.Entity<RolePermission>()
-            .ToTable("role_permissions");
         
         modelBuilder.Entity<IdentityUserClaim<Guid>>()
             .ToTable("user_claims");

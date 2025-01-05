@@ -6,5 +6,5 @@ public class VolunteerAccountDto
 {
     public Guid VolunteerAccountId { get; init; }
     public Guid UserId { get; init; }
-    public WorkingExperienceDto WorkingExperience { get; init; } = default!;
+    public int WorkingExperience { get; init; } = default!;
 }

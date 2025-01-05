@@ -19,8 +19,4 @@
       <ProjectReference Include="..\Shared\PetFamily.Framework\PetFamily.Framework.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Configurations\Read\" />
-    </ItemGroup>
-
 </Project>
