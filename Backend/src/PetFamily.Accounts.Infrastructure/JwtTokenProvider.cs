@@ -8,7 +8,7 @@ using PetFamily.Accounts.Domain;
 using Microsoft.Extensions.Options;
 using Pet.Family.SharedKernel;
 using PetFamily.Accounts.Application.Models;
-using PetFamily.Accounts.Infrastructure.DbContexts.Write;
+using PetFamily.Accounts.Infrastructure.DbContexts;
 using PetFamily.Core.Options;
 using PetFamily.Framework.Authorization;
 

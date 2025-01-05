@@ -9,7 +9,7 @@ using Pet.Family.SharedKernel;
 using PetFamily.Accounts.Application.Interfaces;
 using PetFamily.Accounts.Domain;
 using PetFamily.Accounts.Infrastructure.DataSeeding;
-using PetFamily.Accounts.Infrastructure.DbContexts.Write;
+using PetFamily.Accounts.Infrastructure.DbContexts;
 using PetFamily.Accounts.Infrastructure.IdentityManagers;
 using PetFamily.Accounts.Infrastructure.Options;
 using PetFamily.Core.Abstractions;

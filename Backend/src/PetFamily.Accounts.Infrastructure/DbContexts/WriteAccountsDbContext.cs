@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using PetFamily.Accounts.Domain;
 using PetFamily.Accounts.Domain.AccountModels;
 
-namespace PetFamily.Accounts.Infrastructure.DbContexts.Write;
+namespace PetFamily.Accounts.Infrastructure.DbContexts;
 
 public class WriteAccountsDbContext 
     : IdentityDbContext<User, Role, Guid>
@@ -22,9 +22,7 @@ public class WriteAccountsDbContext
     public DbSet<AdminAccount> AdminAccounts => Set<AdminAccount>();
     public DbSet<ParticipantAccount> ParticipantAccounts => Set<ParticipantAccount>();
     public DbSet<VolunteerAccount> VolunteerAccounts => Set<VolunteerAccount>();
-    
     public DbSet<RefreshSession> RefreshSessions => Set<RefreshSession>();
-    
     public DbSet<Permission> Permissions => Set<Permission>();
     public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
     
