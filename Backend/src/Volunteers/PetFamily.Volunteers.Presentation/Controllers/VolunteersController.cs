@@ -19,6 +19,7 @@ using PetFamily.Volunteers.Application.VolunteersManagement.Commands.Volunteer.H
 using PetFamily.Volunteers.Application.VolunteersManagement.Commands.Volunteer.Update.MainInfo;
 using PetFamily.Volunteers.Application.VolunteersManagement.Queries.GetAllVolunteers;
 using PetFamily.Volunteers.Application.VolunteersManagement.Queries.GetVolunteerById;
+using PetFamily.Volunteers.Infrastructure.Services;
 using PetFamily.Volunteers.Presentation.Processors;
 using PetFamily.Volunteers.Presentation.Requests.Pet;
 using PetFamily.Volunteers.Presentation.Requests.Volunteer;
@@ -248,5 +249,4 @@ public class VolunteersController : BaseApiController
         
         return Ok(result.Value); 
     }
-    
 }

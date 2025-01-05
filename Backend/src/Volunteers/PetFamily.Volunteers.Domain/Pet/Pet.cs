@@ -7,9 +7,8 @@ using PetFamily.Volunteers.Domain.Ids;
 
 namespace PetFamily.Volunteers.Domain.Pet;
 
-public class Pet : BaseEntity<PetId>, ISoftDeletable
+public class Pet : SoftDeletableEntity<PetId>
 {
-    private bool _isDeleted = false;
     private List<Photo> _photos = [];
     // ef core
     public Pet(PetId id) : base(id) {}
@@ -77,19 +76,7 @@ public class Pet : BaseEntity<PetId>, ISoftDeletable
                           petsPageCreationDate);
         return pet;
     }
-
-    public void Delete()
-    {
-        if (!_isDeleted)
-            _isDeleted = true;
-    }
     
-    public void Restore()
-    {
-        if (_isDeleted)
-            _isDeleted = false;
-    }
-
     public void UpdateMainInfo(PetsName petsName, 
         SpecieDetails specieDetails,
         GenderType gender, 
