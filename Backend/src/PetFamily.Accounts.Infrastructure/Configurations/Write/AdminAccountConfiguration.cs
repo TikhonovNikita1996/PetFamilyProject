@@ -17,10 +17,5 @@ public class AdminAccountConfiguration : IEntityTypeConfiguration<AdminAccount>
     {
         builder.ToTable("admin_accounts");
         builder.HasKey(x => x.Id);
-
-        builder
-            .HasOne(aa => aa.User)
-            .WithOne(u => u.AdminAccount)
-            .HasForeignKey<AdminAccount>(a => a.UserId);
     }
 }

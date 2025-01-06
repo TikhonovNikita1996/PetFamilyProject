@@ -3,6 +3,7 @@ using PetFamily.Accounts.Application.AccountsManagement.Commands.Login;
 using PetFamily.Accounts.Application.AccountsManagement.Commands.RefreshTokens;
 using PetFamily.Accounts.Application.AccountsManagement.Commands.RegisterUser;
 using PetFamily.Accounts.Application.AccountsManagement.Commands.UpdateSocialNetworks;
+using PetFamily.Accounts.Application.AccountsManagement.Queries.GetUsersInfo;
 using PetFamily.Accounts.Presentation.Requests;
 using PetFamily.Framework;
 using PetFamily.Framework.Authorization;
@@ -67,4 +68,19 @@ public class AccountsController : BaseApiController
             
         return Ok(result.Value);
     }
+    
+    [HttpGet("/userInfo-by-id")]
+    public async Task<ActionResult> GetPetById(
+        [FromServices] GetUsersInfoHandler handler,
+        [FromQuery] GetUsersInfoRequest request, 
+        CancellationToken cancellationToken)
+    {
+        var query = new GetUsersInfoQuery(request.UserId);
+        var result = await handler.Handle(query, cancellationToken);
+        if(result.IsFailure)
+            return result.Error.ToResponse();
+        
+        return Ok(result.Value); 
+    }
+    
 }

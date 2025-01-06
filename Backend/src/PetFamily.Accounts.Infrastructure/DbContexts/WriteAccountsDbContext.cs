@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using PetFamily.Accounts.Domain;
 using PetFamily.Accounts.Domain.AccountModels;
 
-namespace PetFamily.Accounts.Infrastructure.DbContexts.Write;
+namespace PetFamily.Accounts.Infrastructure.DbContexts;
 
 public class WriteAccountsDbContext 
     : IdentityDbContext<User, Role, Guid>
@@ -22,9 +22,7 @@ public class WriteAccountsDbContext
     public DbSet<AdminAccount> AdminAccounts => Set<AdminAccount>();
     public DbSet<ParticipantAccount> ParticipantAccounts => Set<ParticipantAccount>();
     public DbSet<VolunteerAccount> VolunteerAccounts => Set<VolunteerAccount>();
-    
     public DbSet<RefreshSession> RefreshSessions => Set<RefreshSession>();
-    
     public DbSet<Permission> Permissions => Set<Permission>();
     public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
     
@@ -43,36 +41,12 @@ public class WriteAccountsDbContext
         modelBuilder.Entity<Role>()
             .ToTable("roles");
         
-        modelBuilder.Entity<RolePermission>()
-            .HasOne(rp => rp.Role)
-            .WithMany(r => r.RolePermissions)
-            .HasForeignKey(rp => rp.RoleId);
-
-        modelBuilder.Entity<RolePermission>()
-            .HasOne(rp => rp.Permission)
-            .WithMany()
-            .HasForeignKey(rp => rp.PermissionId);
-        
-        modelBuilder.Entity<RolePermission>()
-            .HasKey(rp => new { rp.RoleId, rp.PermissionId });
-        
         modelBuilder.Entity<Permission>()
             .HasIndex(p => p.Code)
             .IsUnique();
         
-        modelBuilder.Entity<RefreshSession>()
-            .ToTable("refresh_sessions");
-
-        modelBuilder.Entity<RefreshSession>()
-            .HasOne(rs => rs.User)
-            .WithMany()
-            .HasForeignKey(rs => rs.UserId);
-        
         modelBuilder.Entity<Permission>()
             .ToTable("permissions");
-        
-        modelBuilder.Entity<RolePermission>()
-            .ToTable("role_permissions");
         
         modelBuilder.Entity<IdentityUserClaim<Guid>>()
             .ToTable("user_claims");

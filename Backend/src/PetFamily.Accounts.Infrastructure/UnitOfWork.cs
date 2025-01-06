@@ -1,6 +1,6 @@
 ﻿using System.Data;
 using Microsoft.EntityFrameworkCore.Storage;
-using PetFamily.Accounts.Infrastructure.DbContexts.Write;
+using PetFamily.Accounts.Infrastructure.DbContexts;
 using PetFamily.Core.Abstractions;
 
 namespace PetFamily.Accounts.Infrastructure;

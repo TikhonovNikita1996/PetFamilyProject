@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PetFamily.Accounts.Domain;
-using PetFamily.Accounts.Infrastructure.DbContexts.Write;
+using PetFamily.Accounts.Infrastructure.DbContexts;
 
 namespace PetFamily.Accounts.Infrastructure.IdentityManagers;
 
