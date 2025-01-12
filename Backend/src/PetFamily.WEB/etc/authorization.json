@@ -14,7 +14,11 @@
       "volunteers.update",
       "volunteers.delete",
       "accounts.read",
-      "accounts.update"
+      "accounts.update",
+      "pets.create",
+      "pets.read",
+      "pets.update",
+      "pets.delete"
     ],
     "Volunteer": [
       "volunteers.read",

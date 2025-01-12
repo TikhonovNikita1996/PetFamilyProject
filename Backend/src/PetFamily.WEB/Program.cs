@@ -4,7 +4,7 @@ using PetFamily.Accounts.Application;
 using PetFamily.Accounts.Infrastructure;
 using PetFamily.Accounts.Presentation;
 using PetFamily.API;
-using PetFamily.API.Middlewares;
+using PetFamily.API.Middlewares;using PetFamily.Core.Dtos.Pet;
 using PetFamily.Species.Application;
 using PetFamily.Species.Presentation;
 using PetFamily.Species.Presentation.Controllers;
@@ -31,7 +31,6 @@ builder.Services.AddControllers()
     .AddApplicationPart(typeof(SpeciesController).Assembly)
     .AddApplicationPart(typeof(VolunteersController).Assembly)
     .AddApplicationPart(typeof(PetsController).Assembly);
-
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -93,12 +92,22 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors(config =>
+{
+    config.WithOrigins("http://localhost:5173").AllowAnyHeader().AllowAnyMethod();
+});
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+/*app.MapGet("/api/testpets", () =>
+{
+
+});*/
 
 app.Run();
 

@@ -17,5 +17,6 @@ public class PetDto
     public double Height { get; init; }
     public bool IsSterilized { get; init; }
     public bool IsVaccinated { get; init; }
+    
     public PhotoDto[] Photos { get; init; } = [];
 }

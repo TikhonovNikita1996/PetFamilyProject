@@ -36,7 +36,6 @@ public class GetUsersInfoHandler : IQueryHandler<Result<UserDto, CustomErrorsLis
             .Include(u => u.AdminAccount)
             .Include(u => u.VolunteerAccount)
             .Include(u => u.ParticipantAccount)
-            // .Include(u => u.Roles)
             .FirstOrDefaultAsync(u => u.Id == query.UserId, cancellationToken);
         
         return userDto;

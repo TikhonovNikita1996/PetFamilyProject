@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PetFamily.Core.Dtos.Pet;
 using PetFamily.Framework;
 using PetFamily.Framework.Authorization;
 using PetFamily.Volunteers.Application.VolunteersManagement.Queries.GetPetById;
@@ -8,7 +9,7 @@ using PetFamily.Volunteers.Presentation.Requests.Pet;
 
 namespace PetFamily.Volunteers.Presentation.Controllers;
 
-[Authorize]
+// [Authorize]
 public class PetsController : BaseApiController
 {
     [HttpGet]
@@ -21,7 +22,7 @@ public class PetsController : BaseApiController
         var query = request.ToQuery();
         var result = await handler.Handle(query, cancellationToken);
         
-        return Ok(result); 
+        return Ok(result.Value); 
     }
     
     [Permission(Permissions.Pets.Read)]
@@ -37,6 +38,43 @@ public class PetsController : BaseApiController
         if(result.IsFailure)
             return result.Error.ToResponse();
         
-        return Ok(result); 
+        return Ok(result.Value); 
+    }
+    
+    [HttpGet("/test-pets")]
+    public async Task<ActionResult> GetTestPets(
+        CancellationToken cancellationToken)
+    {
+        List<PetDto> users = GetPetsForTests(8);
+
+        List<PetDto> GetPetsForTests(int numberOfPets)
+        {
+            List<PetDto> pets = new List<PetDto>();
+
+            for (int i = 0; i < numberOfPets; i++)
+            {
+                var pet = new PetDto
+                {
+                    Id = Guid.NewGuid(),
+                    Name = $"Pet {i + 1}",
+                    Age = new Random().Next(0, 100),
+                    Color = "Black",
+                    CurrentStatus = "Need Help",
+                    Description = "A pet",
+                    Gender = "Male",
+                    BreedId = Guid.NewGuid(),
+                    HealthInformation = "Health Information",
+                    Height = 1,
+                    Weight = 1,
+                    IsSterilized = true,
+                    IsVaccinated = true
+                };
+                pets.Add(pet);
+            }
+            
+            return pets;
+        }
+
+        return Ok(users);
     }
 }
