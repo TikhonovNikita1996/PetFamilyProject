@@ -11,6 +11,7 @@ using PetFamily.Species.Presentation.Controllers;
 using PetFamily.Volunteers.Application;
 using PetFamily.Volunteers.Presentation;
 using PetFamily.Volunteers.Presentation.Controllers;
+using PetFamily.VolunteersRequests.Infrastructure;
 using Serilog;
 using Serilog.Events;
 
@@ -43,7 +44,8 @@ builder.Services
     .AddAccountsInfrastructure(builder.Configuration)
     .AddAccountsApplication()
     .AddAuthorizationServices(builder.Configuration)
-    .AddAccountsPresentation();
+    .AddAccountsPresentation()
+    .AddVolunteersRequestsInfrastructure(builder.Configuration);
 
 builder.Services.AddSerilog();
 
