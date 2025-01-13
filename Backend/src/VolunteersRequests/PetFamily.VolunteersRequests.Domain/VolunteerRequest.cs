@@ -25,7 +25,7 @@ public class VolunteerRequest
         VolunteerInfo = volunteerInfo;
     }
     
-    public VolunteerRequest Create(
+    public static VolunteerRequest Create(
         Guid userId,
         VolunteerInfo? volunteerInfo)
     {
