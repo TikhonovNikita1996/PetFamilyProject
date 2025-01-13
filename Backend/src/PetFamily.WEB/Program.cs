@@ -4,7 +4,7 @@ using PetFamily.Accounts.Application;
 using PetFamily.Accounts.Infrastructure;
 using PetFamily.Accounts.Presentation;
 using PetFamily.API;
-using PetFamily.API.Middlewares;using PetFamily.Core.Dtos.Pet;
+using PetFamily.API.Middlewares;
 using PetFamily.Species.Application;
 using PetFamily.Species.Presentation;
 using PetFamily.Species.Presentation.Controllers;
