@@ -25,6 +25,9 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\tests\VolunteerTests\VolunteerTests.csproj" />
+      <ProjectReference Include="..\Accounts\PetFamily.Accounts.Application\PetFamily.Accounts.Application.csproj" />
+      <ProjectReference Include="..\Accounts\PetFamily.Accounts.Infrastructure\PetFamily.Accounts.Infrastructure.csproj" />
+      <ProjectReference Include="..\Accounts\PetFamily.Accounts.Presentation\PetFamily.Accounts.Presentation.csproj" />
       <ProjectReference Include="..\PetFamily.Accounts.Application\PetFamily.Accounts.Application.csproj" />
       <ProjectReference Include="..\PetFamily.Accounts.Contracts\PetFamily.Accounts.Contracts.csproj" />
       <ProjectReference Include="..\PetFamily.Accounts.Domain\PetFamily.Accounts.Domain.csproj" />
@@ -35,6 +38,10 @@
       <ProjectReference Include="..\Shared\PetFamily.Framework\PetFamily.Framework.csproj" />
       <ProjectReference Include="..\Species\PetFamily.Species.Infrastructure\PetFamily.Species.Infrastructure.csproj" />
       <ProjectReference Include="..\Species\PetFamily.Species.Presentation\PetFamily.Species.Presentation.csproj" />
+      <ProjectReference Include="..\VolunteersRequests\PetFamily.VolunteersRequests.Application\PetFamily.VolunteersRequests.Application.csproj" />
+      <ProjectReference Include="..\VolunteersRequests\PetFamily.VolunteersRequests.Contracts\PetFamily.VolunteersRequests.Contracts.csproj" />
+      <ProjectReference Include="..\VolunteersRequests\PetFamily.VolunteersRequests.Infrastructure\PetFamily.VolunteersRequests.Infrastructure.csproj" />
+      <ProjectReference Include="..\VolunteersRequests\PetFamily.VolunteersRequests.Presentation\PetFamily.VolunteersRequests.Presentation.csproj" />
       <ProjectReference Include="..\Volunteers\PetFamily.Volunteers.Application\PetFamily.Volunteers.Application.csproj" />
       <ProjectReference Include="..\Volunteers\PetFamily.Volunteers.Domain\PetFamily.Volunteers.Domain.csproj" />
       <ProjectReference Include="..\Volunteers\PetFamily.Volunteers.Infrastructure\PetFamily.Volunteers.Infrastructure.csproj" />

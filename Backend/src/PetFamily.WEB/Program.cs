@@ -4,13 +4,14 @@ using PetFamily.Accounts.Application;
 using PetFamily.Accounts.Infrastructure;
 using PetFamily.Accounts.Presentation;
 using PetFamily.API;
-using PetFamily.API.Middlewares;using PetFamily.Core.Dtos.Pet;
+using PetFamily.API.Middlewares;
 using PetFamily.Species.Application;
 using PetFamily.Species.Presentation;
 using PetFamily.Species.Presentation.Controllers;
 using PetFamily.Volunteers.Application;
 using PetFamily.Volunteers.Presentation;
 using PetFamily.Volunteers.Presentation.Controllers;
+using PetFamily.VolunteersRequests.Infrastructure;
 using Serilog;
 using Serilog.Events;
 
@@ -43,7 +44,8 @@ builder.Services
     .AddAccountsInfrastructure(builder.Configuration)
     .AddAccountsApplication()
     .AddAuthorizationServices(builder.Configuration)
-    .AddAccountsPresentation();
+    .AddAccountsPresentation()
+    .AddVolunteersRequestsInfrastructure(builder.Configuration);
 
 builder.Services.AddSerilog();
 
