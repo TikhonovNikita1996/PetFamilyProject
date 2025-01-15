@@ -2,15 +2,16 @@
 
 public class Relation
 {
-    public Guid Id { get; private set; }
+    private readonly List<Discussion> _discussions = [];
+    public Guid RelationId { get; private set; }
     public string Name { get; private set; }
     
-    public IReadOnlyList<Discussion> Discussions { get; private set; } = [];
+    public IReadOnlyList<Discussion> Discussions => _discussions;
 
     private Relation() { }
     private Relation(string name)
     {
-        Id = Guid.NewGuid();
+        RelationId = Guid.NewGuid();
         Name = name;
     }
 

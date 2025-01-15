@@ -15,6 +15,7 @@ public record MessageText
     {
         if (string.IsNullOrWhiteSpace(value))
             return Errors.General.ValueIsInvalid("Message text");
+        
         return new MessageText(value);
     } 
 

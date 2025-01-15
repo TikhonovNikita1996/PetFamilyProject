@@ -22,10 +22,6 @@ public class VolunteerRequestConfiguration : IEntityTypeConfiguration<VolunteerR
             .IsRequired(false)
             .HasColumnName("admin_Id");
         
-        builder.Property(s => s.AdminId)
-            .IsRequired(false)
-            .HasColumnName("admin_Id");
-        
         builder.Property(s => s.DiscussionId)
             .IsRequired(false)
             .HasColumnName("discussion_id");

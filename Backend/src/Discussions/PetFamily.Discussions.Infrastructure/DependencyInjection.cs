@@ -2,13 +2,13 @@
 using Microsoft.Extensions.DependencyInjection;
 using Pet.Family.SharedKernel;
 using PetFamily.Core.Abstractions;
-using PetFamily.VolunteersRequests.Infrastructure.DataContexts;
+using PetFamily.Discussions.Infrastructure.DataContexts;
 
-namespace PetFamily.VolunteersRequests.Infrastructure;
+namespace PetFamily.Discussions.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddVolunteersRequestsInfrastructure(this IServiceCollection services,
+    public static IServiceCollection AddDiscussionsInfrastructure(this IServiceCollection services,
         IConfiguration configuration)
     {
         services.AddDbContexts(configuration)
@@ -19,15 +19,15 @@ public static class DependencyInjection
 
     private static IServiceCollection AddUnitOfWork(this IServiceCollection services)
     {
-        services.AddKeyedScoped<IUnitOfWork, UnitOfWork>(ProjectConstants.Context.VolunteersRequest);
+        services.AddKeyedScoped<IUnitOfWork, UnitOfWork>(ProjectConstants.Context.Discussions);
         return services;
     }
     
     private static IServiceCollection AddDbContexts(this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddScoped<VolunteersRequestWriteDbContext>(_ => 
-            new VolunteersRequestWriteDbContext(configuration.GetConnectionString("Database")!));
+        services.AddScoped<DiscussionsWriteDbContext>(_ => 
+            new DiscussionsWriteDbContext(configuration.GetConnectionString("Database")!));
 
         return services;
     }
