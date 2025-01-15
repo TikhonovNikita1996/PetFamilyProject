@@ -10,7 +10,7 @@ using PetFamily.Species.Infrastructure.DataContexts;
 
 namespace PetFamily.Species.Infrastructure.Migrations
 {
-    [DbContext(typeof(WriteDbContext))]
+    [DbContext(typeof(SpeciesWriteDbContext))]
     partial class WriteDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

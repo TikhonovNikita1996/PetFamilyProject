@@ -19,7 +19,7 @@ public static class DependencyInjection
 
     private static IServiceCollection AddUnitOfWork(this IServiceCollection services)
     {
-        services.AddKeyedScoped<IUnitOfWork, UnitOfWork>(ProjectConstants.Context.SpeciesManagement);
+        services.AddKeyedScoped<IUnitOfWork, UnitOfWork>(ProjectConstants.Context.VolunteersRequest);
         return services;
     }
     

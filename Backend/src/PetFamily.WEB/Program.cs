@@ -5,6 +5,7 @@ using PetFamily.Accounts.Infrastructure;
 using PetFamily.Accounts.Presentation;
 using PetFamily.API;
 using PetFamily.API.Middlewares;
+using PetFamily.Discussions.Infrastructure;
 using PetFamily.Species.Application;
 using PetFamily.Species.Presentation;
 using PetFamily.Species.Presentation.Controllers;
@@ -45,7 +46,8 @@ builder.Services
     .AddAccountsApplication()
     .AddAuthorizationServices(builder.Configuration)
     .AddAccountsPresentation()
-    .AddVolunteersRequestsInfrastructure(builder.Configuration);
+    .AddVolunteersRequestsInfrastructure(builder.Configuration)
+    .AddDiscussionsInfrastructure(builder.Configuration);
 
 builder.Services.AddSerilog();
 
@@ -83,7 +85,7 @@ var app = builder.Build();
 
 var accountSeeder = app.Services.GetRequiredService<AccountsSeeder>();
 
-await accountSeeder.SeedAsync();
+// await accountSeeder.SeedAsync();
 
 app.UseExceptionMiddleware();
 app.UseSerilogRequestLogging();
@@ -105,11 +107,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
-/*app.MapGet("/api/testpets", () =>
-{
-
-});*/
 
 app.Run();
 

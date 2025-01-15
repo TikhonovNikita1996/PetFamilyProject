@@ -11,7 +11,7 @@ using PetFamily.Species.Infrastructure.DataContexts;
 
 namespace PetFamily.Species.Infrastructure.Migrations
 {
-    [DbContext(typeof(WriteDbContext))]
+    [DbContext(typeof(SpeciesWriteDbContext))]
     [Migration("20241227164723_Species_Initial")]
     partial class Species_Initial
     {

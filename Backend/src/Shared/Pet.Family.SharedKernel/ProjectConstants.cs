@@ -11,6 +11,8 @@ public class ProjectConstants
     {
         VolunteerManagement,
         SpeciesManagement,
-        AccountManagement
+        AccountManagement,
+        Discussions,
+        VolunteersRequest
     }
 }
