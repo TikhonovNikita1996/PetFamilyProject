@@ -88,6 +88,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.Discussions.Prese
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.Discussions.Contracts", "src\Discussions\PetFamily.Discussions.Contracts\PetFamily.Discussions.Contracts.csproj", "{E37E8BCF-9E9B-4975-BA65-E2E396F09A90}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.DiscussionsTests", "tests\PetFamily.DiscussionsTests\PetFamily.DiscussionsTests.csproj", "{3CC28219-3021-4733-BB60-0F1B7F879438}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -225,6 +227,10 @@ Global
 		{E37E8BCF-9E9B-4975-BA65-E2E396F09A90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E37E8BCF-9E9B-4975-BA65-E2E396F09A90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E37E8BCF-9E9B-4975-BA65-E2E396F09A90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CC28219-3021-4733-BB60-0F1B7F879438}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CC28219-3021-4733-BB60-0F1B7F879438}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CC28219-3021-4733-BB60-0F1B7F879438}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CC28219-3021-4733-BB60-0F1B7F879438}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1AE13E76-4DEB-49F6-87EA-DBB12566C8DF} = {24D81CB7-507A-41A7-841F-BF6F1F851ACA}
@@ -265,5 +271,6 @@ Global
 		{44DA1ACA-4AC0-409D-9F33-4584B4F09011} = {1F767864-F6EF-433E-A983-1CB1C170BFCE}
 		{D5A0F92A-6982-45F4-BCFA-7C3BB40BAE6C} = {1F767864-F6EF-433E-A983-1CB1C170BFCE}
 		{E37E8BCF-9E9B-4975-BA65-E2E396F09A90} = {1F767864-F6EF-433E-A983-1CB1C170BFCE}
+		{3CC28219-3021-4733-BB60-0F1B7F879438} = {18B4E763-2C8F-45AA-8F30-C4BE04213463}
 	EndGlobalSection
 EndGlobal

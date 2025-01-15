@@ -29,7 +29,11 @@ public class Discussion
     public static Result<Discussion, CustomError> Create(
         Guid relationId, DiscussionUsers discussionUsers)
     {
-        return new Discussion(relationId, discussionUsers);
+        var discussion = new Discussion(relationId, discussionUsers)
+        {
+            Status = DiscussionStatus.Open
+        };
+        return discussion;
     }
     
     public UnitResult<CustomError> AddMessage(Message message)
@@ -62,11 +66,16 @@ public class Discussion
         return Result.Success<CustomError>();
     }
     
-    public UnitResult<CustomError> RemoveMessage(Message message, Guid userId)
+    public UnitResult<CustomError> RemoveMessage(Guid messageId, Guid userId)
     {
         if (Status == DiscussionStatus.Closed)
             return Errors.General.Failure("Discussion is closed.");
 
+        var message = _messages.FirstOrDefault(m => m.MessageId == messageId);
+        
+        if (message is null)
+            return Errors.General.NotFound("message");
+        
         if (message.SenderId != userId)
             return Errors.General.Failure("You can delete only your messages.");
         
