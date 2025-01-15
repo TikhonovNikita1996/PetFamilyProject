@@ -13,8 +13,6 @@
     <ItemGroup>
       <ProjectReference Include="..\..\Accounts\PetFamily.Accounts.Contracts\PetFamily.Accounts.Contracts.csproj" />
       <ProjectReference Include="..\..\Accounts\PetFamily.Accounts.Domain\PetFamily.Accounts.Domain.csproj" />
-      <ProjectReference Include="..\..\PetFamily.Accounts.Contracts\PetFamily.Accounts.Contracts.csproj" />
-      <ProjectReference Include="..\..\PetFamily.Accounts.Domain\PetFamily.Accounts.Domain.csproj" />
       <ProjectReference Include="..\..\Shared\Pet.Family.SharedKernel\Pet.Family.SharedKernel.csproj" />
       <ProjectReference Include="..\..\Shared\PetFamily.Core\PetFamily.Core.csproj" />
     </ItemGroup>

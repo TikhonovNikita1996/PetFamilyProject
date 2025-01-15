@@ -8,7 +8,7 @@ using PetFamily.Species.Infrastructure.DataContexts;
 
 namespace PetFamily.Species.Infrastructure;
 
-public class SpeciesRepository(WriteDbContext context) : ISpeciesRepository
+public class SpeciesRepository(SpeciesWriteDbContext context) : ISpeciesRepository
 {
     public async Task<Result<Guid, CustomError>> Add(Specie specie, CancellationToken cancellationToken = default)
     {

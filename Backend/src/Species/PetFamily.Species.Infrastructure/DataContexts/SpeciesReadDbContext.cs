@@ -1,34 +1,29 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using PetFamily.Species.Domain.ValueObjects;
+using PetFamily.Core.Dtos.Specie;
+using PetFamily.Species.Application.Database;
 
 namespace PetFamily.Species.Infrastructure.DataContexts;
 
-public class WriteDbContext : DbContext
+public class SpeciesReadDbContext(string ConnectionString) : DbContext, IReadDbContext
 {
-    private readonly string _connectionString;
-
-    public WriteDbContext(string connectionString)
-    {
-        _connectionString = connectionString;
-    }
+    public IQueryable<SpecieDto> Species => Set<SpecieDto>();
+    public IQueryable<BreedDto> Breeds => Set<BreedDto>();
     
-    public DbSet<Specie> Species { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseNpgsql(_connectionString);
+        optionsBuilder.UseNpgsql(ConnectionString);
         optionsBuilder.UseSnakeCaseNamingConvention();
         optionsBuilder.UseLoggerFactory(CreateLoggerFactory());
         optionsBuilder.EnableSensitiveDataLogging();
-        // optionsBuilder.AddInterceptors(new SoftDeleteInterceptor());
+        optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(
-            typeof(WriteDbContext).Assembly,
-            x => x.FullName!.Contains("Configurations.Write"));
-
+            typeof(SpeciesReadDbContext).Assembly,
+            x => x.FullName!.Contains("Configurations.Read"));
         modelBuilder.HasDefaultSchema("PetFamily_Species");
     }
 

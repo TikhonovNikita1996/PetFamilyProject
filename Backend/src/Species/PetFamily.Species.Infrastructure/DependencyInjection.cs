@@ -29,11 +29,11 @@ public static class DependencyInjection
     private static IServiceCollection AddDbContexts(this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddScoped<WriteDbContext>(_ => 
-            new WriteDbContext(configuration.GetConnectionString("Database")!));
+        services.AddScoped<SpeciesWriteDbContext>(_ => 
+            new SpeciesWriteDbContext(configuration.GetConnectionString("Database")!));
         
-        services.AddScoped<IReadDbContext, ReadDbContext>(_ => 
-            new ReadDbContext(configuration.GetConnectionString("Database")!));
+        services.AddScoped<IReadDbContext, SpeciesReadDbContext>(_ => 
+            new SpeciesReadDbContext(configuration.GetConnectionString("Database")!));
 
         return services;
     }
