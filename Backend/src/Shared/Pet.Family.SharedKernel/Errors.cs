@@ -50,6 +50,12 @@ public static class Errors
         {
             return CustomError.Validation("failure", "Failure");
         }
+        
+        public static CustomError Failure(string? text = null)
+        {
+            var label = text ?? "";
+            return CustomError.Validation("failure", label);
+        }
     }
 
     public static class VolunteerValidation

@@ -30,7 +30,6 @@ public class Volunteer : SoftDeletableEntity<VolunteerId>
     public static Result<Volunteer, CustomError> Create(VolunteerId id,
         Description description, PhoneNumber phoneNumber)
     {
-        
         var volunteer = new Volunteer(id, description, phoneNumber);
 
         return volunteer;
