@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PetFamily.Core.Dtos.Discussion;
 using PetFamily.Core.Dtos.Pet;
 using PetFamily.Framework;
 using PetFamily.Framework.Authorization;
@@ -8,8 +9,7 @@ using PetFamily.Volunteers.Application.VolunteersManagement.Queries.GetPetsWithF
 using PetFamily.Volunteers.Presentation.Requests.Pet;
 
 namespace PetFamily.Volunteers.Presentation.Controllers;
-
-// [Authorize]
+[Authorize]
 public class PetsController : BaseApiController
 {
     [HttpGet]
@@ -45,15 +45,15 @@ public class PetsController : BaseApiController
     public async Task<ActionResult> GetTestPets(
         CancellationToken cancellationToken)
     {
-        List<PetDto> users = GetPetsForTests(8);
+        List<RelationDto> users = GetPetsForTests(8);
 
-        List<PetDto> GetPetsForTests(int numberOfPets)
+        List<RelationDto> GetPetsForTests(int numberOfPets)
         {
-            List<PetDto> pets = new List<PetDto>();
+            List<RelationDto> pets = new List<RelationDto>();
 
             for (int i = 0; i < numberOfPets; i++)
             {
-                var pet = new PetDto
+                var pet = new RelationDto
                 {
                     Id = Guid.NewGuid(),
                     Name = $"Pet {i + 1}",

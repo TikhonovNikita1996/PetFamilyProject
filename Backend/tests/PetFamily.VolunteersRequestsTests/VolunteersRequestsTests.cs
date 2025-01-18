@@ -12,7 +12,7 @@ public class VolunteersRequestsTests
         var userId = Guid.NewGuid();
         var request = VolunteerRequest.Create(userId, volunteerInfo);
         
-        return request;
+        return request.Value;
     }
     
     [Fact]
@@ -27,8 +27,8 @@ public class VolunteersRequestsTests
         
         //Assert
         Assert.NotNull(request);
-        Assert.Equal(userId, request.UserId);
-        Assert.Equal(RequestStatus.Submitted, request.Status);
+        Assert.Equal(userId, request.Value.UserId);
+        Assert.Equal(RequestStatus.Submitted, request.Value.Status);
     }
     
     [Fact]

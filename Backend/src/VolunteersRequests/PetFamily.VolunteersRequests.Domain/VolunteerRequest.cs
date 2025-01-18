@@ -1,4 +1,6 @@
-﻿using PetFamily.VolunteersRequests.Domain.Enums;
+﻿using CSharpFunctionalExtensions;
+using Pet.Family.SharedKernel;
+using PetFamily.VolunteersRequests.Domain.Enums;
 using PetFamily.VolunteersRequests.Domain.ValueObjects;
 
 namespace PetFamily.VolunteersRequests.Domain;
@@ -25,11 +27,12 @@ public class VolunteerRequest
         VolunteerInfo = volunteerInfo;
     }
     
-    public static VolunteerRequest Create(
+    public static Result<VolunteerRequest, CustomError>  Create(
         Guid userId,
-        VolunteerInfo? volunteerInfo)
+        VolunteerInfo volunteerInfo)
     {
-        return new VolunteerRequest(userId, volunteerInfo);
+        var request = new VolunteerRequest(userId, volunteerInfo);
+        return request;
     }
     
     public void TakeInReview(Guid adminId)

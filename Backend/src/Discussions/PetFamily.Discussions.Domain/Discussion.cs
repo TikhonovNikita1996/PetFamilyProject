@@ -8,7 +8,6 @@ public class Discussion
     private readonly List<Message> _messages = [];
     public Guid DiscussionId { get; private set; }
     public Guid RelationId { get; private set; }
-    public Relation Relation { get; private set; }
     public DiscussionUsers DiscussionUsers { get; } = default!;
     public IReadOnlyList<Message> Messages => _messages;
     public DiscussionStatus Status { get; private set; }

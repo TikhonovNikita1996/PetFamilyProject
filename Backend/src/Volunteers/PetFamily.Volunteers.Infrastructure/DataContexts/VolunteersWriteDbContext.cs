@@ -4,11 +4,11 @@ using PetFamily.Volunteers.Domain.Volunteer;
 
 namespace PetFamily.Volunteers.Infrastructure.DataContexts;
 
-public class WriteDbContext : DbContext
+public class VolunteersWriteDbContext : DbContext
 {
     private readonly string _connectionString;
 
-    public WriteDbContext(string connectionString)
+    public VolunteersWriteDbContext(string connectionString)
     {
         _connectionString = connectionString;
     }
@@ -26,7 +26,7 @@ public class WriteDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(
-            typeof(WriteDbContext).Assembly,
+            typeof(VolunteersWriteDbContext).Assembly,
             x => x.FullName!.Contains("Configurations.Write"));
         modelBuilder.HasDefaultSchema("PetFamily_Volunteers");
     }

@@ -3,6 +3,7 @@ using CSharpFunctionalExtensions;
 using FluentValidation;
 using Pet.Family.SharedKernel;
 using PetFamily.Core.Abstractions;
+using PetFamily.Core.Dtos.Discussion;
 using PetFamily.Core.Dtos.Pet;
 using PetFamily.Core.Extensions;
 using PetFamily.Core.Models;
@@ -10,7 +11,7 @@ using PetFamily.Volunteers.Application.Database;
 
 namespace PetFamily.Volunteers.Application.VolunteersManagement.Queries.GetPetsWithFiltersAndPagination;
 
-public class GetPetsWithPaginationAndFiltersHandler : IQueryHandler<Result<PagedList<PetDto>, CustomErrorsList>,
+public class GetPetsWithPaginationAndFiltersHandler : IQueryHandler<Result<PagedList<RelationDto>, CustomErrorsList>,
     GetPetsWithPaginationAndFiltersQuery>
 {
     private readonly IReadDbContext _readDbContext;
@@ -24,7 +25,7 @@ public class GetPetsWithPaginationAndFiltersHandler : IQueryHandler<Result<Paged
         _validator = validator;
     }
 
-    public async Task<Result<PagedList<PetDto>, CustomErrorsList>> Handle(
+    public async Task<Result<PagedList<RelationDto>, CustomErrorsList>> Handle(
         GetPetsWithPaginationAndFiltersQuery query,
         CancellationToken cancellationToken)
     {
@@ -34,7 +35,7 @@ public class GetPetsWithPaginationAndFiltersHandler : IQueryHandler<Result<Paged
         
         var petsQuery = _readDbContext.Pets.AsQueryable();
 
-        Expression<Func<PetDto, object>> keySelector = query.SortBy?.ToLower() switch
+        Expression<Func<RelationDto, object>> keySelector = query.SortBy?.ToLower() switch
         {
             "name" => (pet) => pet.Name,
             "age" => (pet) => pet.Age,

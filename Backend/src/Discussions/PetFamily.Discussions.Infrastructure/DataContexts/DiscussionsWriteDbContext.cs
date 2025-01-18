@@ -13,7 +13,8 @@ public class DiscussionsWriteDbContext : DbContext
         _connectionString = connectionString;
     }
     
-    DbSet<Discussion> Discussions => Set<Discussion>();
+    public DbSet<Discussion> Discussions => Set<Discussion>();
+    public DbSet<Relation> Relations => Set<Relation>();
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

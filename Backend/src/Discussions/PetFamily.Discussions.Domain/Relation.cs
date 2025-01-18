@@ -4,16 +4,12 @@ public class Relation
 {
     private readonly List<Discussion> _discussions = [];
     public Guid RelationId { get; private set; }
-    public string Name { get; private set; }
-    
+    public Guid PetId { get; private set; }
     public IReadOnlyList<Discussion> Discussions => _discussions;
-
     private Relation() { }
-    private Relation(string name)
+    private Relation(Guid petId)
     {
         RelationId = Guid.NewGuid();
-        Name = name;
     }
-
-    public static Relation Create(string name) => new Relation(name);
+    public static Relation Create(Guid petId) => new Relation(petId);
 }

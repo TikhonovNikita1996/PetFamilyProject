@@ -31,10 +31,6 @@ public class DiscussionConfiguration : IEntityTypeConfiguration<Discussion>
                 .HasColumnName("second_user_id");
         });
         
-        builder.HasOne(d => d.Relation)
-            .WithMany(r => r.Discussions)
-            .HasForeignKey(d => d.RelationId);
-        
         builder.HasMany(d => d.Messages)
             .WithOne()
             .HasForeignKey(m => m.DiscussionId)

@@ -3,13 +3,14 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Pet.Family.SharedKernel;
 using PetFamily.Core.Abstractions;
+using PetFamily.Core.Dtos.Discussion;
 using PetFamily.Core.Dtos.Pet;
 using PetFamily.Core.Extensions;
 using PetFamily.Volunteers.Application.Database;
 
 namespace PetFamily.Volunteers.Application.VolunteersManagement.Queries.GetPetById;
 
-public class GetPetByIdHandler : IQueryHandler<Result<PetDto, CustomErrorsList>,
+public class GetPetByIdHandler : IQueryHandler<Result<RelationDto, CustomErrorsList>,
     GetPetByIdQuery>
 {
     private readonly IReadDbContext _readDbContext;
@@ -24,7 +25,7 @@ public class GetPetByIdHandler : IQueryHandler<Result<PetDto, CustomErrorsList>,
         _validator = validator;
     }
 
-    public async Task<Result<PetDto, CustomErrorsList>> Handle(
+    public async Task<Result<RelationDto, CustomErrorsList>> Handle(
         GetPetByIdQuery query,
         CancellationToken cancellationToken)
     {

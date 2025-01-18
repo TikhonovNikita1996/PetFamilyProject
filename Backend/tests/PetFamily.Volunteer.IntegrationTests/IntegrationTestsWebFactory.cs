@@ -15,7 +15,6 @@ using PetFamily.Volunteers.Application.Database;
 using PetFamily.Volunteers.Infrastructure.DataContexts;
 using Respawn;
 using Testcontainers.PostgreSql;
-using ReadDbContext = PetFamily.Volunteers.Infrastructure.DataContexts.ReadDbContext;
 
 namespace PetFamily.Volunteer.IntegrationTests;
 
@@ -55,8 +54,8 @@ public class IntegrationTestsWebFactory : WebApplicationFactory<Program>, IAsync
         services.AddScoped<SpeciesWriteDbContext>(_ =>
             new SpeciesWriteDbContext(_dbContainer.GetConnectionString()));
         
-        services.AddScoped<IReadDbContext, ReadDbContext>(_ =>
-            new ReadDbContext(_dbContainer.GetConnectionString()));
+        services.AddScoped<IReadDbContext, VolunteersReadDbContext>(_ =>
+            new VolunteersReadDbContext(_dbContainer.GetConnectionString()));
 
         services.AddTransient<IFileService>(_ => _fileService);
     }

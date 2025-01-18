@@ -2,14 +2,15 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Pet.Family.SharedKernel.ValueObjects.Pet;
+using PetFamily.Core.Dtos.Discussion;
 using PetFamily.Core.Dtos.Pet;
 using PetFamily.Core.Extensions;
 
 namespace PetFamily.Volunteers.Infrastructure.Configurations.Read;
 
-public class PetDtoConfiguration : IEntityTypeConfiguration<PetDto>
+public class PetDtoConfiguration : IEntityTypeConfiguration<RelationDto>
 {
-    public void Configure(EntityTypeBuilder<PetDto> builder)
+    public void Configure(EntityTypeBuilder<RelationDto> builder)
     {
         builder.ToTable("pets");
         builder.HasKey(v => v.Id);

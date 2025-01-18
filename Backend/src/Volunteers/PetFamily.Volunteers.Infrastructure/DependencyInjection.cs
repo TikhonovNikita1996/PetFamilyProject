@@ -49,11 +49,11 @@ public static class DependencyInjection
     private static IServiceCollection AddDbContexts(this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddScoped<WriteDbContext>(_ => 
-            new WriteDbContext(configuration.GetConnectionString("Database")!));
+        services.AddScoped<VolunteersWriteDbContext>(_ => 
+            new VolunteersWriteDbContext(configuration.GetConnectionString("Database")!));
         
-        services.AddScoped<IReadDbContext, ReadDbContext>(_ => 
-            new ReadDbContext(configuration.GetConnectionString("Database")!));
+        services.AddScoped<IReadDbContext, VolunteersReadDbContext>(_ => 
+            new VolunteersReadDbContext(configuration.GetConnectionString("Database")!));
 
         return services;
     }

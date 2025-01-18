@@ -1,15 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using PetFamily.Core.Dtos.Pet;
-using PetFamily.Core.Dtos.Volunteer;
-using PetFamily.Volunteers.Application.Database;
+using PetFamily.Core.Dtos.Discussion;
+using PetFamily.Core.Dtos.Specie;
+using PetFamily.Discussions.Application.Database;
+using PetFamily.Discussions.Domain;
 
-namespace PetFamily.Volunteers.Infrastructure.DataContexts;
+namespace PetFamily.Discussions.Infrastructure.DataContexts;
 
-public class ReadDbContext(string ConnectionString) : DbContext, IReadDbContext
+public class DiscussionsReadDbContext(string ConnectionString) : DbContext, IDiscussionsReadDbContext
 {
-    public IQueryable<VolunteerDto> Volunteers => Set<VolunteerDto>();
-    public IQueryable<PetDto> Pets => Set<PetDto>();
+    public IQueryable<RelationDto> Relations => Set<RelationDto>();
+    public IQueryable<DiscussionDto> Discussions => Set<DiscussionDto>();
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -23,11 +24,12 @@ public class ReadDbContext(string ConnectionString) : DbContext, IReadDbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(
-            typeof(ReadDbContext).Assembly,
+            typeof(DiscussionsReadDbContext).Assembly,
             x => x.FullName!.Contains("Configurations.Read"));
-        modelBuilder.HasDefaultSchema("PetFamily_Volunteers");
+        modelBuilder.HasDefaultSchema("PetFamily_Species");
     }
 
     private ILoggerFactory CreateLoggerFactory() =>
         LoggerFactory.Create(builder => {builder.AddConsole();});
+    
 }
