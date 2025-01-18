@@ -45,15 +45,15 @@ public class PetsController : BaseApiController
     public async Task<ActionResult> GetTestPets(
         CancellationToken cancellationToken)
     {
-        List<RelationDto> users = GetPetsForTests(8);
+        List<PetDto> users = GetPetsForTests(8);
 
-        List<RelationDto> GetPetsForTests(int numberOfPets)
+        List<PetDto> GetPetsForTests(int numberOfPets)
         {
-            List<RelationDto> pets = new List<RelationDto>();
+            List<PetDto> pets = new List<PetDto>();
 
             for (int i = 0; i < numberOfPets; i++)
             {
-                var pet = new RelationDto
+                var pet = new PetDto
                 {
                     Id = Guid.NewGuid(),
                     Name = $"Pet {i + 1}",

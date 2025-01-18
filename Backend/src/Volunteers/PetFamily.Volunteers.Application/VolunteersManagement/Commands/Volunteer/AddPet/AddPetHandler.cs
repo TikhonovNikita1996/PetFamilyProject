@@ -8,6 +8,7 @@ using Pet.Family.SharedKernel.ValueObjects.Specie;
 using Pet.Family.SharedKernel.ValueObjects.Volunteer;
 using PetFamily.Core.Abstractions;
 using PetFamily.Core.Extensions;
+using PetFamily.Discussions.Contracts;
 using PetFamily.Species.Contracts;
 using PetFamily.Species.Contracts.Requests;
 using PetFamily.Volunteers.Application.Interfaces;
@@ -22,19 +23,22 @@ public class AddPetHandler : ICommandHandler<Guid,AddPetCommand>
     private readonly ILogger<AddPetHandler> _logger;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ISpeciesContract _speciesContract;
+    private readonly IRelationContracts _relationContracts;
 
     public AddPetHandler(
         ILogger<AddPetHandler> logger,
         IVolunteerRepository volunteersRepository,
         IValidator<AddPetCommand> validator,
         [FromKeyedServices(ProjectConstants.Context.VolunteerManagement)] IUnitOfWork unitOfWork,
-        ISpeciesContract speciesContract)
+        ISpeciesContract speciesContract,
+        IRelationContracts relationContracts)
     {
         _logger = logger;
         _volunteersRepository = volunteersRepository;
         _validator = validator;
         _unitOfWork = unitOfWork;
         _speciesContract = speciesContract;
+        _relationContracts = relationContracts;
     }
 
     public async Task<Result<Guid, CustomErrorsList>> Handle(AddPetCommand command,
@@ -98,6 +102,8 @@ public class AddPetHandler : ICommandHandler<Guid,AddPetCommand>
             isSterilized, isVaccinated, helpStatus, resultDonationInfoList, pageCreationDate).Value;
         
         volunteerResult.Value.AddPet(newPet);
+        
+        await _relationContracts.CreateRelation(petId, cancellationToken);
         
         await _unitOfWork.SaveChanges(cancellationToken);
         

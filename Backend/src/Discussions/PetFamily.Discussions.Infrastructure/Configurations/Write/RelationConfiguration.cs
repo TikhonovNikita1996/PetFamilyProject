@@ -16,8 +16,8 @@ public class RelationConfiguration : IEntityTypeConfiguration<Relation>
             .IsRequired()
             .HasColumnName("relation_id");
         
-        builder.Property(s => s.PetId)
+        builder.Property(s => s.RelationEntityId)
             .IsRequired()
-            .HasColumnName("pet_id");
+            .HasColumnName("relation_entity_id");
     }
 }

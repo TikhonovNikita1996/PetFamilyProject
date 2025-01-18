@@ -1,6 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
+using Microsoft.EntityFrameworkCore;
 using Pet.Family.SharedKernel;
-using PetFamily.Discussions.Application;
+using PetFamily.Discussions.Application.Repositories;
 using PetFamily.Discussions.Domain;
 using PetFamily.Discussions.Infrastructure.DataContexts;
 
@@ -32,18 +33,32 @@ public class DiscussionRepository : IDiscussionRepository
         return discussion.DiscussionId;
     }
 
-    public Task<Discussion?> GetDiscussionById(Guid discussionId, CancellationToken cancellationToken = default)
+    public async Task<Result<Discussion, CustomError>> GetDiscussionById(Guid discussionId,
+        CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var discussion = await _dbContext.Discussions
+            .Include(d => d.Messages)
+            .FirstOrDefaultAsync(d => d.DiscussionId == discussionId, cancellationToken);
+
+        if (discussion == null)
+            return Errors.General.NotFound("discussion");
+        
+        return discussion;
     }
 
-    public Task<IReadOnlyList<Discussion>> GetDiscussionByRelationId(Guid relationId, CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyList<Discussion>> GetDiscussionsByRelationId(Guid relationId,
+        CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return await _dbContext.Discussions
+            .Include(d => d.Messages)
+            .Where(d => d.RelationId == relationId).ToListAsync(cancellationToken);
     }
 
-    public Task<IReadOnlyList<Discussion>> GetDiscussionByStatus(DiscussionStatus status, CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyList<Discussion>> GetDiscussionsByStatus(DiscussionStatus status,
+        CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return await _dbContext.Discussions
+            .Include(d => d.Messages)
+            .Where(d => d.Status == status).ToListAsync(cancellationToken);
     }
 }

@@ -8,10 +8,10 @@ public interface IDiscussionRepository
 {
     public Task<Discussion> Add(Discussion discussion, CancellationToken cancellationToken);
     public Task<Result<Guid, CustomError>> Remove(Discussion discussion, CancellationToken cancellationToken);
-    public Task<Discussion?> GetDiscussionById(Guid discussionId,
+    public Task<Result<Discussion, CustomError>> GetDiscussionById(Guid discussionId,
         CancellationToken cancellationToken = default);
-    public Task<IReadOnlyList<Discussion>> GetDiscussionByRelationId(Guid relationId,
+    public Task<IReadOnlyList<Discussion>> GetDiscussionsByRelationId(Guid relationId,
         CancellationToken cancellationToken = default);
-    public Task<IReadOnlyList<Discussion>> GetDiscussionByStatus(DiscussionStatus status,
+    public Task<IReadOnlyList<Discussion>> GetDiscussionsByStatus(DiscussionStatus status,
         CancellationToken cancellationToken = default);
 }

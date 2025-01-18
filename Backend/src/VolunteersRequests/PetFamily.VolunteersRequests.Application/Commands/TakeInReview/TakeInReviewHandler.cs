@@ -51,6 +51,6 @@ public class TakeInReviewHandler : ICommandHandler<Guid, TakeInReviewCommand>
         
         _logger.LogInformation("Volunteer request with id {requestId} was taken in review.", command.RequestId);
 
-        return newRequest.RequestId;
+        return existedRequest.Value.RequestId;
     }
 }

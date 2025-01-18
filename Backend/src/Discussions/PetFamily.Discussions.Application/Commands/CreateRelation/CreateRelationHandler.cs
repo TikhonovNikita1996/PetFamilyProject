@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using Microsoft.Extensions.DependencyInjection;
 using Pet.Family.SharedKernel;
 using PetFamily.Core.Abstractions;
 using PetFamily.Discussions.Application.Repositories;
@@ -6,28 +7,32 @@ using PetFamily.Discussions.Domain;
 
 namespace PetFamily.Discussions.Application.Commands.CreateRelation;
 
-public class CreateRelationHandler : ICommandHandler<Discussion, CreateRelationCommand>
+public class CreateRelationHandler : ICommandHandler<Relation, CreateRelationCommand>
 {
-    private readonly IDiscussionRepository _discussionRepository;
+    private readonly IRelationRepository _relationRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public CreateRelationHandler(IDiscussionRepository discussionRepository)
+    public CreateRelationHandler(IRelationRepository relationRepository,
+        [FromKeyedServices(ProjectConstants.Context.Discussions)] IUnitOfWork unitOfWork)
     {
-        _discussionRepository = discussionRepository;
+        _relationRepository = relationRepository;
+        _unitOfWork = unitOfWork;
     }
     
-    public async Task<Result<Discussion, CustomErrorsList>> Handle(CreateRelationCommand request,
+    public async Task<Result<Relation, CustomErrorsList>> Handle(CreateRelationCommand command,
         CancellationToken cancellationToken)
     {
-        var isDiscussionExists = await _discussionsRepository.GetByRelationId(request.RelationId, cancellationToken);
-        if (isDiscussionExists.IsSuccess)
-            return Errors.General.AlreadyExist("Discussion").ToErrorList();
+        var existedRelation = await _relationRepository.GetByRelatedEntityId(command.RelationEntityId,
+            cancellationToken);
+        if (existedRelation.IsSuccess)
+            return Errors.General.AlreadyExists("relation").ToErrorList();
         
-        var discussion = Discussion.Create(request.RelationId, members);
+        var relation = Relation.Create(command.RelationEntityId);
 
-        if (discussion.IsFailure)
-            return discussion.Error.ToErrorList();
+        var result = await _relationRepository.Add(relation, cancellationToken);
 
-        var result = await _discussionsRepository.Add(discussion.Value, cancellationToken);
+        await _unitOfWork.SaveChanges(cancellationToken);
+        
         return result;
     }
 }

@@ -5,7 +5,8 @@ using PetFamily.Accounts.Infrastructure;
 using PetFamily.Accounts.Presentation;
 using PetFamily.API;
 using PetFamily.API.Middlewares;
-using PetFamily.Discussions.Infrastructure;
+using PetFamily.Discussions.Application;
+using PetFamily.Discussions.Presentation;
 using PetFamily.Species.Application;
 using PetFamily.Species.Presentation;
 using PetFamily.Species.Presentation.Controllers;
@@ -47,7 +48,8 @@ builder.Services
     .AddAuthorizationServices(builder.Configuration)
     .AddAccountsPresentation()
     .AddVolunteersRequestsInfrastructure(builder.Configuration)
-    .AddDiscussionsInfrastructure(builder.Configuration);
+    .AddDiscussionsInfrastructure(builder.Configuration)
+    .AddDiscussionApplication();
 
 builder.Services.AddSerilog();
 

@@ -8,9 +8,9 @@ using PetFamily.Core.Extensions;
 
 namespace PetFamily.Volunteers.Infrastructure.Configurations.Read;
 
-public class PetDtoConfiguration : IEntityTypeConfiguration<RelationDto>
+public class PetDtoConfiguration : IEntityTypeConfiguration<PetDto>
 {
-    public void Configure(EntityTypeBuilder<RelationDto> builder)
+    public void Configure(EntityTypeBuilder<PetDto> builder)
     {
         builder.ToTable("pets");
         builder.HasKey(v => v.Id);

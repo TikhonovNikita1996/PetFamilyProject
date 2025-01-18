@@ -10,7 +10,7 @@ using PetFamily.Volunteers.Application.Database;
 
 namespace PetFamily.Volunteers.Application.VolunteersManagement.Queries.GetPetById;
 
-public class GetPetByIdHandler : IQueryHandler<Result<RelationDto, CustomErrorsList>,
+public class GetPetByIdHandler : IQueryHandler<Result<PetDto, CustomErrorsList>,
     GetPetByIdQuery>
 {
     private readonly IReadDbContext _readDbContext;
@@ -25,7 +25,7 @@ public class GetPetByIdHandler : IQueryHandler<Result<RelationDto, CustomErrorsL
         _validator = validator;
     }
 
-    public async Task<Result<RelationDto, CustomErrorsList>> Handle(
+    public async Task<Result<PetDto, CustomErrorsList>> Handle(
         GetPetByIdQuery query,
         CancellationToken cancellationToken)
     {

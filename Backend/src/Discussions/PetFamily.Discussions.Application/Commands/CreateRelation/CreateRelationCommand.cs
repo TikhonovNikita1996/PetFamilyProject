@@ -2,4 +2,4 @@
 
 namespace PetFamily.Discussions.Application.Commands.CreateRelation;
 
-public record CreateRelationCommand (Guid PetId) : ICommand;
+public record CreateRelationCommand (Guid RelationEntityId) : ICommand;

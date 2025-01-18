@@ -38,6 +38,19 @@ public class RelationRepository : IRelationRepository
     {
         return await _dbContext.Relations
             .Include(r => r.Discussions)
-            .SingleOrDefaultAsync(r => r.RelationId == relationId, cancellationToken);
+            .FirstOrDefaultAsync(r => r.RelationId == relationId, cancellationToken);
+    }
+
+    public async Task<Result<Relation, CustomError>> GetByRelatedEntityId(Guid id,
+        CancellationToken cancellationToken = default)
+    {
+        var relation = await _dbContext.Relations
+            .Include(r => r.Discussions)
+            .FirstOrDefaultAsync(r => r.RelationEntityId == id, cancellationToken);
+
+        if (relation == null)
+            return Errors.General.NotFound("relation");
+        
+        return relation;
     }
 }
