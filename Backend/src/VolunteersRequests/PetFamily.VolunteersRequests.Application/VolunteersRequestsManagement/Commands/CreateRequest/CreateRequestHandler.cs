@@ -9,7 +9,7 @@ using PetFamily.VolunteersRequests.Application.Interfaces;
 using PetFamily.VolunteersRequests.Domain;
 using PetFamily.VolunteersRequests.Domain.ValueObjects;
 
-namespace PetFamily.VolunteersRequests.Application.Commands.CreateRequest;
+namespace PetFamily.VolunteersRequests.Application.VolunteersRequestsManagement.Commands.CreateRequest;
 
 public class CreateRequestHandler : ICommandHandler<Guid, CreateRequestCommand>
 {

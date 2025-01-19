@@ -6,37 +6,33 @@ using Pet.Family.SharedKernel;
 using PetFamily.Core.Abstractions;
 using PetFamily.Core.Extensions;
 using PetFamily.Discussions.Contracts;
-using PetFamily.VolunteersRequests.Application.Commands.CreateRequest;
 using PetFamily.VolunteersRequests.Application.Interfaces;
-using PetFamily.VolunteersRequests.Domain;
 using PetFamily.VolunteersRequests.Domain.ValueObjects;
 
-namespace PetFamily.VolunteersRequests.Application.Commands.TakeInReview;
+namespace PetFamily.VolunteersRequests.Application.VolunteersRequestsManagement.Commands.SetRevisionRequiredStatus;
 
-public class TakeInReviewHandler : ICommandHandler<Guid, TakeInReviewCommand>
+public class SetRejectionStatusHandler : ICommandHandler<Guid, SetRejectionStatusCommand>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IVolunteersRequestRepository _requestRepository;
-    private readonly ILogger<TakeInReviewHandler> _logger;
-    private readonly IValidator<TakeInReviewCommand> _validator;
+    private readonly ILogger<SetRejectionStatusHandler> _logger;
+    private readonly IValidator<SetRejectionStatusCommand> _validator;
     private readonly IDiscussionContracts _discussionContracts;
 
-    public TakeInReviewHandler(
+    public SetRejectionStatusHandler(
         [FromKeyedServices(ProjectConstants.Context.VolunteersRequest)] IUnitOfWork unitOfWork,
         IVolunteersRequestRepository requestRepository,
-        ILogger<TakeInReviewHandler> logger,
-        IValidator<TakeInReviewCommand> validator,
-        IDiscussionContracts discussionContracts )
+        ILogger<SetRejectionStatusHandler> logger,
+        IValidator<SetRejectionStatusCommand> validator)
     {
         _unitOfWork = unitOfWork;
         _requestRepository = requestRepository;
         _logger = logger;
         _validator = validator;
-        _discussionContracts = discussionContracts;
     }
     
     public async Task<Result<Guid, CustomErrorsList>> Handle(
-        TakeInReviewCommand command,
+        SetRejectionStatusCommand command,
         CancellationToken cancellationToken = default)
     {
         var validationResult = await _validator.ValidateAsync(
@@ -48,15 +44,13 @@ public class TakeInReviewHandler : ICommandHandler<Guid, TakeInReviewCommand>
         var existedRequest = await _requestRepository.GetById(command.RequestId, cancellationToken);
         if (existedRequest.IsFailure)
             return Errors.General.NotFound("request").ToErrorList();
-        
-        var newDiscussionId = await _discussionContracts.CreateDiscussion(command.AdminId,
-            existedRequest.Value.UserId, cancellationToken);
             
-        existedRequest.Value.TakeInReview(command.AdminId, newDiscussionId.Value);
+        var rejectionComment = RejectionComment.Create(command.RejectionComment).Value;
+        existedRequest.Value.SetRevisionRequiredStatus(rejectionComment);
         
         await _unitOfWork.SaveChanges(cancellationToken);
         
-        _logger.LogInformation("Volunteer request with id {requestId} was taken in review.", command.RequestId);
+        _logger.LogInformation("Volunteer request with id {requestId} was rejected.", command.RequestId);
 
         return existedRequest.Value.RequestId;
     }

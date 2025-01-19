@@ -14,7 +14,6 @@ public class VolunteerAccountConfiguration : IEntityTypeConfiguration<VolunteerA
         builder.ComplexProperty(v => v.WorkingExperience, pm =>
         {
             pm.Property(p => p.Value)
-                .HasColumnName("workingExperience")
                 .HasColumnName("working_experience")
                 .IsRequired();
         });

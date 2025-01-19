@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace PetFamily.VolunteersRequests.Application.Commands.CreateRequest;
+namespace PetFamily.VolunteersRequests.Application.VolunteersRequestsManagement.Commands.CreateRequest;
 
 public class CreateRequestValidator : AbstractValidator<CreateRequestCommand>
 {

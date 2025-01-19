@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
-using PetFamily.VolunteersRequests.Application.Commands.CreateRequest;
 
-namespace PetFamily.VolunteersRequests.Application.Commands.TakeInReview;
+namespace PetFamily.VolunteersRequests.Application.VolunteersRequestsManagement.Commands.TakeInReview;
 
 public class TakeInReviewValidator : AbstractValidator<TakeInReviewCommand>
 {

@@ -49,10 +49,8 @@ public class VolunteerRequest
         RejectionComment = rejectedComment;
     }
 
-    public void SetApprovedStatus(
-        Guid adminId)
+    public void SetApprovedStatus()
     {
-        AdminId = adminId;
         Status = RequestStatus.Approved;
     }
     

@@ -2,9 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using PetFamily.Framework;
 using PetFamily.Framework.Authorization;
-using PetFamily.VolunteersRequests.Application.Commands.CreateRequest;
-using PetFamily.VolunteersRequests.Application.Commands.SetRevisionRequiredStatus;
-using PetFamily.VolunteersRequests.Application.Commands.TakeInReview;
+using PetFamily.VolunteersRequests.Application.VolunteersRequestsManagement.Commands.ApproveRequest;
+using PetFamily.VolunteersRequests.Application.VolunteersRequestsManagement.Commands.CreateRequest;
+using PetFamily.VolunteersRequests.Application.VolunteersRequestsManagement.Commands.SetRevisionRequiredStatus;
+using PetFamily.VolunteersRequests.Application.VolunteersRequestsManagement.Commands.TakeInReview;
 using PetFamily.VolunteersRequests.Presentation.Requests;
 
 namespace PetFamily.VolunteersRequests.Presentation.Controllers;
@@ -19,11 +20,11 @@ public class VolunteersRequestsController : BaseApiController
         [FromBody] CreateVolunteerRequestRequest request,
         CancellationToken cancellationToken = default)
     {
-        var createCommand = new CreateRequestCommand(
+        var command = new CreateRequestCommand(
             request.UserId,
             request.VolunteerInfo);
         
-        var result = await createRequestHandler.Handle(createCommand, cancellationToken);
+        var result = await createRequestHandler.Handle(command, cancellationToken);
 
         if (result.IsFailure)
             return result.Error.ToResponse();
@@ -39,11 +40,11 @@ public class VolunteersRequestsController : BaseApiController
         [FromRoute] Guid adminId,
         CancellationToken cancellationToken = default)
     {
-        var createCommand = new TakeInReviewCommand(
+        var command = new TakeInReviewCommand(
             adminId,
             request.RequestId);
         
-        var result = await handler.Handle(createCommand, cancellationToken);
+        var result = await handler.Handle(command, cancellationToken);
 
         if (result.IsFailure)
             return result.Error.ToResponse();
@@ -59,11 +60,29 @@ public class VolunteersRequestsController : BaseApiController
         [FromRoute] Guid requestId,
         CancellationToken cancellationToken = default)
     {
-        var createCommand = new SetRejectionStatusCommand(
+        var command = new SetRejectionStatusCommand(
             requestId,
             request.RejectionComment);
         
-        var result = await handler.Handle(createCommand, cancellationToken);
+        var result = await handler.Handle(command, cancellationToken);
+
+        if (result.IsFailure)
+            return result.Error.ToResponse();
+        
+        return Ok(result.Value);
+    }
+    
+    [Permission(Permissions.VolunteersRequests.Update)]
+    [HttpPut("{requestId:guid}/approve")]
+    public async Task<ActionResult> SetApprovedStatus(
+        [FromServices] ApproveRequestHandler handler,
+        [FromRoute] Guid requestId,
+        CancellationToken cancellationToken = default)
+    {
+        var command = new ApproveRequestCommand(
+            requestId);
+        
+        var result = await handler.Handle(command, cancellationToken);
 
         if (result.IsFailure)
             return result.Error.ToResponse();

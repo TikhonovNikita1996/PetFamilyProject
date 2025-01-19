@@ -2,7 +2,7 @@
 using Pet.Family.SharedKernel;
 using PetFamily.Core.Validation;
 
-namespace PetFamily.VolunteersRequests.Application.Commands.SetRevisionRequiredStatus;
+namespace PetFamily.VolunteersRequests.Application.VolunteersRequestsManagement.Commands.SetRevisionRequiredStatus;
 
 public class SetRejectionStatusValidator : AbstractValidator<SetRejectionStatusCommand>
 {
