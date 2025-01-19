@@ -2,15 +2,15 @@
 
 public class DiscussionUsers
 {
-    public Guid FirstUserId { get; set; }
-    public Guid SecondUserId { get; set; }
+    public Guid ReviewingUserId { get; set; }
+    public Guid ApplicantUserId { get; set; }
     
     private DiscussionUsers() { }
 
-    public DiscussionUsers(Guid firstUserId, Guid secondUserId)
+    public DiscussionUsers(Guid applicantUserId, Guid reviewingUserId)
     {
-        FirstUserId = firstUserId;
-        SecondUserId = secondUserId;
+        ReviewingUserId = reviewingUserId;
+        ApplicantUserId = applicantUserId;
     }
     
     public static DiscussionUsers Create(Guid firstUserId, Guid secondUserId) => 

@@ -28,7 +28,7 @@ public class CreateDiscussionHandler : ICommandHandler<Discussion, CreateDiscuss
         
         var discussionUsers = DiscussionUsers.Create(request.FirstUsersId, request.SecondUsersId);
         
-        var discussion = Discussion.Create(request.DiscussionId, discussionUsers);
+        var discussion = Discussion.Create(discussionUsers);
 
         if (discussion.IsFailure)
             return discussion.Error.ToErrorList();

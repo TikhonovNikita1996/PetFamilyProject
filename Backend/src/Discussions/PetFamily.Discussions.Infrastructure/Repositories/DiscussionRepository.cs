@@ -46,14 +46,6 @@ public class DiscussionRepository : IDiscussionRepository
         return discussion;
     }
 
-    public async Task<IReadOnlyList<Discussion>> GetDiscussionsByRelationId(Guid relationId,
-        CancellationToken cancellationToken = default)
-    {
-        return await _dbContext.Discussions
-            .Include(d => d.Messages)
-            .Where(d => d.RelationId == relationId).ToListAsync(cancellationToken);
-    }
-
     public async Task<IReadOnlyList<Discussion>> GetDiscussionsByStatus(DiscussionStatus status,
         CancellationToken cancellationToken = default)
     {

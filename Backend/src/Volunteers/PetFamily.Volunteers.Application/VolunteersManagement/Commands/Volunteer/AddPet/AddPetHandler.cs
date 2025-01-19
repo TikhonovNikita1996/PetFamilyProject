@@ -23,7 +23,6 @@ public class AddPetHandler : ICommandHandler<Guid,AddPetCommand>
     private readonly ILogger<AddPetHandler> _logger;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ISpeciesContract _speciesContract;
-    private readonly IRelationContracts _relationContracts;
 
     public AddPetHandler(
         ILogger<AddPetHandler> logger,
@@ -38,7 +37,6 @@ public class AddPetHandler : ICommandHandler<Guid,AddPetCommand>
         _validator = validator;
         _unitOfWork = unitOfWork;
         _speciesContract = speciesContract;
-        _relationContracts = relationContracts;
     }
 
     public async Task<Result<Guid, CustomErrorsList>> Handle(AddPetCommand command,
@@ -102,8 +100,6 @@ public class AddPetHandler : ICommandHandler<Guid,AddPetCommand>
             isSterilized, isVaccinated, helpStatus, resultDonationInfoList, pageCreationDate).Value;
         
         volunteerResult.Value.AddPet(newPet);
-        
-        await _relationContracts.CreateRelation(petId, cancellationToken);
         
         await _unitOfWork.SaveChanges(cancellationToken);
         

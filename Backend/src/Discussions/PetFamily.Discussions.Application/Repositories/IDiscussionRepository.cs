@@ -10,8 +10,6 @@ public interface IDiscussionRepository
     public Task<Result<Guid, CustomError>> Remove(Discussion discussion, CancellationToken cancellationToken);
     public Task<Result<Discussion, CustomError>> GetDiscussionById(Guid discussionId,
         CancellationToken cancellationToken = default);
-    public Task<IReadOnlyList<Discussion>> GetDiscussionsByRelationId(Guid relationId,
-        CancellationToken cancellationToken = default);
     public Task<IReadOnlyList<Discussion>> GetDiscussionsByStatus(DiscussionStatus status,
         CancellationToken cancellationToken = default);
 }
