@@ -43,10 +43,8 @@ public class VolunteerRequest
     }
     
     public void SetRevisionRequiredStatus(
-        Guid adminId,
         RejectionComment rejectedComment)
     {
-        AdminId = adminId;
         Status = RequestStatus.RevisionRequired;
         RejectionComment = rejectedComment;
     }
