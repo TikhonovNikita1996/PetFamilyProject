@@ -15,4 +15,8 @@
       <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Commands\Relations\" />
+    </ItemGroup>
+
 </Project>

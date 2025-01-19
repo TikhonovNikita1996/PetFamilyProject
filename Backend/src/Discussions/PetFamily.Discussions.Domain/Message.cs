@@ -20,7 +20,7 @@ public class Message
         DiscussionId = discussionId;
     }
 
-    public static Message Create(MessageText text, Guid senderId, Guid discussionId) 
+    public static Message Create(Guid discussionId, Guid senderId, MessageText text) 
         => new Message(text, senderId, discussionId);
 
     public void EditMessage(MessageText newText)

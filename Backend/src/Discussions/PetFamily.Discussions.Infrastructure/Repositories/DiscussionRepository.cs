@@ -46,6 +46,21 @@ public class DiscussionRepository : IDiscussionRepository
         return discussion;
     }
 
+    public async Task<Result<Discussion, CustomError>> GetDiscussionByParticipantsId(Guid reviewingUserId,
+        Guid applicantUserId,
+        CancellationToken cancellationToken = default)
+    {
+        var discussion = await _dbContext.Discussions
+            .Include(d => d.Messages)
+            .FirstOrDefaultAsync(d => d.DiscussionUsers.ReviewingUserId == reviewingUserId &&
+                                      d.DiscussionUsers.ApplicantUserId == applicantUserId, cancellationToken);
+
+        if (discussion == null)
+            return Errors.General.NotFound("discussion");
+        
+        return discussion;
+    }
+
     public async Task<IReadOnlyList<Discussion>> GetDiscussionsByStatus(DiscussionStatus status,
         CancellationToken cancellationToken = default)
     {

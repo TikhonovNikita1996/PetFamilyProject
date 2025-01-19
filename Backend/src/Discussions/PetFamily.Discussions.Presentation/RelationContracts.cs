@@ -1,6 +1,5 @@
 ﻿using System.Threading.Channels;
-using PetFamily.Discussions.Application.Commands.Create;
-using PetFamily.Discussions.Application.Commands.CreateRelation;
+using PetFamily.Discussions.Application.Commands.Relations.CreateRelation;
 using PetFamily.Discussions.Application.Database;
 using PetFamily.Discussions.Contracts;
 

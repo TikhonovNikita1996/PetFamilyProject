@@ -5,7 +5,7 @@ using PetFamily.Core.Abstractions;
 using PetFamily.Discussions.Application.Repositories;
 using PetFamily.Discussions.Domain;
 
-namespace PetFamily.Discussions.Application.Commands.CreateRelation;
+namespace PetFamily.Discussions.Application.Commands.Relations.CreateRelation;
 
 public class CreateRelationHandler : ICommandHandler<Relation, CreateRelationCommand>
 {

@@ -1,16 +1,26 @@
 ﻿using CSharpFunctionalExtensions;
 using Pet.Family.SharedKernel;
-using PetFamily.Discussions.Application.Commands.Create;
+using PetFamily.Discussions.Application.Commands.Discussions.CreateDiscussion;
+using PetFamily.Discussions.Application.Database;
+using PetFamily.Discussions.Application.Repositories;
 using PetFamily.Discussions.Contracts;
 
 namespace PetFamily.Discussions.Presentation;
 
 public class DiscussionContracts : IDiscussionContracts
 {
-    public Task<Result<Guid, CustomErrorsList>> CreateDiscussion(CreateDiscussionCommand command,
+    private readonly CreateDiscussionHandler _createDiscussionHandler;
+
+    public DiscussionContracts(CreateDiscussionHandler createDiscussionHandler)
+    {
+        _createDiscussionHandler = createDiscussionHandler;
+    }
+    public async Task<Result<Guid, CustomErrorsList>> CreateDiscussion(Guid reviewingUserId, Guid applicantUserId,
         CancellationToken cancellationToken = default)
     {
-        
-        throw new NotImplementedException();
+        var createCommand = new CreateDiscussionCommand(reviewingUserId, applicantUserId);
+        var discussion = await _createDiscussionHandler.Handle(createCommand, cancellationToken);
+        return discussion.Value.DiscussionId;
     }
+    
 }
