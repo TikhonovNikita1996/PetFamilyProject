@@ -8,6 +8,9 @@ using PetFamily.VolunteersRequests.Application.VolunteersRequestsManagement.Comm
 using PetFamily.VolunteersRequests.Application.VolunteersRequestsManagement.Commands.ReopenRequest;
 using PetFamily.VolunteersRequests.Application.VolunteersRequestsManagement.Commands.SetRevisionRequiredStatus;
 using PetFamily.VolunteersRequests.Application.VolunteersRequestsManagement.Commands.TakeInReview;
+using PetFamily.VolunteersRequests.Application.VolunteersRequestsManagement.Queries.GetAllRequestsByAdminId;
+using PetFamily.VolunteersRequests.Application.VolunteersRequestsManagement.Queries.GetAllRequestsByUserId;
+using PetFamily.VolunteersRequests.Application.VolunteersRequestsManagement.Queries.GetAllSubmuttedRequests;
 using PetFamily.VolunteersRequests.Presentation.Requests;
 
 namespace PetFamily.VolunteersRequests.Presentation.Controllers;
@@ -127,5 +130,46 @@ public class VolunteersRequestsController : BaseApiController
             return result.Error.ToResponse();
         
         return Ok(result.Value);
+    }
+    
+    [Permission(Permissions.VolunteersRequests.Read)]
+    [HttpGet("all-submutted-requests")]
+    public async Task<ActionResult> GetAllSubmittedRequests(
+        [FromServices] GetAllSubmittedRequestsHandler handler,
+        [FromQuery] GetAllSubmittedRequestsRequest request, 
+        CancellationToken cancellationToken)
+    {
+        var query = new GetAllSubmittedRequestsQuery(request.Page, request.PageSize);
+        var result = await handler.Handle(query, cancellationToken);
+        
+        return Ok(result.Value); 
+    }
+    
+    [Permission(Permissions.VolunteersRequests.Read)]
+    [HttpGet("all-requests-by-admin")]
+    public async Task<ActionResult> GetAllRequestsByAdminId(
+        [FromServices] GetAllRequestsByAdminIdHandler handler,
+        [FromQuery] GetAllRequestsByAdminIdRequest request, 
+        CancellationToken cancellationToken)
+    {
+        var query = new GetAllRequestsByAdminIdQuery(request.AdminId, request.Status,
+            request.Page, request.PageSize);
+        var result = await handler.Handle(query, cancellationToken);
+        
+        return Ok(result.Value); 
+    }
+    
+    [Permission(Permissions.VolunteersRequests.Read)]
+    [HttpGet("all-requests-by-user")]
+    public async Task<ActionResult> GetAllRequestsByUserId(
+        [FromServices] GetAllRequestsByUserIdHandler handler,
+        [FromQuery] GetAllRequestsByUserIdRequest request, 
+        CancellationToken cancellationToken)
+    {
+        var query = new GetAllRequestsByUserIdQuery(request.UserId, request.Status,
+            request.Page, request.PageSize);
+        var result = await handler.Handle(query, cancellationToken);
+        
+        return Ok(result.Value); 
     }
 }

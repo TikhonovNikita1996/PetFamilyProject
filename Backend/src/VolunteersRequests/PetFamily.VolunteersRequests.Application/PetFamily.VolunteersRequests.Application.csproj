@@ -12,8 +12,4 @@
       <ProjectReference Include="..\PetFamily.VolunteersRequests.Domain\PetFamily.VolunteersRequests.Domain.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="VolunteersRequestsManagement\Queries\" />
-    </ItemGroup>
-
 </Project>
