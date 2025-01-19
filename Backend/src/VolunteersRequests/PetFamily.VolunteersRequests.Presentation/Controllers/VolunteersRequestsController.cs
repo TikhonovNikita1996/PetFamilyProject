@@ -4,6 +4,7 @@ using PetFamily.Framework;
 using PetFamily.Framework.Authorization;
 using PetFamily.VolunteersRequests.Application.VolunteersRequestsManagement.Commands.ApproveRequest;
 using PetFamily.VolunteersRequests.Application.VolunteersRequestsManagement.Commands.CreateRequest;
+using PetFamily.VolunteersRequests.Application.VolunteersRequestsManagement.Commands.RejectRequest;
 using PetFamily.VolunteersRequests.Application.VolunteersRequestsManagement.Commands.ReopenRequest;
 using PetFamily.VolunteersRequests.Application.VolunteersRequestsManagement.Commands.SetRevisionRequiredStatus;
 using PetFamily.VolunteersRequests.Application.VolunteersRequestsManagement.Commands.TakeInReview;
@@ -56,12 +57,12 @@ public class VolunteersRequestsController : BaseApiController
     [Permission(Permissions.VolunteersRequests.Update)]
     [HttpPut("{requestId:guid}/revision-required")]
     public async Task<ActionResult> SetRevisionRequiredStatus(
-        [FromServices] SetRejectionStatusHandler handler,
+        [FromServices] SetRevisionRequiredStatusHandler handler,
         [FromBody] SetRejectionStatusRequest request,
         [FromRoute] Guid requestId,
         CancellationToken cancellationToken = default)
     {
-        var command = new SetRejectionStatusCommand(
+        var command = new SetRevisionRequiredStatusCommand(
             requestId,
             request.RejectionComment);
         
@@ -100,6 +101,25 @@ public class VolunteersRequestsController : BaseApiController
     {
         var command = new ReopenRequestCommand(
             requestId);
+        
+        var result = await handler.Handle(command, cancellationToken);
+
+        if (result.IsFailure)
+            return result.Error.ToResponse();
+        
+        return Ok(result.Value);
+    }
+    
+    [Permission(Permissions.VolunteersRequests.Update)]
+    [HttpPut("{requestId:guid}/reject")]
+    public async Task<ActionResult> SetRejectStatus(
+        [FromServices] RejectRequestHandler handler,
+        [FromRoute] Guid requestId,
+        [FromBody] SetRejectionStatusRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var command = new RejectRequestCommand(
+            requestId, request.RejectionComment);
         
         var result = await handler.Handle(command, cancellationToken);
 

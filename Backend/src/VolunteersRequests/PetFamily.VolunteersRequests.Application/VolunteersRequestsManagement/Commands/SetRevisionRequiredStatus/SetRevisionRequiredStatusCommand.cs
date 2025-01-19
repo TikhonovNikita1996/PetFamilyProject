@@ -2,4 +2,4 @@
 
 namespace PetFamily.VolunteersRequests.Application.VolunteersRequestsManagement.Commands.SetRevisionRequiredStatus;
 
-public record SetRejectionStatusCommand(Guid RequestId, string RejectionComment) : ICommand;
+public record SetRevisionRequiredStatusCommand(Guid RequestId, string RejectionComment) : ICommand;

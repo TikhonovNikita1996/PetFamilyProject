@@ -4,9 +4,9 @@ using PetFamily.Core.Validation;
 
 namespace PetFamily.VolunteersRequests.Application.VolunteersRequestsManagement.Commands.SetRevisionRequiredStatus;
 
-public class SetRejectionStatusValidator : AbstractValidator<SetRejectionStatusCommand>
+public class SetRevisionRequiredStatusValidator : AbstractValidator<SetRevisionRequiredStatusCommand>
 {
-    public SetRejectionStatusValidator()
+    public SetRevisionRequiredStatusValidator()
     {
         RuleFor(c => c.RejectionComment).NotNull().NotEmpty().WithError(Errors.General.ValueIsRequired());
         RuleFor(c => c.RequestId).NotNull().NotEmpty().WithError(Errors.General.ValueIsRequired());

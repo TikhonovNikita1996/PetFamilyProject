@@ -11,19 +11,19 @@ using PetFamily.VolunteersRequests.Domain.ValueObjects;
 
 namespace PetFamily.VolunteersRequests.Application.VolunteersRequestsManagement.Commands.SetRevisionRequiredStatus;
 
-public class SetRejectionStatusHandler : ICommandHandler<Guid, SetRejectionStatusCommand>
+public class SetRevisionRequiredStatusHandler : ICommandHandler<Guid, SetRevisionRequiredStatusCommand>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IVolunteersRequestRepository _requestRepository;
-    private readonly ILogger<SetRejectionStatusHandler> _logger;
-    private readonly IValidator<SetRejectionStatusCommand> _validator;
+    private readonly ILogger<SetRevisionRequiredStatusHandler> _logger;
+    private readonly IValidator<SetRevisionRequiredStatusCommand> _validator;
     private readonly IDiscussionContracts _discussionContracts;
 
-    public SetRejectionStatusHandler(
+    public SetRevisionRequiredStatusHandler(
         [FromKeyedServices(ProjectConstants.Context.VolunteersRequest)] IUnitOfWork unitOfWork,
         IVolunteersRequestRepository requestRepository,
-        ILogger<SetRejectionStatusHandler> logger,
-        IValidator<SetRejectionStatusCommand> validator)
+        ILogger<SetRevisionRequiredStatusHandler> logger,
+        IValidator<SetRevisionRequiredStatusCommand> validator)
     {
         _unitOfWork = unitOfWork;
         _requestRepository = requestRepository;
@@ -32,7 +32,7 @@ public class SetRejectionStatusHandler : ICommandHandler<Guid, SetRejectionStatu
     }
     
     public async Task<Result<Guid, CustomErrorsList>> Handle(
-        SetRejectionStatusCommand command,
+        SetRevisionRequiredStatusCommand command,
         CancellationToken cancellationToken = default)
     {
         var validationResult = await _validator.ValidateAsync(

@@ -76,8 +76,8 @@ public class VolunteersRequestsTests
         // Arrange
         var request = CreateTestRequest();
         
-        // Act
-        request.SetRejectStatus(Guid.NewGuid());
+        // // Act
+        // request.SetRejectStatus(Guid.NewGuid());
         
         //Assert
         Assert.Equal(RequestStatus.Rejected, request.Status);

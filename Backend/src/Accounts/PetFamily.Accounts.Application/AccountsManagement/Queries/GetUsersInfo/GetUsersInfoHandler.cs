@@ -12,12 +12,12 @@ namespace PetFamily.Accounts.Application.AccountsManagement.Queries.GetUsersInfo
 public class GetUsersInfoHandler : IQueryHandler<Result<UserDto, CustomErrorsList>,
     GetUsersInfoQuery>
 {
-    private readonly IReadDbContext _readDbContext;
+    private readonly IAccountsReadDbContext _readDbContext;
     private readonly IValidator<GetUsersInfoQuery> _validator;
 
 
     public GetUsersInfoHandler(
-        IReadDbContext readDbContext, 
+        IAccountsReadDbContext readDbContext, 
         IValidator<GetUsersInfoQuery> validator)
     {
         _readDbContext = readDbContext;

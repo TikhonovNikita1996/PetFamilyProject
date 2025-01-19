@@ -2,7 +2,7 @@
 
 namespace PetFamily.Accounts.Application.Database;
 
-public interface IReadDbContext
+public interface IAccountsReadDbContext
 {
     public IQueryable<UserDto> Users { get; }
     public IQueryable<AdminAccountDto> AdminAccounts { get; }
