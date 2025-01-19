@@ -41,7 +41,7 @@ public static class DependencyInjection
     
     private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
-        services.AddScoped<IRelationRepository, RelationRepository>();
+        // services.AddScoped<IRelationRepository, RelationRepository>();
         services.AddScoped<IDiscussionRepository, DiscussionRepository>();
         
         return services;

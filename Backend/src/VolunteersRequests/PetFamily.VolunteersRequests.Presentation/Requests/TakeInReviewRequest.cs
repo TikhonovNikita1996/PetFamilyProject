@@ -1,3 +1,3 @@
 ﻿namespace PetFamily.VolunteersRequests.Presentation.Requests;
 
-public record TakeInReviewRequest(Guid AdminId, Guid RequestId);
+public record TakeInReviewRequest(Guid RequestId);

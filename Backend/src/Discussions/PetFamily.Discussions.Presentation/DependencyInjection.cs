@@ -11,7 +11,7 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         services.AddInfrastructure(configuration);
-        services.AddScoped<IRelationContracts, RelationContracts>();
+        // services.AddScoped<IRelationContracts, RelationContracts>();
         services.AddScoped<IDiscussionContracts, DiscussionContracts>();
         return services;
     }

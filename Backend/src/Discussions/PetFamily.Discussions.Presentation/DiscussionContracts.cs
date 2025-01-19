@@ -4,6 +4,7 @@ using PetFamily.Discussions.Application.Commands.Discussions.CreateDiscussion;
 using PetFamily.Discussions.Application.Database;
 using PetFamily.Discussions.Application.Repositories;
 using PetFamily.Discussions.Contracts;
+using PetFamily.Framework;
 
 namespace PetFamily.Discussions.Presentation;
 
@@ -20,6 +21,9 @@ public class DiscussionContracts : IDiscussionContracts
     {
         var createCommand = new CreateDiscussionCommand(reviewingUserId, applicantUserId);
         var discussion = await _createDiscussionHandler.Handle(createCommand, cancellationToken);
+        if (discussion.IsFailure)
+            return discussion.Error;
+        
         return discussion.Value.DiscussionId;
     }
     

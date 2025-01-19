@@ -3,11 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using PetFamily.Framework;
 using PetFamily.Framework.Authorization;
 using PetFamily.VolunteersRequests.Application.Commands.CreateRequest;
+using PetFamily.VolunteersRequests.Application.Commands.TakeInReview;
 using PetFamily.VolunteersRequests.Presentation.Requests;
 
 namespace PetFamily.VolunteersRequests.Presentation.Controllers;
 
-[Authorize]
+// [Authorize]
 public class VolunteersRequestsController : BaseApiController
 {
     [Permission(Permissions.VolunteersRequests.Create)]
@@ -22,6 +23,26 @@ public class VolunteersRequestsController : BaseApiController
             request.VolunteerInfo);
         
         var result = await createRequestHandler.Handle(createCommand, cancellationToken);
+
+        if (result.IsFailure)
+            return result.Error.ToResponse();
+        
+        return Ok(result.Value);
+    }
+    
+    [Permission(Permissions.VolunteersRequests.Update)]
+    [HttpPut("{adminId:guid}/take-in-review")]
+    public async Task<ActionResult> TakeInReview(
+        [FromServices] TakeInReviewHandler handler,
+        [FromBody] TakeInReviewRequest request,
+        [FromRoute] Guid adminId,
+        CancellationToken cancellationToken = default)
+    {
+        var createCommand = new TakeInReviewCommand(
+            adminId,
+            request.RequestId);
+        
+        var result = await handler.Handle(createCommand, cancellationToken);
 
         if (result.IsFailure)
             return result.Error.ToResponse();

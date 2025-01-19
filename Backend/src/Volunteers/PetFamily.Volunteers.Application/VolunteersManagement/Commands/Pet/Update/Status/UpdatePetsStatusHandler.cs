@@ -16,7 +16,6 @@ public class UpdatePetsStatusHandler : ICommandHandler<Guid,UpdatePetsStatusComm
     private readonly ILogger<UpdatePetsStatusHandler> _logger;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IValidator<UpdatePetsStatusCommand> _validator;
-    private readonly IReadDbContext _readDbContext;
 
     public UpdatePetsStatusHandler(IVolunteerRepository volunteerRepository,
         ILogger<UpdatePetsStatusHandler> logger, 

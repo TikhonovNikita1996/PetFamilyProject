@@ -13,6 +13,7 @@ using PetFamily.Species.Presentation.Controllers;
 using PetFamily.Volunteers.Application;
 using PetFamily.Volunteers.Presentation;
 using PetFamily.Volunteers.Presentation.Controllers;
+using PetFamily.VolunteersRequests.Application;
 using PetFamily.VolunteersRequests.Infrastructure;
 using Serilog;
 using Serilog.Events;
@@ -49,7 +50,8 @@ builder.Services
     .AddAccountsPresentation()
     .AddVolunteersRequestsInfrastructure(builder.Configuration)
     .AddDiscussionsInfrastructure(builder.Configuration)
-    .AddDiscussionApplication();
+    .AddDiscussionApplication()
+    .AddVolunteersRequestsApplication();
 
 builder.Services.AddSerilog();
 
@@ -87,7 +89,7 @@ var app = builder.Build();
 
 var accountSeeder = app.Services.GetRequiredService<AccountsSeeder>();
 
-// await accountSeeder.SeedAsync();
+await accountSeeder.SeedAsync();
 
 app.UseExceptionMiddleware();
 app.UseSerilogRequestLogging();

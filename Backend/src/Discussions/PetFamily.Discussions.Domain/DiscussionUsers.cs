@@ -7,12 +7,12 @@ public class DiscussionUsers
     
     private DiscussionUsers() { }
 
-    public DiscussionUsers(Guid applicantUserId, Guid reviewingUserId)
+    private DiscussionUsers(Guid reviewingUserId, Guid applicantUserId)
     {
         ReviewingUserId = reviewingUserId;
         ApplicantUserId = applicantUserId;
     }
     
-    public static DiscussionUsers Create(Guid firstUserId, Guid secondUserId) => 
-        new DiscussionUsers(firstUserId, secondUserId);
+    public static DiscussionUsers Create(Guid reviewingUserId, Guid applicantUserId) => 
+        new DiscussionUsers(reviewingUserId, applicantUserId);
 }

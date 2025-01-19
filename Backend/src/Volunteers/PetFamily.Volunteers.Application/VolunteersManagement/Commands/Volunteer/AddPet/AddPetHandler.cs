@@ -29,8 +29,7 @@ public class AddPetHandler : ICommandHandler<Guid,AddPetCommand>
         IVolunteerRepository volunteersRepository,
         IValidator<AddPetCommand> validator,
         [FromKeyedServices(ProjectConstants.Context.VolunteerManagement)] IUnitOfWork unitOfWork,
-        ISpeciesContract speciesContract,
-        IRelationContracts relationContracts)
+        ISpeciesContract speciesContract)
     {
         _logger = logger;
         _volunteersRepository = volunteersRepository;

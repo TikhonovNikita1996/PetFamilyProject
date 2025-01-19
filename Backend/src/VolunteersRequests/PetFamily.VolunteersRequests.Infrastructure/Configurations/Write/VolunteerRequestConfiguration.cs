@@ -9,6 +9,8 @@ public class VolunteerRequestConfiguration : IEntityTypeConfiguration<VolunteerR
 {
     public void Configure(EntityTypeBuilder<VolunteerRequest> builder)
     {
+        builder.ToTable("volunteer_requests");
+        
         builder.HasKey(b => b.RequestId);
         
         builder.Property(s => s.RequestId)

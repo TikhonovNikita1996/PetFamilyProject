@@ -9,7 +9,6 @@ namespace PetFamily.Discussions.Infrastructure.DataContexts;
 
 public class DiscussionsReadDbContext(string ConnectionString) : DbContext, IDiscussionsReadDbContext
 {
-    public IQueryable<RelationDto> Relations => Set<RelationDto>();
     public IQueryable<DiscussionDto> Discussions => Set<DiscussionDto>();
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -26,7 +25,7 @@ public class DiscussionsReadDbContext(string ConnectionString) : DbContext, IDis
         modelBuilder.ApplyConfigurationsFromAssembly(
             typeof(DiscussionsReadDbContext).Assembly,
             x => x.FullName!.Contains("Configurations.Read"));
-        modelBuilder.HasDefaultSchema("PetFamily_Species");
+        modelBuilder.HasDefaultSchema("PetFamily_Discussions");
     }
 
     private ILoggerFactory CreateLoggerFactory() =>

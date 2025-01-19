@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Pet.Family.SharedKernel;
 using PetFamily.Core.Abstractions;
 using PetFamily.Core.Extensions;
+using PetFamily.Discussions.Contracts;
 using PetFamily.VolunteersRequests.Application.Commands.CreateRequest;
 using PetFamily.VolunteersRequests.Application.Interfaces;
 using PetFamily.VolunteersRequests.Domain;
@@ -18,17 +19,20 @@ public class TakeInReviewHandler : ICommandHandler<Guid, TakeInReviewCommand>
     private readonly IVolunteersRequestRepository _requestRepository;
     private readonly ILogger<TakeInReviewHandler> _logger;
     private readonly IValidator<TakeInReviewCommand> _validator;
+    private readonly IDiscussionContracts _discussionContracts;
 
     public TakeInReviewHandler(
         [FromKeyedServices(ProjectConstants.Context.VolunteersRequest)] IUnitOfWork unitOfWork,
         IVolunteersRequestRepository requestRepository,
         ILogger<TakeInReviewHandler> logger,
-        IValidator<TakeInReviewCommand> validator)
+        IValidator<TakeInReviewCommand> validator,
+        IDiscussionContracts discussionContracts )
     {
         _unitOfWork = unitOfWork;
         _requestRepository = requestRepository;
         _logger = logger;
         _validator = validator;
+        _discussionContracts = discussionContracts;
     }
     
     public async Task<Result<Guid, CustomErrorsList>> Handle(
@@ -45,7 +49,10 @@ public class TakeInReviewHandler : ICommandHandler<Guid, TakeInReviewCommand>
         if (existedRequest.IsFailure)
             return Errors.General.NotFound("request").ToErrorList();
         
-        existedRequest.Value.TakeInReview(command.AdminId);
+        var newDiscussionId = await _discussionContracts.CreateDiscussion(command.AdminId,
+            existedRequest.Value.UserId, cancellationToken);
+            
+        existedRequest.Value.TakeInReview(command.AdminId, newDiscussionId.Value);
         
         await _unitOfWork.SaveChanges(cancellationToken);
         

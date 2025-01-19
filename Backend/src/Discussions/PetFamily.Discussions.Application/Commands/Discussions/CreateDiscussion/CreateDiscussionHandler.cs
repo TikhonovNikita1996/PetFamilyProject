@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Pet.Family.SharedKernel;
 using PetFamily.Core.Abstractions;
+using PetFamily.Core.Extensions;
 using PetFamily.Discussions.Application.Database;
 using PetFamily.Discussions.Application.Repositories;
 using PetFamily.Discussions.Domain;
@@ -38,12 +39,8 @@ public class CreateDiscussionHandler : ICommandHandler<Discussion, CreateDiscuss
         var validationResult = await _validator.ValidateAsync(
             command, cancellationToken);
         
-        var existedDiscussionDto = await _discussionsReadDbContext.Discussions.
-            FirstOrDefaultAsync(d => d.ReviewingUserId == command.ReviewingUsersId &&
-            d.ApplicantUserId == command.ApplicantUserId, cancellationToken);
-        
-        if (existedDiscussionDto is not null)
-            return Errors.General.AlreadyExists("discussion").ToErrorList();
+        if (validationResult.IsValid == false)
+            return validationResult.ToErrorList();
         
         var discussionUsers = DiscussionUsers.Create(command.ReviewingUsersId, command.ApplicantUserId);
         

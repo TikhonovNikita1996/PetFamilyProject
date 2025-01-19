@@ -14,8 +14,6 @@ public class DiscussionsWriteDbContext : DbContext
     }
     
     public DbSet<Discussion> Discussions => Set<Discussion>();
-    public DbSet<Relation> Relations => Set<Relation>();
-    
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseNpgsql(_connectionString);

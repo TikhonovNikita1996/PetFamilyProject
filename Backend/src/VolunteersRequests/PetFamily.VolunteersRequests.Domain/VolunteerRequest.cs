@@ -35,9 +35,10 @@ public class VolunteerRequest
         return request;
     }
     
-    public void TakeInReview(Guid adminId)
+    public void TakeInReview(Guid adminId, Guid discussionId)
     {
         AdminId = adminId;
+        DiscussionId = discussionId;
         Status = RequestStatus.OnReview;
     }
     
