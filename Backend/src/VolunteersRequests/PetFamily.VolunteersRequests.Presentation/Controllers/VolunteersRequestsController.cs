@@ -4,6 +4,7 @@ using PetFamily.Framework;
 using PetFamily.Framework.Authorization;
 using PetFamily.VolunteersRequests.Application.VolunteersRequestsManagement.Commands.ApproveRequest;
 using PetFamily.VolunteersRequests.Application.VolunteersRequestsManagement.Commands.CreateRequest;
+using PetFamily.VolunteersRequests.Application.VolunteersRequestsManagement.Commands.ReopenRequest;
 using PetFamily.VolunteersRequests.Application.VolunteersRequestsManagement.Commands.SetRevisionRequiredStatus;
 using PetFamily.VolunteersRequests.Application.VolunteersRequestsManagement.Commands.TakeInReview;
 using PetFamily.VolunteersRequests.Presentation.Requests;
@@ -80,6 +81,24 @@ public class VolunteersRequestsController : BaseApiController
         CancellationToken cancellationToken = default)
     {
         var command = new ApproveRequestCommand(
+            requestId);
+        
+        var result = await handler.Handle(command, cancellationToken);
+
+        if (result.IsFailure)
+            return result.Error.ToResponse();
+        
+        return Ok(result.Value);
+    }
+    
+    [Permission(Permissions.VolunteersRequests.Create)]
+    [HttpPut("{requestId:guid}/reopen")]
+    public async Task<ActionResult> SetReopenStatus(
+        [FromServices] ReopenRequestHandler handler,
+        [FromRoute] Guid requestId,
+        CancellationToken cancellationToken = default)
+    {
+        var command = new ReopenRequestCommand(
             requestId);
         
         var result = await handler.Handle(command, cancellationToken);

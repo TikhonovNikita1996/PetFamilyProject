@@ -61,4 +61,9 @@ public class VolunteerRequest
         Status = RequestStatus.Rejected;
     }
     
+    public void Refresh()
+    {
+        Status = RequestStatus.Submitted;
+    }
+    
 }
