@@ -56,4 +56,9 @@ public class User : IdentityUser<Guid>
     {
         _socialNetworks = socialMedia;
     }
+    
+    public void ChangeRole(Role role)
+    {
+        _roles = [role];
+    }
 }

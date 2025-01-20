@@ -3,6 +3,7 @@ using CSharpFunctionalExtensions;
 using FluentValidation;
 using Pet.Family.SharedKernel;
 using PetFamily.Core.Abstractions;
+using PetFamily.Core.Dtos.Discussion;
 using PetFamily.Core.Dtos.Pet;
 using PetFamily.Core.Extensions;
 using PetFamily.Core.Models;

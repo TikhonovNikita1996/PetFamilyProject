@@ -16,24 +16,16 @@ public class DiscussionConfiguration : IEntityTypeConfiguration<Discussion>
             .IsRequired()
             .HasColumnName("discussion_id");
         
-        builder.Property(s => s.RelationId)
-            .IsRequired()
-            .HasColumnName("relation_id");
-        
         builder.ComplexProperty(p => p.DiscussionUsers, du =>
         {
-            du.Property(p => p.FirstUserId)
+            du.Property(p => p.ReviewingUserId)
                 .IsRequired()
-                .HasColumnName("first_user_id");
+                .HasColumnName("reviewing_user_id");
             
-            du.Property(p => p.SecondUserId)
+            du.Property(p => p.ApplicantUserId)
                 .IsRequired()
-                .HasColumnName("second_user_id");
+                .HasColumnName("applicant_user_id");
         });
-        
-        builder.HasOne(d => d.Relation)
-            .WithMany(r => r.Discussions)
-            .HasForeignKey(d => d.RelationId);
         
         builder.HasMany(d => d.Messages)
             .WithOne()

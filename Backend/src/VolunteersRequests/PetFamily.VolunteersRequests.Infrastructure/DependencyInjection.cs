@@ -2,6 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Pet.Family.SharedKernel;
 using PetFamily.Core.Abstractions;
+using PetFamily.VolunteersRequests.Application.Database;
+using PetFamily.VolunteersRequests.Application.Interfaces;
 using PetFamily.VolunteersRequests.Infrastructure.DataContexts;
 
 namespace PetFamily.VolunteersRequests.Infrastructure;
@@ -12,7 +14,8 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         services.AddDbContexts(configuration)
-                .AddUnitOfWork();
+                .AddUnitOfWork()
+                .AddRepositories();
         
         return services;
     }
@@ -28,7 +31,16 @@ public static class DependencyInjection
     {
         services.AddScoped<VolunteersRequestWriteDbContext>(_ => 
             new VolunteersRequestWriteDbContext(configuration.GetConnectionString("Database")!));
+        
+        services.AddScoped<IVolunteersRequestReadDbContext, VolunteersRequestReadDbContext>(_ => 
+            new VolunteersRequestReadDbContext(configuration.GetConnectionString("Database")!));
 
+        return services;
+    }
+    private static IServiceCollection AddRepositories(
+        this IServiceCollection services)
+    {
+        services.AddScoped<IVolunteersRequestRepository, VolunteersRequestsRepository>();
         return services;
     }
 }

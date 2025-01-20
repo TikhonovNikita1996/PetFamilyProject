@@ -4,7 +4,7 @@ using PetFamily.Volunteers.Infrastructure.DataContexts;
 
 namespace PetFamily.Volunteers.Infrastructure.Services;
 
-public class DeleteExpiredVolunteersService (WriteDbContext dbContext)
+public class DeleteExpiredVolunteersService (VolunteersWriteDbContext dbContext)
 {  
     public async Task Process(CancellationToken cancellationToken)
     {

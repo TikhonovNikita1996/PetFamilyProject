@@ -16,14 +16,14 @@ public class AddPhotosToPetTests : IClassFixture<IntegrationTestsWebFactory>, IA
 {
     private readonly IntegrationTestsWebFactory _factory;
     private readonly IServiceScope _scope;
-    private readonly WriteDbContext _writeDbContext;
+    private readonly VolunteersWriteDbContext _volunteersWriteDbContext;
     private readonly ICommandHandler<Guid,AddPhotosToPetCommand> _sut;
 
     public AddPhotosToPetTests(IntegrationTestsWebFactory factory)
     {
         _factory = factory;
         _scope = factory.Services.CreateScope();
-        _writeDbContext = _scope.ServiceProvider.GetRequiredService<WriteDbContext>();
+        _volunteersWriteDbContext = _scope.ServiceProvider.GetRequiredService<VolunteersWriteDbContext>();
         _sut = _scope.ServiceProvider.GetRequiredService<ICommandHandler<Guid, AddPhotosToPetCommand>>();
     }
     
@@ -83,8 +83,8 @@ public class AddPhotosToPetTests : IClassFixture<IntegrationTestsWebFactory>, IA
         
         volunteer.AddPet(pet);
         
-        await _writeDbContext.Volunteers.AddAsync(volunteer);
-        await _writeDbContext.SaveChangesAsync();
+        await _volunteersWriteDbContext.Volunteers.AddAsync(volunteer);
+        await _volunteersWriteDbContext.SaveChangesAsync();
         return volunteer;
     }
     

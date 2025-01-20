@@ -182,6 +182,10 @@ namespace PetFamily.Accounts.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
+                    b.Property<DateTime?>("BannedForRequestsUntil")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("banned_for_requests_until");
+
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid")
                         .HasColumnName("user_id");

@@ -5,7 +5,7 @@ using PetFamily.Core.Dtos.Account;
 
 namespace PetFamily.Accounts.Infrastructure.DbContexts;
 
-public class ReadAccountsDbContext(string ConnectionString) : DbContext, IReadDbContext
+public class ReadAccountsDbContext(string ConnectionString) : DbContext, IAccountsReadDbContext
 {
     public IQueryable<UserDto> Users => Set<UserDto>();
     public IQueryable<AdminAccountDto> AdminAccounts => Set<AdminAccountDto>();

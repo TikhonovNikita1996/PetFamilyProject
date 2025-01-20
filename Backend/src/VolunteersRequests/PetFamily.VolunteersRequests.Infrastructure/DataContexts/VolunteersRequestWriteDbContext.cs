@@ -13,7 +13,7 @@ public class VolunteersRequestWriteDbContext : DbContext
         _connectionString = connectionString;
     }
     
-    DbSet<VolunteerRequest> VolunteerRequests => Set<VolunteerRequest>();
+    public DbSet<VolunteerRequest> VolunteersRequests => Set<VolunteerRequest>();
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

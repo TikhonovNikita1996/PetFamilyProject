@@ -1,4 +1,6 @@
-﻿using PetFamily.VolunteersRequests.Domain.Enums;
+﻿using CSharpFunctionalExtensions;
+using Pet.Family.SharedKernel;
+using PetFamily.VolunteersRequests.Domain.Enums;
 using PetFamily.VolunteersRequests.Domain.ValueObjects;
 
 namespace PetFamily.VolunteersRequests.Domain;
@@ -25,40 +27,42 @@ public class VolunteerRequest
         VolunteerInfo = volunteerInfo;
     }
     
-    public static VolunteerRequest Create(
+    public static Result<VolunteerRequest, CustomError>  Create(
         Guid userId,
-        VolunteerInfo? volunteerInfo)
+        VolunteerInfo volunteerInfo)
     {
-        return new VolunteerRequest(userId, volunteerInfo);
+        var request = new VolunteerRequest(userId, volunteerInfo);
+        return request;
     }
     
-    public void TakeInReview(Guid adminId)
+    public void TakeInReview(Guid adminId, Guid discussionId)
     {
         AdminId = adminId;
+        DiscussionId = discussionId;
         Status = RequestStatus.OnReview;
     }
     
     public void SetRevisionRequiredStatus(
-        Guid adminId,
         RejectionComment rejectedComment)
     {
-        AdminId = adminId;
         Status = RequestStatus.RevisionRequired;
         RejectionComment = rejectedComment;
     }
 
-    public void SetApprovedStatus(
-        Guid adminId)
+    public void SetApprovedStatus()
     {
-        AdminId = adminId;
         Status = RequestStatus.Approved;
     }
     
-    public void SetRejectStatus(
-        Guid adminId)
+    public void SetRejectStatus(RejectionComment rejectedComment)
     {
-        AdminId = adminId;
+        RejectionComment = rejectedComment;
         Status = RequestStatus.Rejected;
+    }
+    
+    public void Refresh()
+    {
+        Status = RequestStatus.Submitted;
     }
     
 }

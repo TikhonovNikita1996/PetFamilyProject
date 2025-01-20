@@ -18,7 +18,11 @@
       "pets.create",
       "pets.read",
       "pets.update",
-      "pets.delete"
+      "pets.delete",
+      "request.create",
+      "request.read",
+      "request.update",
+      "request.delete"
     ],
     "Volunteer": [
       "volunteers.read",
@@ -37,7 +41,9 @@
       "pets.read",
       "species.read",
       "breeds.read",
-      "files.read"
+      "files.read",
+      "request.create",
+      "request.read"
     ]
   },
   "Permissions": {
@@ -72,6 +78,12 @@
     "Accounts": [
       "accounts.read",
       "accounts.update"
+    ],
+    "VolunteerRequests": [
+      "request.create",
+      "request.read",
+      "request.update",
+      "request.delete"
     ]
   }
 }

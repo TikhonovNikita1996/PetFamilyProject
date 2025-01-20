@@ -4,4 +4,6 @@ public class ParticipantAccountDto
 {
     public Guid ParticipantAccountId { get; init; }
     public Guid UserId { get; init; }
+
+    public DateTime? BannedForRequestsUntil { get; set; }
 }

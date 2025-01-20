@@ -45,7 +45,7 @@ public static class DependencyInjection
         services.AddScoped<WriteAccountsDbContext>(_ => 
             new WriteAccountsDbContext(configuration.GetConnectionString("Database")!));
         
-        services.AddScoped<IReadDbContext, ReadAccountsDbContext>(_ => 
+        services.AddScoped<IAccountsReadDbContext, ReadAccountsDbContext>(_ => 
             new ReadAccountsDbContext(configuration.GetConnectionString("Database")!));
         
         return services;

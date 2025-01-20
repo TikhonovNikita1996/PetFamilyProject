@@ -6,9 +6,8 @@ public class DiscussionsTests
 {
     private Discussion CreateDiscussion()
     {
-        var relationId = Guid.NewGuid();
         var users = DiscussionUsers.Create(Guid.NewGuid(),Guid.NewGuid());
-        var discussion = Discussion.Create(relationId, users).Value;
+        var discussion = Discussion.Create(users).Value;
         
         return discussion;
     }
@@ -17,11 +16,10 @@ public class DiscussionsTests
     public void CreateDiscussion_Should_Be_Not_Null()
     {
         // Arrange
-        var relationId = Guid.NewGuid();
         var users = DiscussionUsers.Create(Guid.NewGuid(),Guid.NewGuid());
         
         // Act
-        var discussion = Discussion.Create(relationId, users).Value;
+        var discussion = Discussion.Create(users).Value;
         
         //Assert
         Assert.NotNull(discussion);
@@ -31,9 +29,8 @@ public class DiscussionsTests
     public void CloseDiscussion_Status_Should_Be_Closed()
     {
         // Arrange
-        var relationId = Guid.NewGuid();
         var users = DiscussionUsers.Create(Guid.NewGuid(),Guid.NewGuid());
-        var discussion = Discussion.Create(relationId, users).Value;
+        var discussion = Discussion.Create(users).Value;
         
         // Act
         discussion.Close();
@@ -47,9 +44,9 @@ public class DiscussionsTests
     {
         // Arrange
         var discussion = CreateDiscussion();
-        var userId = discussion.DiscussionUsers.FirstUserId;
+        var userId = discussion.DiscussionUsers.ApplicantUserId;
         var messageText = MessageText.Create("Hello World").Value;
-        var message = Message.Create(messageText, userId, discussion.DiscussionId);
+        var message = Message.Create(discussion.DiscussionId, userId, messageText);
         
         // Act
         discussion.AddMessage(message);
@@ -64,7 +61,7 @@ public class DiscussionsTests
         // Arrange
         var discussion = CreateDiscussion();
         var messageText = MessageText.Create("Hello World").Value;
-        var message = Message.Create(messageText, Guid.NewGuid(), discussion.DiscussionId);
+        var message = Message.Create(discussion.DiscussionId, Guid.NewGuid(), messageText);
         
         // Act
         var result = discussion.AddMessage(message);
@@ -78,9 +75,9 @@ public class DiscussionsTests
     {
         // Arrange
         var discussion = CreateDiscussion();
-        var userId = discussion.DiscussionUsers.FirstUserId;
+        var userId = discussion.DiscussionUsers.ApplicantUserId;
         var messageText = MessageText.Create("Hello World").Value;
-        var message = Message.Create(messageText, userId, discussion.DiscussionId);
+        var message = Message.Create(discussion.DiscussionId, userId, messageText);
         discussion.AddMessage(message);
         
         // Act
@@ -96,9 +93,9 @@ public class DiscussionsTests
     {
         // Arrange
         var discussion = CreateDiscussion();
-        var userId = discussion.DiscussionUsers.FirstUserId;
+        var userId = discussion.DiscussionUsers.ApplicantUserId;
         var messageText = MessageText.Create("Hello World").Value;
-        var message = Message.Create(messageText, userId, discussion.DiscussionId);
+        var message = Message.Create(discussion.DiscussionId, userId, messageText);
         discussion.AddMessage(message);
         var newMessageText = MessageText.Create("New Message").Value;
         

@@ -8,6 +8,7 @@ using Pet.Family.SharedKernel.ValueObjects.Specie;
 using Pet.Family.SharedKernel.ValueObjects.Volunteer;
 using PetFamily.Core.Abstractions;
 using PetFamily.Core.Extensions;
+using PetFamily.Discussions.Contracts;
 using PetFamily.Species.Contracts;
 using PetFamily.Species.Contracts.Requests;
 using PetFamily.Volunteers.Application.Interfaces;

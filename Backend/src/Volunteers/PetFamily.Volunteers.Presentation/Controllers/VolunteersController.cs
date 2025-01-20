@@ -26,10 +26,10 @@ using PetFamily.Volunteers.Presentation.Requests.Volunteer;
 
 namespace PetFamily.Volunteers.Presentation.Controllers;
 
-// [Authorize]
+[Authorize]
 public class VolunteersController : BaseApiController
 {
-    // [Permission(Permissions.Volunteers.Create)]
+    [Permission(Permissions.Volunteers.Create)]
     [HttpPost]
     public async Task<ActionResult> Create(
         [FromServices] CreateVolunteerHandler createVolunteerHandler,

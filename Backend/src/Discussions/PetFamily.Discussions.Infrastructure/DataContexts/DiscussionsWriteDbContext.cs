@@ -13,8 +13,7 @@ public class DiscussionsWriteDbContext : DbContext
         _connectionString = connectionString;
     }
     
-    DbSet<Discussion> Discussions => Set<Discussion>();
-    
+    public DbSet<Discussion> Discussions => Set<Discussion>();
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseNpgsql(_connectionString);

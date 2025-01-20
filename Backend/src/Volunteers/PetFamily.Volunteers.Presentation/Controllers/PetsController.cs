@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PetFamily.Core.Dtos.Discussion;
 using PetFamily.Core.Dtos.Pet;
 using PetFamily.Framework;
 using PetFamily.Framework.Authorization;
@@ -8,8 +9,7 @@ using PetFamily.Volunteers.Application.VolunteersManagement.Queries.GetPetsWithF
 using PetFamily.Volunteers.Presentation.Requests.Pet;
 
 namespace PetFamily.Volunteers.Presentation.Controllers;
-
-// [Authorize]
+[Authorize]
 public class PetsController : BaseApiController
 {
     [HttpGet]

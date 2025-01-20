@@ -14,7 +14,7 @@ public record MessageText
     public static Result<MessageText, CustomError> Create(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
-            return Errors.General.ValueIsInvalid("Message text");
+            return Errors.General.ValueIsInvalid("message text");
         
         return new MessageText(value);
     } 
