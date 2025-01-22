@@ -102,7 +102,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors(config =>
 {
-    config.WithOrigins("http://localhost:5173").AllowAnyHeader().AllowAnyMethod();
+    config
+        .WithOrigins("http://localhost:5173")
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials();
 });
 
 app.UseHttpsRedirection();

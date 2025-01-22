@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using PetFamily.Accounts.Application.AccountsManagement.Commands.Login;
 using PetFamily.Accounts.Application.AccountsManagement.Commands.RefreshTokens;
 using PetFamily.Accounts.Application.AccountsManagement.Commands.RegisterUser;
@@ -36,19 +37,45 @@ public class AccountsController : BaseApiController
         var result = await handler.Handle(command, cancellationToken);
         if(result.IsFailure)
             return result.Error.ToResponse();
+        
+        HttpContext.Response.Cookies.Append("refreshToken", result.Value.RefreshToken.ToString(),
+            new CookieOptions
+            {
+                HttpOnly = false,
+                Secure = true,
+                SameSite = SameSiteMode.None,
+                Expires = DateTime.UtcNow.AddDays(30),
+                IsEssential = true
+            });
+        
         return Ok(result.Value);
     }
     
     [HttpPost("refresh")]
     public async Task<IActionResult> RefreshTokens(
-        [FromBody] RefreshTokenRequest request,
         [FromServices] RefreshTokensHandler handler,
         CancellationToken cancellationToken) 
     {
-        var command = new RefreshTokensCommand(request.AccessToken, request.RefreshToken);
+        if (!HttpContext.Request.Cookies.TryGetValue("refreshToken", out var refreshToken))
+        {
+            return Unauthorized();
+        }
+        
+        var command = new RefreshTokensCommand(Guid.Parse(refreshToken!));
         var result = await handler.Handle(command, cancellationToken);
         if(result.IsFailure)
             return result.Error.ToResponse();
+        
+        HttpContext.Response.Cookies.Append("refreshToken", result.Value.RefreshToken.ToString(),
+            new CookieOptions
+            {
+                HttpOnly = false,
+                Secure = true,
+                SameSite = SameSiteMode.None,
+                Expires = DateTime.UtcNow.AddDays(30),
+                IsEssential = true
+            });
+        
         return Ok(result.Value);
     }
     

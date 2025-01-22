@@ -9,10 +9,10 @@ namespace PetFamily.Framework;
 
 public class BaseApiController : ControllerBase
 { 
-    // public override OkObjectResult Ok(object? value)
-    // {
-    //     var envelope = Envelope.Ok(value);
-    //
-    //     return base.Ok(envelope);
-    // }
+    public override OkObjectResult Ok(object? value)
+    {
+        var envelope = Envelope.Ok(value);
+    
+        return base.Ok(envelope);
+    }
 }
