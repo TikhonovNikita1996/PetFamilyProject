@@ -89,7 +89,7 @@ var app = builder.Build();
 
 var accountSeeder = app.Services.GetRequiredService<AccountsSeeder>();
 
-await accountSeeder.SeedAsync();
+// await accountSeeder.SeedAsync();
 
 app.UseExceptionMiddleware();
 app.UseSerilogRequestLogging();
