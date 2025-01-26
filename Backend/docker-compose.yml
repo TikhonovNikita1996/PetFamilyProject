@@ -70,3 +70,4 @@
 volumes:
   postgres-data:
   minio_data:
+  mongo_data:
