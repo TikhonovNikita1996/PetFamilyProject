@@ -30,8 +30,8 @@ public static class DependencyInjection
             .AddUnitOfWork()
             .AddSoftDelete();
 
-        services.AddHostedService<FilesCleanerBackgroundService>();
-        services.AddScoped<IFileCleanerService, FileCleanerService>();
+        // services.AddHostedService<FilesCleanerBackgroundService>();
+        // services.AddScoped<IFileCleanerService, FileCleanerService>();
         services.AddScoped<ISqlConnectionFactory, SqlConnectionFactory>();
 
         services.AddSingleton<IMessageQueue<IEnumerable<FileMetaData>>

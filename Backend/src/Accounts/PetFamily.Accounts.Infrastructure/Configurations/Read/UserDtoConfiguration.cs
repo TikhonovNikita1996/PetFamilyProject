@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetFamily.Core.Dtos.Account;
+using PetFamily.Core.Dtos.Pet;
 
 namespace PetFamily.Accounts.Infrastructure.Configurations.Read;
 
@@ -30,6 +32,11 @@ public class UserDtoConfiguration : IEntityTypeConfiguration<UserDto>
         builder.HasOne(u => u.VolunteerAccount)
             .WithOne()
             .HasForeignKey<VolunteerAccountDto>(v => v.UserId);
+        
+        builder.Property(u => u.Photo)
+            .HasConversion(
+                photos => JsonSerializer.Serialize(photos, JsonSerializerOptions.Default),
+                json => JsonSerializer.Deserialize<UserAvatarDto>(json, JsonSerializerOptions.Default)!);
 
     }
 }

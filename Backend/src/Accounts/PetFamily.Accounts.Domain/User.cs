@@ -11,10 +11,9 @@ public class User : IdentityUser<Guid>
     private User() {}
     private List<Role> _roles = [];
     private List<SocialMedia> _socialNetworks = [];
-    private List<Photo> _photos = [];
     public FullName FullName { get; set; } = null!;
     public IReadOnlyList<Role> Roles => _roles.AsReadOnly();
-    public IReadOnlyList<Photo> Photos => _photos;
+    public UserAvatar? Photo { get; set; }
     public IReadOnlyList<SocialMedia> SocialNetworks => _socialNetworks;
     public AdminAccount? AdminAccount { get; set; }
     public VolunteerAccount? VolunteerAccount { get; set; }

@@ -1,8 +1,9 @@
 ﻿using CSharpFunctionalExtensions;
+using Pet.Family.SharedKernel;
 
-namespace Pet.Family.SharedKernel.ValueObjects;
+namespace PetFamily.Accounts.Domain;
 
-public class Photo
+public class UserAvatar
 {
     private static readonly string[] PermittedFileTypes = ["image/jpeg","image/jpg","image/png"];
     private static readonly string[] PermittedFileExtensions =
@@ -11,11 +12,10 @@ public class Photo
     public const int MAX_FILE_SIZE = 5120;
     
     // ef core
-    public Photo(){}
-    public Photo(Guid fileId, bool isMain)
+    public UserAvatar(){}
+    public UserAvatar(Guid fileId)
     {
         FileId = fileId;
-        IsMain = isMain;
     }
     public Guid FileId { get; set; }
     public bool IsMain { get; set; }

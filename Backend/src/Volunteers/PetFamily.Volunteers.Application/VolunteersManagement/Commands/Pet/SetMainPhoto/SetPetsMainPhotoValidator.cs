@@ -10,6 +10,6 @@ public class SetPetsMainPhotoValidator : AbstractValidator<SetPetsMainPhotoComma
     {
         RuleFor(r => r.PetId).NotNull().WithError(Errors.General.ValueIsRequired());
         RuleFor(r => r.VolunteerId).NotNull().WithError(Errors.General.ValueIsRequired());
-        RuleFor(r => r.FilePath).MustBeValueObject(fp => FilePath.Create(fp.Value));
+        // RuleFor(r => r.FilePath).MustBeValueObject(fp => FilePath.Create(fp.Value));
     }
 }

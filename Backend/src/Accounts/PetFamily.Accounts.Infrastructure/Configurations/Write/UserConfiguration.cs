@@ -43,11 +43,13 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                 output => SocialMedia.Create(output.Name, output.Url).Value)
             .HasColumnName("social_networks");
         
-        builder.Property(v => v.Photos)
-            .ValueObjectsJsonConversion<Photo, PhotoDto>(
-                file => new PhotoDto {FileId = file.FileId , IsMain = file.IsMain},
-                json => new Photo {IsMain = json.IsMain, FileId = json.FileId})
-            .HasColumnName("photos");
+        builder.Property(a => a.Photo)
+            .IsRequired(false)
+            .HasConversion(
+                photo => photo!.FileId, 
+                value => new UserAvatar(value)
+            )
+            .HasColumnName("photo");
 
         builder.HasMany(u => u.Roles)
             .WithMany()
