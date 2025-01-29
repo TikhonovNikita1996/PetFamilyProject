@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Pet.Family.SharedKernel;
+using Pet.Family.SharedKernel.ValueObjects;
 using Pet.Family.SharedKernel.ValueObjects.Pet;
 using Pet.Family.SharedKernel.ValueObjects.Specie;
 using PetFamily.Core.Dtos.Pet;
@@ -159,8 +160,8 @@ public class PetConfiguration : IEntityTypeConfiguration<Domain.Pet.Pet>
         
         builder.Property(v => v.Photos)
             .ValueObjectsJsonConversion<Photo, PhotoDto>(
-                file => new PhotoDto {PathToStorage = file.FilePath , IsMain = file.IsMain},
-                json => new Photo {IsMain = json.IsMain, FilePath = json.PathToStorage})
+                file => new PhotoDto {FileId = file.FileId , IsMain = file.IsMain},
+                json => new Photo {IsMain = json.IsMain, FileId = json.FileId})
             .HasColumnName("photos");
         
         builder.OwnsOne(v => v.DonateForHelpInfos, db =>

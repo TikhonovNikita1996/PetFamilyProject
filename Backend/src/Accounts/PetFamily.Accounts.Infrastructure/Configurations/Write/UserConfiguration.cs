@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Pet.Family.SharedKernel;
+using Pet.Family.SharedKernel.ValueObjects;
 using Pet.Family.SharedKernel.ValueObjects.Pet;
 using Pet.Family.SharedKernel.ValueObjects.Volunteer;
 using PetFamily.Accounts.Domain;
@@ -44,8 +45,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         
         builder.Property(v => v.Photos)
             .ValueObjectsJsonConversion<Photo, PhotoDto>(
-                file => new PhotoDto {PathToStorage = file.FilePath , IsMain = file.IsMain},
-                json => new Photo {IsMain = json.IsMain, FilePath = json.PathToStorage})
+                file => new PhotoDto {FileId = file.FileId , IsMain = file.IsMain},
+                json => new Photo {IsMain = json.IsMain, FileId = json.FileId})
             .HasColumnName("photos");
 
         builder.HasMany(u => u.Roles)

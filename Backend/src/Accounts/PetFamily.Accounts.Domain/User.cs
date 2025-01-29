@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Pet.Family.SharedKernel.ValueObjects;
 using Pet.Family.SharedKernel.ValueObjects.Pet;
 using Pet.Family.SharedKernel.ValueObjects.Volunteer;
 using PetFamily.Accounts.Domain.AccountModels;

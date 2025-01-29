@@ -97,26 +97,26 @@ public class VolunteersController : BaseApiController
         return Ok(result.Value);
     }
     
-    [Permission(Permissions.Volunteers.Update)]
-    [HttpPost("{volunteerId:guid}/pet/{petId:guid}/files")]
-    public async Task<ActionResult> UploadFilesToPet(
-        [FromRoute] Guid volunteerId,
-        [FromRoute] Guid petId,
-        [FromForm] IFormFileCollection files,
-        [FromServices] AddPhotosToPetHandler handler,
-        CancellationToken cancellationToken)
-    {
-        await using var fileProcessor = new FormFileProcessor();
-        var fileDtos = fileProcessor.Process(files);
-            
-        var command = new AddPhotosToPetCommand(volunteerId, petId, fileDtos);
-            
-        var result = await handler.Handle(command, cancellationToken);
-        if(result.IsFailure)
-            return result.Error.ToResponse(); 
-            
-        return Ok(result.Value);
-    }
+    // [Permission(Permissions.Volunteers.Update)]
+    // [HttpPost("{volunteerId:guid}/pet/{petId:guid}/files")]
+    // public async Task<ActionResult> UploadFilesToPet(
+    //     [FromRoute] Guid volunteerId,
+    //     [FromRoute] Guid petId,
+    //     [FromForm] IFormFileCollection files,
+    //     [FromServices] AddPhotosToPetHandler handler,
+    //     CancellationToken cancellationToken)
+    // {
+    //     await using var fileProcessor = new FormFileProcessor();
+    //     var fileDtos = fileProcessor.Process(files);
+    //         
+    //     var command = new AddPhotosToPetCommand(volunteerId, petId, fileDtos);
+    //         
+    //     var result = await handler.Handle(command, cancellationToken);
+    //     if(result.IsFailure)
+    //         return result.Error.ToResponse(); 
+    //         
+    //     return Ok(result.Value);
+    // }
     
     [Permission(Permissions.Volunteers.Update)]
     [HttpPut("{volunteerId:guid}/pet/{petId:guid}/position-number")]
@@ -232,21 +232,21 @@ public class VolunteersController : BaseApiController
         return Ok(result.Value); 
     }
     
-    [Permission(Permissions.Volunteers.Update)]
-    [HttpPut("{volunteerId:guid}/pet/{petId:guid}/main-photo")]
-    public async Task<ActionResult> SetPetMainPhoto(
-        [FromRoute] Guid volunteerId,
-        [FromRoute] Guid petId,
-        [FromServices] SetPetsMainPhotoHandler handler,
-        [FromBody] SetPetsMainPhotoRequest request,
-        CancellationToken cancellationToken)
-    {
-        var command = new SetPetsMainPhotoCommand(volunteerId, petId, FilePath.Create(request.FilePath).Value);
-        
-        var result = await handler.Handle(command, cancellationToken);
-        if (result.IsFailure)
-            return result.Error.ToResponse();
-        
-        return Ok(result.Value); 
-    }
+    // [Permission(Permissions.Volunteers.Update)]
+    // [HttpPut("{volunteerId:guid}/pet/{petId:guid}/main-photo")]
+    // public async Task<ActionResult> SetPetMainPhoto(
+    //     [FromRoute] Guid volunteerId,
+    //     [FromRoute] Guid petId,
+    //     [FromServices] SetPetsMainPhotoHandler handler,
+    //     [FromBody] SetPetsMainPhotoRequest request,
+    //     CancellationToken cancellationToken)
+    // {
+    //     var command = new SetPetsMainPhotoCommand(volunteerId, petId, FilePath.Create(request.FilePath).Value);
+    //     
+    //     var result = await handler.Handle(command, cancellationToken);
+    //     if (result.IsFailure)
+    //         return result.Error.ToResponse();
+    //     
+    //     return Ok(result.Value); 
+    // }
 }

@@ -4,12 +4,12 @@ namespace Pet.Family.SharedKernel;
 
 public record FilePath
 {
-    private FilePath(string path)
+    private FilePath(string value)
     {
-        Path = path;
+        Value = value;
     }
 
-    public string Path { get; }
+    public string Value { get; }
 
     public static Result<FilePath, CustomError> Create(Guid path, string extension)
     {

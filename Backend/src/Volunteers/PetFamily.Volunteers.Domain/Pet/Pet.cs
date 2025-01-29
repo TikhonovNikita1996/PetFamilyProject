@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using Pet.Family.SharedKernel;
+using Pet.Family.SharedKernel.ValueObjects;
 using Pet.Family.SharedKernel.ValueObjects.Pet;
 using Pet.Family.SharedKernel.ValueObjects.Specie;
 using Pet.Family.SharedKernel.ValueObjects.Volunteer;
@@ -128,14 +129,14 @@ public class Pet : SoftDeletableEntity<PetId>
         PositionNumber = PositionNumber.Create(newPosition).Value;
     }
 
-    public void SetMainPhoto(FilePath filePath)
+    public void SetMainPhoto(Guid fileId)
     {
         foreach (var photo in Photos)
         {
             photo.IsMain = false;
         }
         
-        var newMainPhoto = Photos.FirstOrDefault(p => p.FilePath == filePath.Path);
+        var newMainPhoto = Photos.FirstOrDefault(p => p.FileId == fileId);
         
         if(newMainPhoto != null)
             newMainPhoto.IsMain = true;

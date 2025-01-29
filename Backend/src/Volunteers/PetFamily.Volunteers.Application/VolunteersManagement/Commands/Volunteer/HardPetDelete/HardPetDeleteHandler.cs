@@ -58,7 +58,7 @@ public class HardPetDeleteHandler : ICommandHandler<Guid,HardPetDeleteCommand>
         if (petToDelete.Photos != null)
         {
             var photosMetaDataToDelete = petToDelete.Photos
-                .Select(p => new FileMetaData("photos", FilePath.Create(p.FilePath).Value));
+                .Select(p => new FileMetaData("photos", FilePath.Create(p.FileId.ToString()).Value));
         
             foreach (var photoMetaData in photosMetaDataToDelete)
             {

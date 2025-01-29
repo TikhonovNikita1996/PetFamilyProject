@@ -86,4 +86,17 @@ public static class Errors
             return CustomError.Validation("token.is.invalid", "Token is invalid");
         }
     }
+    
+    public static class Files
+    {
+        public static CustomError InvalidSize()
+        {
+            return CustomError.Validation("invalid.size", "File size needs to be smaller");
+        }
+        
+        public static CustomError InvalidExtension()
+        {
+            return CustomError.Validation("invalid.extension", "This extension is invalid");
+        }
+    }
 }
