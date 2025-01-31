@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Pet.Family.SharedKernel;
+using Pet.Family.SharedKernel.ValueObjects;
 using Pet.Family.SharedKernel.ValueObjects.Pet;
 using Pet.Family.SharedKernel.ValueObjects.Volunteer;
 using PetFamily.Accounts.Domain;
@@ -42,11 +43,13 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                 output => SocialMedia.Create(output.Name, output.Url).Value)
             .HasColumnName("social_networks");
         
-        builder.Property(v => v.Photos)
-            .ValueObjectsJsonConversion<Photo, PhotoDto>(
-                file => new PhotoDto {PathToStorage = file.FilePath , IsMain = file.IsMain},
-                json => new Photo {IsMain = json.IsMain, FilePath = json.PathToStorage})
-            .HasColumnName("photos");
+        builder.Property(a => a.Photo)
+            .IsRequired(false)
+            .HasConversion(
+                photo => photo!.FileId, 
+                value => new UserAvatar(value)
+            )
+            .HasColumnName("photo");
 
         builder.HasMany(u => u.Roles)
             .WithMany()

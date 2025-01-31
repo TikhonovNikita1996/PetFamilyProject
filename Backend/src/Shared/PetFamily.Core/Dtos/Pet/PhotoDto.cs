@@ -2,6 +2,6 @@
 
 public class PhotoDto
 {
-    public string PathToStorage { get; set; } = string.Empty;
+    public Guid FileId { get; set; }
     public bool IsMain { get; set; }
 }

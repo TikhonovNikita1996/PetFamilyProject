@@ -45,7 +45,7 @@ public class SetPetsMainPhotoHandler : ICommandHandler<Guid,SetPetsMainPhotoComm
         if(petToUpdate == null)
            return Errors.General.NotFound("pet not found").ToErrorList();
         
-        petToUpdate.SetMainPhoto(command.FilePath);
+        petToUpdate.SetMainPhoto(command.FileId);
         
         await _unitOfWork.SaveChanges(cancellationToken);
         

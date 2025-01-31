@@ -3,6 +3,7 @@ using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Pet.Family.SharedKernel;
+using Pet.Family.SharedKernel.ValueObjects;
 using Pet.Family.SharedKernel.ValueObjects.Pet;
 using PetFamily.Core;
 using PetFamily.Core.Abstractions;
@@ -20,7 +21,6 @@ public class AddPhotosToPetHandler : ICommandHandler<Guid,AddPhotosToPetCommand>
     private readonly IUnitOfWork _unitOfWork;
     private readonly IValidator<AddPhotosToPetCommand> _validator;
     private readonly IMessageQueue<IEnumerable<FileMetaData>> _messageQueue;
-    private readonly IFileService _fileService;
     private const string BUCKET_NAME = "photos";
 
     public AddPhotosToPetHandler(
@@ -28,15 +28,13 @@ public class AddPhotosToPetHandler : ICommandHandler<Guid,AddPhotosToPetCommand>
         IVolunteerRepository volunteerRepository,
         [FromKeyedServices(ProjectConstants.Context.VolunteerManagement)] IUnitOfWork unitOfWork,
         IValidator<AddPhotosToPetCommand> validator, 
-        IMessageQueue<IEnumerable<FileMetaData>> messageQueue,
-        IFileService fileService)
+        IMessageQueue<IEnumerable<FileMetaData>> messageQueue)
     {
         _logger = logger;
         _volunteerRepository = volunteerRepository;
         _unitOfWork = unitOfWork;
         _validator = validator;
         _messageQueue = messageQueue;
-        _fileService = fileService;
     }
 
     public async Task<Result<Guid, CustomErrorsList>> Handle(
@@ -70,19 +68,19 @@ public class AddPhotosToPetHandler : ICommandHandler<Guid,AddPhotosToPetCommand>
             filesData.Add(fileContent);
         }
         
-        var filePathsResult = await _fileService.UploadFilesAsync(filesData, cancellationToken);
-        if (filePathsResult.IsFailure)
-        {
-            await _messageQueue.WriteAsync(filesData.Select(f => f.FileMetaData),cancellationToken);
-            return filePathsResult.Error.ToErrorList();
-        }
+        // var filePathsResult = await _fileService.UploadFilesAsync(filesData, cancellationToken);
+        // if (filePathsResult.IsFailure)
+        // {
+        //     await _messageQueue.WriteAsync(filesData.Select(f => f.FileMetaData),cancellationToken);
+        //     return filePathsResult.Error.ToErrorList();
+        // }
 
-        List<Photo> photos = filePathsResult.Value.Select((t, i) => i == 0
-                ? Photo.Create(t.Path, true).Value
-                : Photo.Create(t.Path, false).Value)
-            .ToList();
+        // List<Photo> photos = filePathsResult.Value.Select((t, i) => i == 0
+        //         ? new Photo(t.Value, true)
+        //         : Photo.Create(t.Path, false).Value)
+        //     .ToList();
 
-        petResult.Value.UpdatePhotos(photos);
+        // petResult.Value.UpdatePhotos(photos);
         
         await _unitOfWork.SaveChanges(cancellationToken);
 

@@ -17,20 +17,17 @@ public class HardPetDeleteHandler : ICommandHandler<Guid,HardPetDeleteCommand>
     private readonly IValidator<HardPetDeleteCommand> _validator;
     private readonly ILogger<HardPetDeleteHandler> _logger;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IFileService _fileService;
-
+    
     public HardPetDeleteHandler(
         ILogger<HardPetDeleteHandler> logger,
         IVolunteerRepository volunteersRepository,
         IValidator<HardPetDeleteCommand> validator,
-        [FromKeyedServices(ProjectConstants.Context.VolunteerManagement)] IUnitOfWork unitOfWork,
-        IFileService fileService)
+        [FromKeyedServices(ProjectConstants.Context.VolunteerManagement)] IUnitOfWork unitOfWork)
     {
         _logger = logger;
         _volunteersRepository = volunteersRepository;
         _validator = validator;
         _unitOfWork = unitOfWork;
-        _fileService = fileService;
     }
 
     public async Task<Result<Guid, CustomErrorsList>> Handle(HardPetDeleteCommand command,
@@ -54,17 +51,17 @@ public class HardPetDeleteHandler : ICommandHandler<Guid,HardPetDeleteCommand>
         var orderedPetsList = volunteerResult.Value.CurrentPets.OrderBy(p => p.PositionNumber.Value).ToList();
         volunteerResult.Value.UpdatePetsPositions(orderedPetsList);
 
-        // Delete photos from minio
-        if (petToDelete.Photos != null)
-        {
-            var photosMetaDataToDelete = petToDelete.Photos
-                .Select(p => new FileMetaData("photos", FilePath.Create(p.FilePath).Value));
-        
-            foreach (var photoMetaData in photosMetaDataToDelete)
-            {
-                await _fileService.DeleteFileAsync(photoMetaData, cancellationToken);
-            }
-        }
+        // // Delete photos from minio
+        // if (petToDelete.Photos != null)
+        // {
+        //     var photosMetaDataToDelete = petToDelete.Photos
+        //         .Select(p => new FileMetaData("photos", FilePath.Create(p.FileId.ToString()).Value));
+        //
+        //     foreach (var photoMetaData in photosMetaDataToDelete)
+        //     {
+        //         await _fileService.DeleteFileAsync(photoMetaData, cancellationToken);
+        //     }
+        // }
         
         await _unitOfWork.SaveChanges(cancellationToken);
         
