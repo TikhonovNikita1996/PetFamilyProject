@@ -71,7 +71,6 @@ public static class CompleteMultipartUpload
             return Results.Ok(new
             {
                 Id = key,
-
                 location = response.Location
             });
         }
