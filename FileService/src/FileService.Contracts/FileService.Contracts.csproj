@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <PackageId>FileService.Contracts</PackageId>
+        <Version>1.0.0</Version>
+        <Authors>TikhonovNikita1996</Authors>
+        <Company>TikhonovNikita1996</Company>
+        <PackageDescription>Contracts for file service</PackageDescription>
+        <RepositoryUrl>https://github.com/TikhonovNikita1996/PetFamilyProject</RepositoryUrl>
+    </PropertyGroup>
+
+</Project>
+ 

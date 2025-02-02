@@ -5,7 +5,7 @@ using FileService.Contracts;
 
 namespace FileService.Communication;
 
-public class FileHttpClient(HttpClient httpClient)
+public class FileHttpClient(HttpClient httpClient) : IFileService
 {
     public async Task<Result<IReadOnlyList<FileResponse>>> GetPresignedUrls(GetFilePresignedUrlRequest request
         ,CancellationToken cancellationToken = default)
