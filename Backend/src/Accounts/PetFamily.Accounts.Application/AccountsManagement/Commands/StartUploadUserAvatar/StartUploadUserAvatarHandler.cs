@@ -4,6 +4,7 @@ using FileService.Contracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Pet.Family.SharedKernel;
+using PetFamily.Accounts.Application.AccountsManagement.Commands.CompleteUploadUserAvatar;
 using PetFamily.Accounts.Contracts.Responses;
 using PetFamily.Accounts.Domain;
 using PetFamily.Core.Abstractions;
@@ -56,6 +57,5 @@ public class StartUploadUserAvatarHandler : ICommandHandler<StartUploadFileRespo
         var response = new StartUploadFileResponse(result.Value.FileId, result.Value.PresignedUrl);
 
         return response;
-
     }
 }
