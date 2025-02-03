@@ -6,11 +6,11 @@ namespace FileService.Communication;
 public interface IFileService
 {
     public Task<Result<IReadOnlyList<FileResponse>>> GetPresignedUrls(GetFilePresignedUrlRequest request
-        , CancellationToken cancellationToken = default);
+        ,CancellationToken cancellationToken = default);
     
-    Task<Result<FileResponse, string>> StartMultipartUpload(
+    public Task<Result<FileResponse, string>> StartMultipartUpload(
         StartMultipartUploadRequest request, CancellationToken cancellationToken = default);
     
-    Task<Result<FileResponse, string>> CompleteMultipartUpload(
+    public Task<Result<FileResponse, string>> CompleteMultipartUpload(
         CompleteMultipartRequest request, CancellationToken cancellationToken = default);
 }
