@@ -1,9 +1,9 @@
 ﻿using PetFamily.Core.Abstractions;
 using PetFamily.Core.Dtos;
 
-namespace PetFamily.Volunteers.Application.VolunteersManagement.Commands.Volunteer.AddPhotosToPet;
+namespace PetFamily.Volunteers.Application.VolunteersManagement.Commands.Volunteer.StartUploadPhotosToPet;
 
-public record AddPhotosToPetCommand(
+public record StartUploadPhotosToPetCommand(
     Guid VolunteerId,
     Guid PetId,
     IEnumerable<CreateFileDto> Files) : ICommand;

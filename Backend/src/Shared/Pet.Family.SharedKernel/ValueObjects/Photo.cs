@@ -22,7 +22,7 @@ public class Photo
     public static UnitResult<CustomError> Validate(
         string fileName,
         string contentType,
-        long size)
+        int size)
     {
         if (string.IsNullOrWhiteSpace(fileName))
             return Errors.General.ValueIsInvalid(fileName);

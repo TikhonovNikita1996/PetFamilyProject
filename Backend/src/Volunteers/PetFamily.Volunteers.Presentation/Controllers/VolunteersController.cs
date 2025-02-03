@@ -11,7 +11,6 @@ using PetFamily.Volunteers.Application.VolunteersManagement.Commands.Pet.SoftDel
 using PetFamily.Volunteers.Application.VolunteersManagement.Commands.Pet.Update.MainInfo;
 using PetFamily.Volunteers.Application.VolunteersManagement.Commands.Pet.Update.Status;
 using PetFamily.Volunteers.Application.VolunteersManagement.Commands.Volunteer.AddPet;
-using PetFamily.Volunteers.Application.VolunteersManagement.Commands.Volunteer.AddPhotosToPet;
 using PetFamily.Volunteers.Application.VolunteersManagement.Commands.Volunteer.ChangePetsPosition;
 using PetFamily.Volunteers.Application.VolunteersManagement.Commands.Volunteer.Create;
 using PetFamily.Volunteers.Application.VolunteersManagement.Commands.Volunteer.Delete;
@@ -19,8 +18,6 @@ using PetFamily.Volunteers.Application.VolunteersManagement.Commands.Volunteer.H
 using PetFamily.Volunteers.Application.VolunteersManagement.Commands.Volunteer.Update.MainInfo;
 using PetFamily.Volunteers.Application.VolunteersManagement.Queries.GetAllVolunteers;
 using PetFamily.Volunteers.Application.VolunteersManagement.Queries.GetVolunteerById;
-using PetFamily.Volunteers.Infrastructure.Services;
-using PetFamily.Volunteers.Presentation.Processors;
 using PetFamily.Volunteers.Presentation.Requests.Pet;
 using PetFamily.Volunteers.Presentation.Requests.Volunteer;
 

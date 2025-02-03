@@ -8,7 +8,6 @@
 
     <ItemGroup>
       <Folder Include="VolunteersManagement\Commands\Pet\" />
-      <Folder Include="VolunteersManagement\Commands\Volunteer\" />
     </ItemGroup>
 
     <ItemGroup>
@@ -22,6 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="fileservice" Version="1.0.4" />
       <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.1" />
     </ItemGroup>
 
