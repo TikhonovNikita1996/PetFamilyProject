@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <PackageId>FileService</PackageId>
+        <Version>1.0.0</Version>
+        <Authors>TikhonovNikita1996</Authors>
+        <Company>TikhonovNikita1996</Company>
+        <PackageDescription>FileService</PackageDescription>
+        <RepositoryUrl>https://github.com/TikhonovNikita1996/PetFamilyProject</RepositoryUrl>
+    </PropertyGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\FileService.Contracts\FileService.Contracts.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="CSharpFunctionalExtensions" Version="3.1.0" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
+      <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
+    </ItemGroup>
+
+</Project>

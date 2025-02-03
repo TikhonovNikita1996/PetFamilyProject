@@ -1,5 +1,6 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
+using FileService.Contracts;
 using FileService.Core;
 using FileService.Endpoints;
 using FileService.Infrastructure.Repositories;
@@ -10,10 +11,6 @@ namespace FileService.Features;
 
 public static class CompleteMultipartUpload
 {
-    private record PartETagInfo(int PartNumber, string ETag);
-
-    private record CompleteMultipartRequest(string UploadId, List<PartETagInfo> Parts);
-
     public sealed class Endpoint : IEndpoint
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
@@ -71,7 +68,6 @@ public static class CompleteMultipartUpload
             return Results.Ok(new
             {
                 Id = key,
-
                 location = response.Location
             });
         }

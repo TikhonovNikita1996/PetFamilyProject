@@ -1,3 +1,4 @@
+using FileService.Communication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 using PetFamily.Accounts.Application;
@@ -51,7 +52,8 @@ builder.Services
     .AddVolunteersRequestsInfrastructure(builder.Configuration)
     .AddDiscussionsInfrastructure(builder.Configuration)
     .AddDiscussionApplication()
-    .AddVolunteersRequestsApplication();
+    .AddVolunteersRequestsApplication()
+    .AddFileHttpCommunication(builder.Configuration);
 
 builder.Services.AddSerilog();
 

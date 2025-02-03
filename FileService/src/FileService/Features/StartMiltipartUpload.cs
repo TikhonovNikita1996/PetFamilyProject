@@ -1,5 +1,6 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
+using FileService.Contracts;
 using FileService.Endpoints;
 using FileService.Infrastructure.Providers;
 
@@ -7,11 +8,6 @@ namespace FileService.Features;
 
 public static class StartMultipartUpload
 {
-    private record StartMultipartUploadRequest(
-        string FileName,
-        string ContentType,
-        long Size);
-
     public sealed class Endpoint : IEndpoint
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
