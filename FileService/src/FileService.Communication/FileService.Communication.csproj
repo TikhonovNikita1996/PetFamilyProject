@@ -5,7 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <PackageId>FileService</PackageId>
-        <Version>1.0.3</Version>
+        <Version>1.0.4</Version>
         <Authors>TikhonovNikita1996</Authors>
         <Company>TikhonovNikita1996</Company>
         <PackageDescription>FileService</PackageDescription>

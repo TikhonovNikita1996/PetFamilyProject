@@ -15,7 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="FileService" Version="1.0.3" />
+      <PackageReference Include="fileservice" Version="1.0.4" />
       <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.1" />
     </ItemGroup>
 

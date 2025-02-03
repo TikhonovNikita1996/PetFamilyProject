@@ -6,6 +6,6 @@ namespace PetFamily.Accounts.Application.AccountsManagement.Commands.CompleteUpl
 public record CompleteUploadUserAvatarCommand(Guid UserId,
     string FileName,
     string ContentType,
-    long FileSize,
+    int FileSize,
     string UploadId,
     List<PartETagInfo> Parts) : ICommand;
