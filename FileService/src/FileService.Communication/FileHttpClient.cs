@@ -21,4 +21,37 @@ internal class FileHttpClient(HttpClient httpClient) : IFileService
         
         return fileResponse?.ToList() ?? [];
     }
+
+    public async Task<Result<FileResponse, string>> StartMultipartUpload(StartMultipartUploadRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var response = await httpClient.PostAsJsonAsync("files/start-multipart", request, cancellationToken);
+
+        if (response.StatusCode != HttpStatusCode.OK)
+        {
+            return "Failed to start multipart upload";
+        }
+
+        var fileResponse = await response.Content.ReadFromJsonAsync<FileResponse>(cancellationToken);
+
+        return fileResponse!;
+    }
+
+    public async Task<Result<FileResponse, string>> CompleteMultipartUpload(CompleteMultipartRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var response = await httpClient.PostAsJsonAsync(
+            $"files/{request.UploadId}/complete-multipart",
+            request,
+            cancellationToken);
+
+        if (response.StatusCode != HttpStatusCode.OK)
+        {
+            return "Failed to complete multipart upload";
+        }
+
+        var fileResponse = await response.Content.ReadFromJsonAsync<FileResponse>(cancellationToken);
+
+        return fileResponse!;
+    }
 }
