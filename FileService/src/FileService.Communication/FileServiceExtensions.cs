@@ -11,7 +11,7 @@ public static class FileServiceExtensions
     {
         services.Configure<FileServiceOptions>(configuration.GetSection(FileServiceOptions.FILE_SERVICE));
 
-        services.AddHttpClient<FileHttpClient>((sp, config) =>
+        services.AddHttpClient<IFileService, FileHttpClient>((sp, config) =>
         {
             var fileOptions = sp.GetRequiredService<IOptions<FileServiceOptions>>().Value;
 
