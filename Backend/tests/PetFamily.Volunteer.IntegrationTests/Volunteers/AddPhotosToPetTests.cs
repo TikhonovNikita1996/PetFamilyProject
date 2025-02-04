@@ -6,7 +6,7 @@ using Pet.Family.SharedKernel.ValueObjects.Specie;
 using Pet.Family.SharedKernel.ValueObjects.Volunteer;
 using PetFamily.Core.Abstractions;
 using PetFamily.Core.Dtos;
-using PetFamily.Volunteers.Application.VolunteersManagement.Commands.Volunteer.AddPhotosToPet;
+using PetFamily.Volunteers.Application.VolunteersManagement.Commands.Volunteer.StartUploadPhotosToPet;
 using PetFamily.Volunteers.Domain.Ids;
 using PetFamily.Volunteers.Infrastructure.DataContexts;
 

@@ -12,7 +12,7 @@ public static class StartMultipartUpload
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapPost("files/multipart", Handler);
+            app.MapPost("files/start-multipart", Handler);
         }
     }
 

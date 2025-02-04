@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FileService.Contracts;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PetFamily.Accounts.Application.AccountsManagement.Commands.CompleteUploadUserAvatar;
 using PetFamily.Accounts.Application.AccountsManagement.Commands.Login;
 using PetFamily.Accounts.Application.AccountsManagement.Commands.RefreshTokens;
 using PetFamily.Accounts.Application.AccountsManagement.Commands.RegisterUser;
+using PetFamily.Accounts.Application.AccountsManagement.Commands.StartUploadUserAvatar;
 using PetFamily.Accounts.Application.AccountsManagement.Commands.UpdateSocialNetworks;
 using PetFamily.Accounts.Application.AccountsManagement.Queries.GetUsersInfo;
 using PetFamily.Accounts.Presentation.Requests;
@@ -97,7 +100,7 @@ public class AccountsController : BaseApiController
     }
     
     [HttpGet("/userInfo-by-id")]
-    public async Task<ActionResult> GetPetById(
+    public async Task<ActionResult> GetUserInfoById(
         [FromServices] GetUsersInfoHandler handler,
         [FromQuery] GetUsersInfoRequest request, 
         CancellationToken cancellationToken)
@@ -109,5 +112,52 @@ public class AccountsController : BaseApiController
         
         return Ok(result.Value); 
     }
+    
+    [HttpPost("{userId:guid}/start-upload-photo")]
+    [Permission(Permissions.Accounts.Update)]
+    public async Task<IActionResult> StartUploadPhoto(
+        [FromRoute] Guid userId,
+        [FromServices] StartUploadUserAvatarHandler handler,
+        [FromBody] StartUploadUserAvatarRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var command = new StartUploadUserAvatarCommand(
+            userId,
+            request.FileName,
+            request.ContentType,
+            request.Size);
+
+        var result = await handler.Handle(command, cancellationToken);
+
+        if (result.IsFailure)
+            result.Error.ToResponse();
+
+        return Ok(result.Value);
+    }
+    
+    [HttpPost("{userId:guid}/complete-upload-photo")]
+    [Permission(Permissions.Accounts.Update)]
+    public async Task<IActionResult> CompleteUploadPhoto(
+        [FromServices] CompleteUploadUserAvatarHandler handler,
+        [FromRoute] Guid userId,
+        [FromBody] CompleteUserAvatarUploadRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var command = new CompleteUploadUserAvatarCommand(
+            userId,
+            request.FileName,
+            request.ContentType,
+            request.Size,
+            request.UploadId,
+            request.Parts);
+
+        var result = await handler.Handle(command, cancellationToken);
+
+        if (result.IsFailure)
+            result.Error.ToResponse();
+
+        return Ok();
+    }
+
     
 }
