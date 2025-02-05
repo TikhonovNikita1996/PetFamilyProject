@@ -7,7 +7,6 @@ using PetFamily.Core;
 using PetFamily.Core.Abstractions;
 using PetFamily.Core.Database;
 using PetFamily.Core.Messaging;
-using PetFamily.Core.Providers;
 using PetFamily.Volunteers.Application.Database;
 using PetFamily.Volunteers.Application.Interfaces;
 using PetFamily.Volunteers.Infrastructure.BackgroundServices;
@@ -73,22 +72,4 @@ public static class DependencyInjection
         
         return services;
     }
-    
-    // private static IServiceCollection AddMinioCustom(this IServiceCollection services,
-    //     IConfiguration configuration)
-    // {
-    //     services.Configure<MinioOptions>(configuration.GetSection(Options.MinioOptions.MINIO));
-    //     services.AddScoped<IFileService, MinioService>();
-    //     ServiceCollectionExtensions.AddMinio(services, options =>
-    //     {
-    //         var minioOptions = configuration.GetSection(Options.MinioOptions.MINIO).Get<Options.MinioOptions>()
-    //                            ?? throw new ApplicationException("Missing minio configuration");
-    //         
-    //         options.WithEndpoint(minioOptions.Endpoint);
-    //         options.WithCredentials(minioOptions.AccessKey, minioOptions.SecretKey);
-    //         options.WithSSL(minioOptions.WithSSL);
-    //     });
-    //     
-    //     return services;
-    // }
 }
