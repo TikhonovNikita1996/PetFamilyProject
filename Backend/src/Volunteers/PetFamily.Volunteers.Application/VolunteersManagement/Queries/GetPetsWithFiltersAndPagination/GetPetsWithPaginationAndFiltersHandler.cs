@@ -1,5 +1,7 @@
 ﻿using System.Linq.Expressions;
 using CSharpFunctionalExtensions;
+using FileService.Communication;
+using FileService.Contracts;
 using FluentValidation;
 using Pet.Family.SharedKernel;
 using PetFamily.Core.Abstractions;
@@ -8,24 +10,28 @@ using PetFamily.Core.Dtos.Pet;
 using PetFamily.Core.Extensions;
 using PetFamily.Core.Models;
 using PetFamily.Volunteers.Application.Database;
+using PetFamily.Volunteers.Contracts.Responses;
 
 namespace PetFamily.Volunteers.Application.VolunteersManagement.Queries.GetPetsWithFiltersAndPagination;
 
-public class GetPetsWithPaginationAndFiltersHandler : IQueryHandler<Result<PagedList<PetDto>, CustomErrorsList>,
+public class GetPetsWithPaginationAndFiltersHandler : IQueryHandler<Result<PagedList<PetResponse>, CustomErrorsList>,
     GetPetsWithPaginationAndFiltersQuery>
 {
     private readonly IReadDbContext _readDbContext;
     private readonly IValidator<GetPetsWithPaginationAndFiltersQuery> _validator;
+    private readonly IFileService _fileService;
 
     public GetPetsWithPaginationAndFiltersHandler(
         IReadDbContext readDbContext,
-        IValidator<GetPetsWithPaginationAndFiltersQuery> validator)
+        IValidator<GetPetsWithPaginationAndFiltersQuery> validator,
+        IFileService fileService)
     {
         _readDbContext = readDbContext;
         _validator = validator;
+        _fileService = fileService;
     }
 
-    public async Task<Result<PagedList<PetDto>, CustomErrorsList>> Handle(
+    public async Task<Result<PagedList<PetResponse>, CustomErrorsList>> Handle(
         GetPetsWithPaginationAndFiltersQuery query,
         CancellationToken cancellationToken)
     {
@@ -79,6 +85,42 @@ public class GetPetsWithPaginationAndFiltersHandler : IQueryHandler<Result<Paged
             !string.IsNullOrEmpty(query.Color),
             p => p.Color == query.Color);
         
-        return await petsQuery.ToPagedList(query.Page, query.PageSize, cancellationToken);
+        var dtosPagedList = await petsQuery.ToPagedList(query.Page, query.PageSize, cancellationToken);
+
+        List<Guid> photoIds = [];
+        
+        photoIds.AddRange(from dto in dtosPagedList.Items from photo in dto.Photos select photo.FileId);
+
+        var request = new GetFilePresignedUrlRequest(photoIds);
+        
+        var urlsResult = await _fileService.GetPresignedUrls(request, cancellationToken);
+
+        if (urlsResult.IsFailure)
+            return Errors.General.NotFound("urls").ToErrorList();
+        
+        List<PetResponse> petResponses = [];
+
+        foreach (var item in dtosPagedList.Items)
+        {
+            var photosIds = item.Photos.Select(photo => photo.FileId).ToList();
+            List<string> photosUrls = [];
+            
+            photosUrls.AddRange(from fileResponse in urlsResult.Value 
+                where photosIds.Contains(fileResponse.FileId)
+                select fileResponse.PresignedUrl);
+
+            var petResponse = PetResponse.ToPetResponse(item, photosIds, photosUrls);
+            petResponses.Add(petResponse);
+        }
+
+        PagedList<PetResponse> pagedList = new PagedList<PetResponse>
+        {
+            Items = petResponses.AsReadOnly(),
+            TotalCount = dtosPagedList.TotalCount,
+            PageSize = dtosPagedList.PageSize,
+            PageNumber = dtosPagedList.PageNumber
+        };
+
+        return pagedList;
     }
 }

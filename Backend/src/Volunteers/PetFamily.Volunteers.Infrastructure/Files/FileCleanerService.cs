@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using FileService.Communication;
+using Microsoft.Extensions.Logging;
 using PetFamily.Core;
 using PetFamily.Core.Messaging;
-using PetFamily.Core.Providers;
 using PetFamily.Volunteers.Application.Interfaces;
 
 namespace PetFamily.Volunteers.Infrastructure.Files;
@@ -25,9 +25,9 @@ public class FileCleanerService : IFileCleanerService
     {
         var fileInfos = await _messageQueue.ReadAsync(cancellationToken);
 
-        foreach (var fileInfo in fileInfos)
-        {
-            await _fileService.DeleteFileAsync(fileInfo, cancellationToken);
-        }
+        // foreach (var fileInfo in fileInfos)
+        // {
+        //     await _fileService.DeleteFileAsync(fileInfo, cancellationToken);
+        // }
     }
 }

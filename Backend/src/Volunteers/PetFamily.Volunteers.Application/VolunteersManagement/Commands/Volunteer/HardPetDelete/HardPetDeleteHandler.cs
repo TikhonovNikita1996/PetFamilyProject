@@ -3,10 +3,8 @@ using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Pet.Family.SharedKernel;
-using PetFamily.Core;
 using PetFamily.Core.Abstractions;
 using PetFamily.Core.Extensions;
-using PetFamily.Core.Providers;
 using PetFamily.Volunteers.Application.Interfaces;
 
 namespace PetFamily.Volunteers.Application.VolunteersManagement.Commands.Volunteer.HardPetDelete;
