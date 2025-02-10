@@ -91,7 +91,7 @@ var app = builder.Build();
 
 var accountSeeder = app.Services.GetRequiredService<AccountsSeeder>();
 
-// await accountSeeder.SeedAsync();
+await accountSeeder.SeedAsync();
 
 app.UseExceptionMiddleware();
 app.UseSerilogRequestLogging();
@@ -114,6 +114,7 @@ app.UseCors(config =>
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
+app.UseScopeDataMiddleware();
 app.UseAuthorization();
 
 app.MapControllers();

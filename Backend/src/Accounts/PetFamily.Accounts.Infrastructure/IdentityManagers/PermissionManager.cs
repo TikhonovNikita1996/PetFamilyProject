@@ -6,7 +6,6 @@ namespace PetFamily.Accounts.Infrastructure.IdentityManagers;
 
 public class PermissionManager(WriteAccountsDbContext writeAccountsDbContext)
 {
-        
     public async Task<Permission?> FindByCode(string permissionCode, CancellationToken cancellationToken = default)
     {
         var permission = await writeAccountsDbContext.Permissions
@@ -46,4 +45,16 @@ public class PermissionManager(WriteAccountsDbContext writeAccountsDbContext)
         return permissions.ToHashSet();
     }
     
+    public async Task<HashSet<Role>> GetUserRoles(
+        Guid userId,
+        CancellationToken cancellationToken = default)
+    {
+        var permissions = await writeAccountsDbContext.Users
+            .Include(u => u.Roles)
+            .Where(u => u.Id == userId)
+            .SelectMany(u => u.Roles)
+            .ToListAsync(cancellationToken);
+        
+        return permissions.ToHashSet();
+    }
 }

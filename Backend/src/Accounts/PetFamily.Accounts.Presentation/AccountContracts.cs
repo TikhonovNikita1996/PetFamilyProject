@@ -47,6 +47,11 @@ public class AccountContracts : IAccountContracts
         return await _permissionManager.GetUserPermissionsCode(userId);
     }
 
+    public async Task<HashSet<Role>> GetUserRoles(Guid userId)
+    {
+        return await _permissionManager.GetUserRoles(userId);
+    }
+
     public async Task<Result<Guid, CustomErrorsList>> CreateVolunteerAccountForUser(Guid userid,
         CancellationToken cancellationToken = default)
     {
