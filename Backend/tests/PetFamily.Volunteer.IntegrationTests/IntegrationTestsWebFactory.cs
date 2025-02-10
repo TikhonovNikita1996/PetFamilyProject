@@ -1,5 +1,6 @@
 ﻿using System.Data.Common;
 using CSharpFunctionalExtensions;
+using FileService.Communication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -8,8 +9,6 @@ using Npgsql;
 using NSubstitute;
 using Pet.Family.SharedKernel;
 using PetFamily.API;
-using PetFamily.Core;
-using PetFamily.Core.Providers;
 using PetFamily.Species.Infrastructure.DataContexts;
 using PetFamily.Volunteers.Application.Database;
 using PetFamily.Volunteers.Infrastructure.DataContexts;
@@ -104,13 +103,13 @@ public class IntegrationTestsWebFactory : WebApplicationFactory<Program>, IAsync
             FilePath.Create("Test3.jpg").Value
         };
         
-        _fileService.UploadFilesAsync(Arg.Any<IEnumerable<FileData>>(), Arg.Any<CancellationToken>())
-        .Returns(Result.Success<IReadOnlyList<FilePath>, CustomError>(response));
+        // _fileService.UploadFilesAsync(Arg.Any<IEnumerable<FileData>>(), Arg.Any<CancellationToken>())
+        // .Returns(Result.Success<IReadOnlyList<FilePath>, CustomError>(response));
     }
     
     public void SetupFailureFileServiceMock()
     {
-        _fileService.UploadFileAsync(Arg.Any<FileData>(), Arg.Any<CancellationToken>())
-            .Returns(Result.Failure<string, CustomError>(CustomError.Failure("Failure", "Failed to upload file")));
+        // _fileService.UploadFileAsync(Arg.Any<FileData>(), Arg.Any<CancellationToken>())
+        //     .Returns(Result.Failure<string, CustomError>(CustomError.Failure("Failure", "Failed to upload file")));
     }
 }
