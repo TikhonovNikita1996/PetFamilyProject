@@ -58,6 +58,6 @@ public class RejectRequestHandler : ICommandHandler<Guid, RejectRequestCommand>
         _logger.LogInformation("Volunteer request with id {requestId} was rejected."
             , command.RequestId);
 
-        return existedRequest.Value.RequestId.Value;
+        return existedRequest.Value.Id.Value;
     }
 }

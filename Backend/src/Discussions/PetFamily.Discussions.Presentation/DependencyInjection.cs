@@ -12,7 +12,7 @@ public static class DependencyInjection
     {
         services.AddInfrastructure(configuration);
         // services.AddScoped<IRelationContracts, RelationContracts>();
-        services.AddScoped<IDiscussionContracts, DiscussionContracts>();
+        // services.AddScoped<IDiscussionContracts, DiscussionContracts>();
         return services;
     }
 }

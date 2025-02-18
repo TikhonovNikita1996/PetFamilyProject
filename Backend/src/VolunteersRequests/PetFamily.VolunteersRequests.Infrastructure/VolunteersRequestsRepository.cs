@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Pet.Family.SharedKernel;
 using PetFamily.VolunteersRequests.Application.Interfaces;
 using PetFamily.VolunteersRequests.Domain;
+using PetFamily.VolunteersRequests.Domain.ValueObjects;
 using PetFamily.VolunteersRequests.Infrastructure.DataContexts;
 
 namespace PetFamily.VolunteersRequests.Infrastructure;
@@ -24,11 +25,11 @@ public class VolunteersRequestsRepository(VolunteersRequestWriteDbContext dbCont
         await dbContext.SaveChangesAsync(cancellationToken);
     }
     
-    public async Task<Result<VolunteerRequest, CustomError>> GetById(Guid requestId,
+    public async Task<Result<VolunteerRequest, CustomError>> GetById(VolunteerRequestId requestId,
         CancellationToken cancellationToken = default)
     {
         var request = await dbContext.VolunteersRequests.
-            SingleOrDefaultAsync(r => r.RequestId == requestId, cancellationToken);
+            FirstOrDefaultAsync(r => r.Id == requestId, cancellationToken);
 
         if (request is null)
             return Errors.General.NotFound(requestId);

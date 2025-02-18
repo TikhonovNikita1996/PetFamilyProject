@@ -11,11 +11,12 @@ public class VolunteerRequestConfiguration : IEntityTypeConfiguration<VolunteerR
     {
         builder.ToTable("volunteer_requests");
         
-        builder.HasKey(b => b.RequestId);
+        builder.HasKey(b => b.Id);
         
-        builder.Property(s => s.RequestId)
-            .IsRequired()
-            .HasColumnName("request_Id");
+        builder.Property(v => v.Id)
+            .HasConversion(
+                id => id.Value,
+                value => VolunteerRequestId.Create(value));
         
         builder.Property(s => s.UserId)
             .HasColumnName("user_Id");

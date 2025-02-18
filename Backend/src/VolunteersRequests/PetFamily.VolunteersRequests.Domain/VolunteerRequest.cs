@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using Pet.Family.SharedKernel;
+using PetFamily.Core.Events.VolunteerRequest;
 using PetFamily.VolunteersRequests.Domain.Enums;
 using PetFamily.VolunteersRequests.Domain.ValueObjects;
 
@@ -7,7 +8,8 @@ namespace PetFamily.VolunteersRequests.Domain;
 
 public class VolunteerRequest : DomainEntity<VolunteerRequestId>
 {
-    public VolunteerRequestId RequestId { get; set; }
+    // ef core
+    public VolunteerRequest(VolunteerRequestId id) : base(id) {}
     public Guid? AdminId { get; private set; }
     public Guid UserId { get; private set; }
     public VolunteerInfo VolunteerInfo { get; private set; }
@@ -22,7 +24,7 @@ public class VolunteerRequest : DomainEntity<VolunteerRequestId>
         VolunteerInfo volunteerInfo) : base(requestId)
     {
         UserId = userId;
-        RequestId = requestId;
+        Id = requestId;
         CreatedAt = DateTime.UtcNow;
         Status = RequestStatus.Submitted;
         VolunteerInfo = volunteerInfo;
@@ -37,11 +39,12 @@ public class VolunteerRequest : DomainEntity<VolunteerRequestId>
         return request;
     }
     
-    public void TakeInReview(Guid adminId, Guid discussionId)
+    public void TakeInReview(Guid adminId)
     {
         AdminId = adminId;
-        DiscussionId = discussionId;
         Status = RequestStatus.OnReview;
+
+        AddDomainEvent(new CreateDiscussionEvent(adminId, Id.Value));
     }
     
     public void SetRevisionRequiredStatus(

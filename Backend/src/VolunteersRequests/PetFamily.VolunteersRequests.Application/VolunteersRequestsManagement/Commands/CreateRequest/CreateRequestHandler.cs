@@ -58,6 +58,6 @@ public class CreateRequestHandler : ICommandHandler<Guid, CreateRequestCommand>
         
         _logger.LogInformation("Volunteer request was added with id {requestId}.", requestId);
 
-        return newRequest.RequestId.Value;
+        return newRequest.Id.Value;
     }
 }
