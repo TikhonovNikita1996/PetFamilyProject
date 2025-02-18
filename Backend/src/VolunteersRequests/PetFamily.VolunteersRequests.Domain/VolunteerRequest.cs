@@ -1,13 +1,15 @@
 ﻿using CSharpFunctionalExtensions;
 using Pet.Family.SharedKernel;
+using PetFamily.Core.Events.VolunteerRequest;
 using PetFamily.VolunteersRequests.Domain.Enums;
 using PetFamily.VolunteersRequests.Domain.ValueObjects;
 
 namespace PetFamily.VolunteersRequests.Domain;
 
-public class VolunteerRequest
+public class VolunteerRequest : DomainEntity<VolunteerRequestId>
 {
-    public Guid RequestId { get; set; }
+    // ef core
+    public VolunteerRequest(VolunteerRequestId id) : base(id) {}
     public Guid? AdminId { get; private set; }
     public Guid UserId { get; private set; }
     public VolunteerInfo VolunteerInfo { get; private set; }
@@ -17,29 +19,32 @@ public class VolunteerRequest
     public RejectionComment? RejectionComment { get; private set; }
     
     private VolunteerRequest(
+        VolunteerRequestId requestId,
         Guid userId,
-        VolunteerInfo volunteerInfo)
+        VolunteerInfo volunteerInfo) : base(requestId)
     {
         UserId = userId;
-        RequestId = Guid.NewGuid();
+        Id = requestId;
         CreatedAt = DateTime.UtcNow;
         Status = RequestStatus.Submitted;
         VolunteerInfo = volunteerInfo;
     }
     
     public static Result<VolunteerRequest, CustomError>  Create(
+        VolunteerRequestId requestId,
         Guid userId,
         VolunteerInfo volunteerInfo)
     {
-        var request = new VolunteerRequest(userId, volunteerInfo);
+        var request = new VolunteerRequest(requestId, userId, volunteerInfo);
         return request;
     }
     
-    public void TakeInReview(Guid adminId, Guid discussionId)
+    public void TakeInReview(Guid adminId)
     {
         AdminId = adminId;
-        DiscussionId = discussionId;
         Status = RequestStatus.OnReview;
+
+        AddDomainEvent(new CreateDiscussionEvent(adminId, Id.Value));
     }
     
     public void SetRevisionRequiredStatus(
@@ -52,6 +57,7 @@ public class VolunteerRequest
     public void SetApprovedStatus()
     {
         Status = RequestStatus.Approved;
+        AddDomainEvent(new CreateVolunteerAccountEvent(UserId));
     }
     
     public void SetRejectStatus(RejectionComment rejectedComment)

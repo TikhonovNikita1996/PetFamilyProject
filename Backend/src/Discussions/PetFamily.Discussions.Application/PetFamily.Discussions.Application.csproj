@@ -17,6 +17,7 @@
 
     <ItemGroup>
       <Folder Include="Commands\Relations\" />
+      <Folder Include="EventHandlers\" />
     </ItemGroup>
 
 </Project>

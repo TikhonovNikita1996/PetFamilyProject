@@ -50,6 +50,6 @@ public class ReopenRequestHandler : ICommandHandler<Guid, ReopenRequestCommand>
         _logger.LogInformation("Volunteer request with id {requestId} was reopened with submitted status."
             , command.RequestId);
 
-        return existedRequest.Value.RequestId;
+        return existedRequest.Value.Id.Value;
     }
 }

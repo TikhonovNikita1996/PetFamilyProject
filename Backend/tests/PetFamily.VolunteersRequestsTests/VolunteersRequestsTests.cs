@@ -10,7 +10,8 @@ public class VolunteersRequestsTests
     {
         var volunteerInfo = VolunteerInfo.Create("John Doe").Value;
         var userId = Guid.NewGuid();
-        var request = VolunteerRequest.Create(userId, volunteerInfo);
+        var requestId = VolunteerRequestId.NewId();
+        var request = VolunteerRequest.Create(requestId, userId, volunteerInfo);
         
         return request.Value;
     }
@@ -21,9 +22,10 @@ public class VolunteersRequestsTests
         // Arrange
         var volunteerInfo = VolunteerInfo.Create("John Doe").Value;
         var userId = Guid.NewGuid();
+        var requestId = VolunteerRequestId.NewId();
         
         // Act
-        var request = VolunteerRequest.Create(userId, volunteerInfo);
+        var request = VolunteerRequest.Create(requestId, userId, volunteerInfo);
         
         //Assert
         Assert.NotNull(request);

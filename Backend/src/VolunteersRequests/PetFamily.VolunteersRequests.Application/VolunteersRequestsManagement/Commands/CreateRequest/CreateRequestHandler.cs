@@ -48,16 +48,16 @@ public class CreateRequestHandler : ICommandHandler<Guid, CreateRequestCommand>
         if (validationResult.IsValid == false)
             return validationResult.ToErrorList();
         
-        var requestId = command.UserId;
+        var userId = command.UserId;
         var volunteerInfo = VolunteerInfo.Create(command.VolunteerInfo).Value;
-        
-        var newRequest = VolunteerRequest.Create(requestId, volunteerInfo).Value;
+        var requestId = VolunteerRequestId.NewId();
+        var newRequest = VolunteerRequest.Create(requestId, userId, volunteerInfo).Value;
 
         await _requestRepository.Add(newRequest, cancellationToken);
         await _unitOfWork.SaveChanges(cancellationToken);
         
         _logger.LogInformation("Volunteer request was added with id {requestId}.", requestId);
 
-        return newRequest.RequestId;
+        return newRequest.Id.Value;
     }
 }
