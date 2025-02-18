@@ -20,6 +20,8 @@ public static class DependencyInjection
             .AddClasses(c => c.AssignableTo(typeof(IQueryHandler<,>)))
             .AsSelfWithInterfaces().WithScopedLifetime());
         
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly));
+        
         return services;
     }
 

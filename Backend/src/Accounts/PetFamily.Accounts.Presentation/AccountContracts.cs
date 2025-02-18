@@ -25,8 +25,8 @@ public class AccountContracts : IAccountContracts
     private readonly WriteAccountsDbContext _writeAccountsDbContext;
     private readonly IUnitOfWork _unitOfWork;
 
-    public AccountContracts(PermissionManager permissionManager
-        ,IAccountManager accountManager,
+    public AccountContracts(PermissionManager permissionManager,
+        IAccountManager accountManager,
         UserManager<User> userManager,
         RoleManager<Role> roleManager,
         IAccountsReadDbContext accountsReadDbContext,
@@ -51,30 +51,7 @@ public class AccountContracts : IAccountContracts
     {
         return await _permissionManager.GetUserRoles(userId);
     }
-
-    public async Task<Result<Guid, CustomErrorsList>> CreateVolunteerAccountForUser(Guid userid,
-        CancellationToken cancellationToken = default)
-    {
-        var user = await _userManager.FindByIdAsync(userid.ToString());
-        var workingExperience = WorkingExperience.Create(0).Value;
-        
-        var volunteerRole = await _roleManager.FindByNameAsync(VolunteerAccount.RoleName)
-                              ?? throw new ApplicationException("Volunteer role is not found");
-        
-        var volunteerAccount = new VolunteerAccount(user!, workingExperience);
-        
-        user.VolunteerAccount = volunteerAccount;
-        
-        user.ChangeRole(volunteerRole);
-        
-        var result = await _accountManager.CreateVolunteerAccount(volunteerAccount);
-        
-        if (result.IsFailure)
-            return result.Error;
-        
-        return volunteerAccount.Id;
-    }
-
+    
     public async Task<bool> IsUserBannedForVolunteerRequests(Guid userId, CancellationToken cancellationToken)
     {
         var userDto = await _accountsReadDbContext.ParticipantAccounts

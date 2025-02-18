@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Pet.Family.SharedKernel;
@@ -19,20 +20,20 @@ public class ApproveRequestHandler : ICommandHandler<Guid, ApproveRequestCommand
     private readonly IVolunteersRequestRepository _requestRepository;
     private readonly ILogger<ApproveRequestHandler> _logger;
     private readonly IValidator<ApproveRequestCommand> _validator;
-    private readonly IAccountContracts _accountContracts;
+    private readonly IPublisher _publisher;
 
     public ApproveRequestHandler(
         [FromKeyedServices(ProjectConstants.Context.VolunteersRequest)] IUnitOfWork unitOfWork,
         IVolunteersRequestRepository requestRepository,
         ILogger<ApproveRequestHandler> logger,
         IValidator<ApproveRequestCommand> validator,
-        IAccountContracts accountContracts)
+        IPublisher publisher)
     {
         _unitOfWork = unitOfWork;
         _requestRepository = requestRepository;
         _logger = logger;
         _validator = validator;
-        _accountContracts = accountContracts;
+        _publisher = publisher;
     }
     
     public async Task<Result<Guid, CustomErrorsList>> Handle(
@@ -51,11 +52,7 @@ public class ApproveRequestHandler : ICommandHandler<Guid, ApproveRequestCommand
         
         existedRequest.Value.SetApprovedStatus();
         
-        var volunteerAccountResult = await _accountContracts
-            .CreateVolunteerAccountForUser(existedRequest.Value.UserId, cancellationToken);
-
-        if (volunteerAccountResult.IsFailure)
-            return volunteerAccountResult.Error;
+        await _publisher.PublishDomainEvents(existedRequest.Value, cancellationToken);
         
         await _unitOfWork.SaveChanges(cancellationToken);
         

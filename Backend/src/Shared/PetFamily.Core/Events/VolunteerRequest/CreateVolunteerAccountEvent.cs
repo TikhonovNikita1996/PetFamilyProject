@@ -1,6 +1,5 @@
-﻿namespace PetFamily.Core.Events.VolunteerRequest;
+﻿using Pet.Family.SharedKernel;
 
-public class CreateVolunteerAccountEvent
-{
-    
-}
+namespace PetFamily.Core.Events.VolunteerRequest;
+
+public record CreateVolunteerAccountEvent(Guid UserId) : IDomainEvent;
