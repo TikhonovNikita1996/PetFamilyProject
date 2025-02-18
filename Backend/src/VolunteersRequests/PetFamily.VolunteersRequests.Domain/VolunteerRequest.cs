@@ -5,9 +5,9 @@ using PetFamily.VolunteersRequests.Domain.ValueObjects;
 
 namespace PetFamily.VolunteersRequests.Domain;
 
-public class VolunteerRequest
+public class VolunteerRequest : DomainEntity<VolunteerRequestId>
 {
-    public Guid RequestId { get; set; }
+    public VolunteerRequestId RequestId { get; set; }
     public Guid? AdminId { get; private set; }
     public Guid UserId { get; private set; }
     public VolunteerInfo VolunteerInfo { get; private set; }
@@ -17,21 +17,23 @@ public class VolunteerRequest
     public RejectionComment? RejectionComment { get; private set; }
     
     private VolunteerRequest(
+        VolunteerRequestId requestId,
         Guid userId,
-        VolunteerInfo volunteerInfo)
+        VolunteerInfo volunteerInfo) : base(requestId)
     {
         UserId = userId;
-        RequestId = Guid.NewGuid();
+        RequestId = requestId;
         CreatedAt = DateTime.UtcNow;
         Status = RequestStatus.Submitted;
         VolunteerInfo = volunteerInfo;
     }
     
     public static Result<VolunteerRequest, CustomError>  Create(
+        VolunteerRequestId requestId,
         Guid userId,
         VolunteerInfo volunteerInfo)
     {
-        var request = new VolunteerRequest(userId, volunteerInfo);
+        var request = new VolunteerRequest(requestId, userId, volunteerInfo);
         return request;
     }
     

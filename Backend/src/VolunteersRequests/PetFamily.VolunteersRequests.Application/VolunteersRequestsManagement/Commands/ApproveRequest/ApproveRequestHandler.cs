@@ -61,6 +61,6 @@ public class ApproveRequestHandler : ICommandHandler<Guid, ApproveRequestCommand
         
         _logger.LogInformation("Volunteer request with id {requestId} was approved.", command.RequestId);
 
-        return existedRequest.Value.RequestId;
+        return existedRequest.Value.RequestId.Value;
     }
 }
