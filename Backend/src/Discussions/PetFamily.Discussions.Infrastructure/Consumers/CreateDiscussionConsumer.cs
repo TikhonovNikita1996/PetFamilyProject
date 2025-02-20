@@ -1,11 +1,12 @@
 ﻿using MassTransit;
+using PetFamily.Core.Events.VolunteerRequest;
 using PetFamily.Discussions.Application.Repositories;
 using PetFamily.Discussions.Domain;
 using PetFamily.VolunteersRequests.Contracts.Messages;
 
 namespace PetFamily.Discussions.Infrastructure.Consumers;
 
-public class CreateDiscussionConsumer : IConsumer<VolunteerRequestReviewStartedEvent>
+public class CreateDiscussionConsumer : IConsumer<CreateDiscussionEvent>
 {
     private readonly IDiscussionRepository _discussionRepository;
 
@@ -13,7 +14,7 @@ public class CreateDiscussionConsumer : IConsumer<VolunteerRequestReviewStartedE
     {
         _discussionRepository = discussionRepository;
     }
-    public async Task Consume(ConsumeContext<VolunteerRequestReviewStartedEvent> context)
+    public async Task Consume(ConsumeContext<CreateDiscussionEvent> context)
     {
         var discussionUsers = DiscussionUsers.Create(context.Message.ReviewingUserId,
             context.Message.ApplicantUserId);

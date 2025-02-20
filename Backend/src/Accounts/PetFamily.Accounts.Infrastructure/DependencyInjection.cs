@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using CSharpFunctionalExtensions;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,6 +10,7 @@ using Pet.Family.SharedKernel;
 using PetFamily.Accounts.Application.Database;
 using PetFamily.Accounts.Application.Interfaces;
 using PetFamily.Accounts.Domain;
+using PetFamily.Accounts.Infrastructure.Consumers;
 using PetFamily.Accounts.Infrastructure.DataSeeding;
 using PetFamily.Accounts.Infrastructure.DbContexts;
 using PetFamily.Accounts.Infrastructure.IdentityManagers;
@@ -28,6 +30,7 @@ public static class DependencyInjection
             .AddManagers()
             .AddInfrastructureIdentity(configuration)
             .AddAccountsSeeding()
+            .AddMessageBus(configuration)
             .AddUnitOfWork();
         
         return services;
@@ -85,6 +88,29 @@ public static class DependencyInjection
         services.AddSingleton<AccountsSeeder>();
         services.AddScoped<AccountsSeederService>();
         
+        return services;
+    }
+    
+    private static IServiceCollection AddMessageBus(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddMassTransit<IAccountsMessageBus>(configure =>
+        {
+            configure.SetKebabCaseEndpointNameFormatter();
+         
+            configure.AddConsumer<CreateVolunteerAccountConsumer>();
+            
+            configure.UsingRabbitMq((context, cfg) =>
+            {
+                cfg.Host(new Uri(configuration["RabbitMQ:Host"]!), h =>
+                {
+                    h.Username(configuration["RabbitMQ:UserName"]!);
+                    h.Password(configuration["RabbitMQ:Password"]!);
+                });
+
+                cfg.ConfigureEndpoints(context);
+            });
+        });
+
         return services;
     }
     
