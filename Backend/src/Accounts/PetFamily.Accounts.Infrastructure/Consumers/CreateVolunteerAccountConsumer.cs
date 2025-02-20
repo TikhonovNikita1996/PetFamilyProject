@@ -1,21 +1,20 @@
-﻿using MediatR;
+﻿using MassTransit;
 using Microsoft.AspNetCore.Identity;
-using Pet.Family.SharedKernel;
 using Pet.Family.SharedKernel.ValueObjects.Volunteer;
 using PetFamily.Accounts.Application.Interfaces;
 using PetFamily.Accounts.Domain;
 using PetFamily.Accounts.Domain.AccountModels;
 using PetFamily.Core.Events.VolunteerRequest;
 
-namespace PetFamily.Accounts.Application.AccountsManagement.EventHandlers.CreateVolunteerAccountForUser;
+namespace PetFamily.Accounts.Infrastructure.Consumers;
 
-public class CreateVolunteerAccountForUser : INotificationHandler<CreateVolunteerAccountEvent>
+public class CreateVolunteerAccountConsumer : IConsumer<CreateVolunteerAccountEvent>
 {
     private readonly IAccountManager _accountManager;
     private readonly UserManager<User> _userManager;
     private readonly RoleManager<Role> _roleManager;
 
-    public CreateVolunteerAccountForUser(
+    public CreateVolunteerAccountConsumer(
         IAccountManager accountManager,
         UserManager<User> userManager,
         RoleManager<Role> roleManager)
@@ -25,10 +24,9 @@ public class CreateVolunteerAccountForUser : INotificationHandler<CreateVoluntee
         _roleManager = roleManager;
     }
     
-    public async Task Handle(CreateVolunteerAccountEvent domainEvent,
-        CancellationToken cancellationToken)
+    public async Task Consume(ConsumeContext<CreateVolunteerAccountEvent> context)
     {
-        var user = await _userManager.FindByIdAsync(domainEvent.UserId.ToString());
+        var user = await _userManager.FindByIdAsync(context.Message.UserId.ToString());
         if (user == null)
             throw new Exception("User not found");
         

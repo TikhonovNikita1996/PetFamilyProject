@@ -1,12 +1,16 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
+using MassTransit;
+using MassTransit.DependencyInjection;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Pet.Family.SharedKernel;
 using PetFamily.Core.Abstractions;
 using PetFamily.Core.Extensions;
+using PetFamily.Discussions.Application.Interfaces;
 using PetFamily.VolunteersRequests.Application.Interfaces;
+using PetFamily.VolunteersRequests.Contracts.Messages;
 
 namespace PetFamily.VolunteersRequests.Application.VolunteersRequestsManagement.Commands.TakeInReview;
 
@@ -17,13 +21,14 @@ public class TakeInReviewHandler : ICommandHandler<Guid, TakeInReviewCommand>
     private readonly ILogger<TakeInReviewHandler> _logger;
     private readonly IValidator<TakeInReviewCommand> _validator;
     private readonly IPublisher _publisher;
+    private readonly Bind<IDiscussionMessageBus, IPublishEndpoint> _publishEndpoint;
 
     public TakeInReviewHandler(
         [FromKeyedServices(ProjectConstants.Context.VolunteersRequest)] IUnitOfWork unitOfWork,
         IVolunteersRequestRepository requestRepository,
         ILogger<TakeInReviewHandler> logger,
         IValidator<TakeInReviewCommand> validator,
-        IPublisher publisher )
+        IPublisher publisher)
     {
         _unitOfWork = unitOfWork;
         _requestRepository = requestRepository;
@@ -47,7 +52,7 @@ public class TakeInReviewHandler : ICommandHandler<Guid, TakeInReviewCommand>
             return Errors.General.NotFound("request").ToErrorList();
 
         existedRequest.Value.TakeInReview(command.AdminId);
-        
+
         await _publisher.PublishDomainEvents(existedRequest.Value, cancellationToken);
         
         await _unitOfWork.SaveChanges(cancellationToken);

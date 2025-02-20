@@ -1,10 +1,13 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using MassTransit;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Pet.Family.SharedKernel;
 using PetFamily.Core.Abstractions;
 using PetFamily.VolunteersRequests.Application.Database;
 using PetFamily.VolunteersRequests.Application.Interfaces;
 using PetFamily.VolunteersRequests.Infrastructure.DataContexts;
+using PetFamily.VolunteersRequests.Infrastructure.Outbox;
+using Quartz;
 
 namespace PetFamily.VolunteersRequests.Infrastructure;
 
@@ -14,8 +17,11 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         services.AddDbContexts(configuration)
-                .AddUnitOfWork()
-                .AddRepositories();
+            .AddUnitOfWork()
+            .AddRepositories()
+            .AddOutbox()
+            .AddQuartzService()
+            .AddMessageBus(configuration);
         
         return services;
     }
@@ -41,6 +47,54 @@ public static class DependencyInjection
         this IServiceCollection services)
     {
         services.AddScoped<IVolunteersRequestRepository, VolunteersRequestsRepository>();
+        services.AddScoped<IOutboxRepository, OutboxRepository>();
+        return services;
+    }
+    
+    private static IServiceCollection AddOutbox(
+        this IServiceCollection services)
+    {
+        services.AddScoped<ProcessOutboxMessagesService>();
+        return services;
+    }
+    
+    private static IServiceCollection AddMessageBus(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddMassTransit<IVolunteerRequestMessageBus>(configure =>
+        {
+            configure.SetKebabCaseEndpointNameFormatter();
+            
+            configure.UsingRabbitMq((context, cfg) =>
+            {
+                cfg.Host(new Uri(configuration["RabbitMQ:Host"]!), h =>
+                {
+                    h.Username(configuration["RabbitMQ:UserName"]!);
+                    h.Password(configuration["RabbitMQ:Password"]!);
+                });
+
+                cfg.ConfigureEndpoints(context);
+            });
+        });
+
+        return services;
+    }
+    
+    private static IServiceCollection AddQuartzService(this IServiceCollection services)
+    {
+        services.AddScoped<ProcessOutboxMessagesService>();
+
+        services.AddQuartz(configure =>
+        {
+            var jobKey = new JobKey(nameof(ProcessOutboxMessagesJob));
+
+            configure
+                .AddJob<ProcessOutboxMessagesJob>(jobKey)
+                .AddTrigger(trigger => trigger.ForJob(jobKey).WithSimpleSchedule(
+                    schedule => schedule.WithIntervalInSeconds(1).RepeatForever()));
+        });
+
+        services.AddQuartzHostedService(options => { options.WaitForJobsToComplete = true; });
+
         return services;
     }
 }

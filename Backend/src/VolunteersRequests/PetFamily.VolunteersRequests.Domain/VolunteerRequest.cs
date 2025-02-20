@@ -1,6 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using Pet.Family.SharedKernel;
 using PetFamily.Core.Events.VolunteerRequest;
+using PetFamily.VolunteersRequests.Contracts.Messages;
 using PetFamily.VolunteersRequests.Domain.Enums;
 using PetFamily.VolunteersRequests.Domain.ValueObjects;
 
@@ -44,7 +45,7 @@ public class VolunteerRequest : DomainEntity<VolunteerRequestId>
         AdminId = adminId;
         Status = RequestStatus.OnReview;
 
-        AddDomainEvent(new CreateDiscussionEvent(adminId, Id.Value));
+        AddDomainEvent(new VolunteerRequestReviewStartedEvent(adminId, Id.Value));
     }
     
     public void SetRevisionRequiredStatus(
@@ -57,7 +58,7 @@ public class VolunteerRequest : DomainEntity<VolunteerRequestId>
     public void SetApprovedStatus()
     {
         Status = RequestStatus.Approved;
-        AddDomainEvent(new CreateVolunteerAccountEvent(UserId));
+        AddDomainEvent(new VolunteerRequestApprovedEvent(UserId));
     }
     
     public void SetRejectStatus(RejectionComment rejectedComment)

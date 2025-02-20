@@ -9,7 +9,12 @@
     <ItemGroup>
       <ProjectReference Include="..\..\Discussions\PetFamily.Discussions.Contracts\PetFamily.Discussions.Contracts.csproj" />
       <ProjectReference Include="..\..\Shared\PetFamily.Core\PetFamily.Core.csproj" />
+      <ProjectReference Include="..\PetFamily.VolunteersRequests.Contracts\PetFamily.VolunteersRequests.Contracts.csproj" />
       <ProjectReference Include="..\PetFamily.VolunteersRequests.Domain\PetFamily.VolunteersRequests.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MassTransit" Version="8.3.6" />
     </ItemGroup>
 
 </Project>

@@ -1,4 +1,6 @@
 using FileService.Communication;
+using MassTransit;
+using MassTransit.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 using PetFamily.Accounts.Application;
@@ -7,6 +9,7 @@ using PetFamily.Accounts.Presentation;
 using PetFamily.API;
 using PetFamily.API.Middlewares;
 using PetFamily.Discussions.Application;
+using PetFamily.Discussions.Application.Interfaces;
 using PetFamily.Discussions.Presentation;
 using PetFamily.Species.Application;
 using PetFamily.Species.Presentation;
@@ -15,6 +18,7 @@ using PetFamily.Volunteers.Application;
 using PetFamily.Volunteers.Presentation;
 using PetFamily.Volunteers.Presentation.Controllers;
 using PetFamily.VolunteersRequests.Application;
+using PetFamily.VolunteersRequests.Contracts.Messages;
 using PetFamily.VolunteersRequests.Infrastructure;
 using Serilog;
 using Serilog.Events;
@@ -119,9 +123,15 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.MapPost("message", async (Bind<IDiscussionMessageBus,IPublishEndpoint> publishEndpoint) =>
+{
+    await publishEndpoint.Value.Publish(new VolunteerRequestReviewStartedEvent(Guid.NewGuid(), Guid.NewGuid()));
+});
+
 app.Run();
 
 namespace PetFamily.API
 {
     public partial class Program { }
 }
+

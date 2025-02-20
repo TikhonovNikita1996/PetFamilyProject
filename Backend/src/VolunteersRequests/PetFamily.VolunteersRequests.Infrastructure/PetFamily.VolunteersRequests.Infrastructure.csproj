@@ -9,10 +9,15 @@
     <ItemGroup>
       <ProjectReference Include="..\..\Shared\PetFamily.Core\PetFamily.Core.csproj" />
       <ProjectReference Include="..\PetFamily.VolunteersRequests.Application\PetFamily.VolunteersRequests.Application.csproj" />
+      <ProjectReference Include="..\PetFamily.VolunteersRequests.Contracts\PetFamily.VolunteersRequests.Contracts.csproj" />
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="MassTransit.RabbitMQ" Version="8.3.6" />
         <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.1" />
+        <PackageReference Include="Polly" Version="8.5.2" />
+        <PackageReference Include="Quartz.AspNetCore" Version="3.13.1" />
+        <PackageReference Include="Quartz.Extensions.Hosting" Version="3.13.1" />
     </ItemGroup>
 
 </Project>
