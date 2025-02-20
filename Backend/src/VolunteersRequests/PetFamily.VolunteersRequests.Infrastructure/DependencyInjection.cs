@@ -6,6 +6,7 @@ using PetFamily.Core.Abstractions;
 using PetFamily.VolunteersRequests.Application.Database;
 using PetFamily.VolunteersRequests.Application.Interfaces;
 using PetFamily.VolunteersRequests.Infrastructure.DataContexts;
+using PetFamily.VolunteersRequests.Infrastructure.Outbox;
 
 namespace PetFamily.VolunteersRequests.Infrastructure;
 
@@ -17,6 +18,7 @@ public static class DependencyInjection
         services.AddDbContexts(configuration)
             .AddUnitOfWork()
             .AddRepositories()
+            .AddOutbox()
             .AddMessageBus(configuration);
         
         return services;
@@ -43,6 +45,14 @@ public static class DependencyInjection
         this IServiceCollection services)
     {
         services.AddScoped<IVolunteersRequestRepository, VolunteersRequestsRepository>();
+        services.AddScoped<IOutboxRepository, OutboxRepository>();
+        return services;
+    }
+    
+    private static IServiceCollection AddOutbox(
+        this IServiceCollection services)
+    {
+        services.AddScoped<ProcessOutboxMessagesService>();
         return services;
     }
     
