@@ -1,3 +1,5 @@
-﻿namespace PetFamily.VolunteersRequests.Contracts.Messages;
+﻿using Pet.Family.SharedKernel;
 
-public record VolunteerRequestReviewStartedEvent(Guid ReviewingUserId, Guid ApplicantUserId);
+namespace PetFamily.VolunteersRequests.Contracts.Messages;
+
+public record VolunteerRequestReviewStartedEvent(Guid ReviewingUserId, Guid ApplicantUserId) : IDomainEvent;

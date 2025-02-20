@@ -45,7 +45,7 @@ public class ProcessOutboxMessagesService
                 MaxRetryAttempts = 3,
                 BackoffType = DelayBackoffType.Exponential,
                 Delay = TimeSpan.FromSeconds(2),
-                ShouldHandle = new PredicateBuilder().Handle<Exception>(e => e is not NullReferenceException),
+                ShouldHandle = new PredicateBuilder().Handle<Exception>(),
                 OnRetry = retryArguments =>
                 {
                     _logger.LogCritical(

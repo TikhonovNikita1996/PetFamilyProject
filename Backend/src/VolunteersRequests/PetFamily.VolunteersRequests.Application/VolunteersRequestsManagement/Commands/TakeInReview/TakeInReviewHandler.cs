@@ -20,6 +20,7 @@ public class TakeInReviewHandler : ICommandHandler<Guid, TakeInReviewCommand>
     private readonly IVolunteersRequestRepository _requestRepository;
     private readonly ILogger<TakeInReviewHandler> _logger;
     private readonly IValidator<TakeInReviewCommand> _validator;
+    private readonly IPublisher _publisher;
     private readonly Bind<IDiscussionMessageBus, IPublishEndpoint> _publishEndpoint;
 
     public TakeInReviewHandler(
@@ -27,13 +28,13 @@ public class TakeInReviewHandler : ICommandHandler<Guid, TakeInReviewCommand>
         IVolunteersRequestRepository requestRepository,
         ILogger<TakeInReviewHandler> logger,
         IValidator<TakeInReviewCommand> validator,
-        Bind<IDiscussionMessageBus,IPublishEndpoint> publishEndpoint )
+        IPublisher publisher)
     {
         _unitOfWork = unitOfWork;
         _requestRepository = requestRepository;
         _logger = logger;
         _validator = validator;
-        _publishEndpoint = publishEndpoint;
+        _publisher = publisher;
     }
     
     public async Task<Result<Guid, CustomErrorsList>> Handle(
@@ -52,8 +53,7 @@ public class TakeInReviewHandler : ICommandHandler<Guid, TakeInReviewCommand>
 
         existedRequest.Value.TakeInReview(command.AdminId);
 
-        await _publishEndpoint.Value.Publish(new VolunteerRequestReviewStartedEvent(command.AdminId,
-            existedRequest.Value.UserId), cancellationToken);
+        await _publisher.PublishDomainEvents(existedRequest.Value, cancellationToken);
         
         await _unitOfWork.SaveChanges(cancellationToken);
         

@@ -7,6 +7,7 @@ using PetFamily.VolunteersRequests.Application.Database;
 using PetFamily.VolunteersRequests.Application.Interfaces;
 using PetFamily.VolunteersRequests.Infrastructure.DataContexts;
 using PetFamily.VolunteersRequests.Infrastructure.Outbox;
+using Quartz;
 
 namespace PetFamily.VolunteersRequests.Infrastructure;
 
@@ -19,6 +20,7 @@ public static class DependencyInjection
             .AddUnitOfWork()
             .AddRepositories()
             .AddOutbox()
+            .AddQuartzService()
             .AddMessageBus(configuration);
         
         return services;
@@ -73,6 +75,25 @@ public static class DependencyInjection
                 cfg.ConfigureEndpoints(context);
             });
         });
+
+        return services;
+    }
+    
+    private static IServiceCollection AddQuartzService(this IServiceCollection services)
+    {
+        services.AddScoped<ProcessOutboxMessagesService>();
+
+        services.AddQuartz(configure =>
+        {
+            var jobKey = new JobKey(nameof(ProcessOutboxMessagesJob));
+
+            configure
+                .AddJob<ProcessOutboxMessagesJob>(jobKey)
+                .AddTrigger(trigger => trigger.ForJob(jobKey).WithSimpleSchedule(
+                    schedule => schedule.WithIntervalInSeconds(1).RepeatForever()));
+        });
+
+        services.AddQuartzHostedService(options => { options.WaitForJobsToComplete = true; });
 
         return services;
     }
