@@ -57,7 +57,8 @@ builder.Services
     .AddDiscussionsInfrastructure(builder.Configuration)
     .AddDiscussionApplication()
     .AddVolunteersRequestsApplication()
-    .AddFileHttpCommunication(builder.Configuration);
+    .AddFileHttpCommunication(builder.Configuration)
+    .AddDistributedCache(builder.Configuration);
 
 builder.Services.AddSerilog();
 

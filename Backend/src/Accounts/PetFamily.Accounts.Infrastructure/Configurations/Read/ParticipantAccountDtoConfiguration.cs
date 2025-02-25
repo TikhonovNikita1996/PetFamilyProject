@@ -16,5 +16,9 @@ public class ParticipantDtoConfiguration : IEntityTypeConfiguration<ParticipantA
         
         builder.Property(v => v.UserId)
             .HasColumnName("user_id");
+        
+        builder.Property(n => n.BannedForRequestsUntil)
+            .IsRequired(false)
+            .HasColumnName("banned_for_requests_until");
     }
 }

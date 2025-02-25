@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.IdentityModel.Tokens;
+using PetFamily.Core.Caching;
 using PetFamily.Core.Options;
 using PetFamily.Framework.Authorization;
 
@@ -38,6 +39,21 @@ public static class DependencyInjection
         
         services.AddSingleton<IAuthorizationHandler, PermissionRequirementHandler>();
         services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+        return services;
+    }
+
+    public static IServiceCollection AddDistributedCache(this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        services.AddStackExchangeRedisCache(options =>
+        {
+            string connection = configuration.GetConnectionString("Redis")
+                                      ?? throw new ArgumentNullException(nameof(connection));
+            options.Configuration = connection;
+        });
+
+        services.AddSingleton<ICacheService, DistributedCacheService>();
+        
         return services;
     }
 }

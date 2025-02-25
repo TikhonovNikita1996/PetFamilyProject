@@ -9,7 +9,7 @@ using PetFamily.Volunteers.Application.VolunteersManagement.Queries.GetPetsWithF
 using PetFamily.Volunteers.Presentation.Requests.Pet;
 
 namespace PetFamily.Volunteers.Presentation.Controllers;
-[Authorize]
+// [Authorize]
 public class PetsController : BaseApiController
 {
     [HttpGet]

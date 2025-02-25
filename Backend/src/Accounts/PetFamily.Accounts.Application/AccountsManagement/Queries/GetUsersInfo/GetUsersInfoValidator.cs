@@ -2,9 +2,9 @@
 
 namespace PetFamily.Accounts.Application.AccountsManagement.Queries.GetUsersInfo;
 
-public class GetPetByIdValidator : AbstractValidator<GetUsersInfoQuery>
+public class GetUsersInfoValidator : AbstractValidator<GetUsersInfoQuery>
 {
-    public GetPetByIdValidator()
+    public GetUsersInfoValidator()
     {
         RuleFor(c => c.UserId).NotEmpty();
     }
